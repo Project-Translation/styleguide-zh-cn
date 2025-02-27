@@ -1,0 +1,3003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Google JavaScript 风格指南</title>
+<link rel="stylesheet" href="javaguide.css">
+<script src="include/styleguide.js"></script>
+<link rel="shortcut icon" href="/styleguide/favicon.ico">
+<script src="include/jsguide.js"></script>
+</head>
+<body onload="initStyleGuide();">
+<div id="content">
+<h1>Google JavaScript 风格指南</h1>
+
+<p style="position: fixed; left: 0; top: 0; padding: 0.5em; margin: 0; background-color: #fef6e0; text-align: center; width: 100%; font-weight: bold; z-index: 1;">
+请注意：本指南不再更新。Google 建议迁移到 TypeScript，并遵循 <a href="tsguide.html">TypeScript 指南</a>。
+</p>
+
+<h2 id="introduction">1 引言</h2>
+
+<p>本文档是 Google 对 JavaScript 编程语言源代码编码标准的<strong>完整</strong>定义。如果一个 JavaScript 源文件遵循此处的规则，则称其为<em>Google 风格</em>。</p>
+
+<p>与其他编程风格指南一样，本指南涵盖的不仅仅是格式的美观问题，还包括其他类型的约定或编码标准。然而，本文档主要关注我们普遍遵循的严格规则，并避免提供不明确可执行的建议（无论是人工还是工具）。</p>
+
+<h3 id="terminology-notes">1.1 术语说明</h3>
+
+<p>在本文档中，除非另有说明：</p>
+
+<ol>
+<li><p>术语<em>注释</em>始终指的是<em>实现</em>注释。我们不使用“文档注释”这一短语，而是使用常见的术语“JSDoc”来指代人类可读的文本和机器可读的注释，这些注释位于<code>/** … */</code>中。</p></li>
+<li><p>本风格指南在使用<em>必须</em>、<em>不得</em>、<em>应当</em>、<em>不应当</em>和<em>可以</em>这些短语时，采用<a href="http://tools.ietf.org/html/rfc2119">RFC 2119</a>的术语。术语<em>偏好</em>和<em>避免</em>分别对应于<em>应当</em>和<em>不应当</em>。命令式和陈述式语句是规定性的，对应于<em>必须</em>。</p></li>
+</ol>
+
+<p>其他“术语说明”将偶尔出现在整个文档中。</p>
+
+<h3 id="guide-notes">1.2 指南说明</h3>
+
+<p>本文档中的示例代码是<strong>非规范性</strong>的。也就是说，虽然示例符合 Google 风格，但它们可能不是表示代码的唯一风格化方式。示例中做出的可选格式选择不得作为规则强制执行。</p>
+
+<h2 id="source-file-basics">2 源文件基础</h2>
+
+<h3 id="file-name">2.1 文件名</h3>
+
+<p>文件名必须全部小写，可以包含下划线（<code>_</code>）或连字符（<code>-</code>），但不得包含其他标点符号。遵循您的项目使用的惯例。文件扩展名必须是<code>.js</code>。</p>
+
+<h3 id="file-encoding">2.2 文件编码：UTF-8</h3>
+
+<p>源文件使用<strong>UTF-8</strong>编码。</p>
+
+<h3 id="special-characters">2.3 特殊字符</h3>
+
+<h4 id="whitespace-characters">2.3.1 空白字符</h4>
+
+<p>除了行终止序列外，ASCII 水平空格字符（0x20）是源文件中唯一出现的空白字符。这意味着</p>
+
+<ol>
+<li><p>字符串字面量中的所有其他空白字符都已转义，以及</p></li>
+<li><p>制表符<strong>不</strong>用于缩进。</p></li>
+</ol>
+
+<h4 id="special-escape-sequences">2.3.2 特殊转义序列</h4>
+
+<p>对于任何具有特殊转义序列的字符（<code>\'</code>, <code>\"</code>, <code>\\</code>, <code>\b</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\v</code>），使用该序列而不是相应的数字转义（例如<code>\x0a</code>, <code>\u000a</code>, 或<code>\u{a}</code>）。从不使用旧的八进制转义。</p>
+
+<h4 id="non-ascii-characters">2.3.3 非 ASCII 字符</h4>
+
+<p>对于剩余的非 ASCII 字符，使用实际的 Unicode 字符（例如<code>∞</code>）或等效的十六进制或 Unicode 转义（例如<code>\u221e</code>），仅取决于哪个能使代码<strong>更易读和理解</strong>。</p>
+
+<p>提示：在使用 Unicode 转义的情况下，有时即使使用实际的 Unicode 字符，也可以添加解释性注释，这会非常有帮助。</p>
+
+<pre><code class="language-js prettyprint good">/* 最佳：即使没有注释也非常清晰。 */
+const units = 'μs';
+
+/* 允许：但由于μ是可打印字符，因此不必要。 */
+const units = '\u03bcs'; // 'μs'
+
+/* 良好：对不可打印字符使用转义，并添加注释以提高清晰度。 */
+return '\ufeff' + content;  // 在内容前添加字节顺序标记。
+</code></pre>
+
+<pre><code class="language-js prettyprint bad">/* 差：读者不知道这是什么字符。 */
+const units = '\u03bcs';
+</code></pre>
+
+<p>提示：永远不要因为担心某些程序可能无法正确处理非 ASCII 字符而使您的代码可读性降低。如果发生这种情况，这些程序是<strong>有问题的</strong>，必须<strong>修复</strong>。</p>
+
+<h2 id="source-file-structure">3 源文件结构</h2>
+
+<p>所有新源文件应为<code>goog.module</code>文件（包含<code>goog.module</code>调用的文件）或 ECMAScript（ES）模块（使用<code>import</code>和<code>export</code>语句）。</p>
+
+<p>文件由以下内容组成，<strong>按顺序</strong>：</p>
+
+<ol>
+<li>许可或版权信息（如果存在）</li>
+<li><code>@fileoverview</code> JSDoc（如果存在）</li>
+<li><code>goog.module</code>语句（如果是<code>goog.module</code>文件）</li>
+<li>ES <code>import</code>语句（如果是 ES 模块）</li>
+<li><code>goog.require</code>和<code>goog.requireType</code>语句</li>
+<li>文件的实现部分</li>
+</ol>
+
+<p>每个存在的部分之间用<strong>恰好一行空白</strong>分隔，除了文件的实现部分之前可以有1或2行空白。</p>
+
+<h3 id="file-copyright">3.1 许可或版权信息（如果存在）</h3>
+
+<p>如果文件中应包含许可或版权信息，则应放在此处。</p>
+
+<h3 id="file-fileoverview">3.2 <code>@fileoverview</code> JSDoc（如果存在）</h3>
+
+<p>有关格式规则，请参见<a href="#jsdoc-top-file-level-comments">??</a>。</p>
+<h3 id="file-goog-module">3.3 <code>goog.module</code> 声明</h3>
+
+<p>所有 <code>goog.module</code> 文件必须在单行上声明一个 <code>goog.module</code> 名称：包含 <code>goog.module</code> 声明的行不能换行，因此是 80 列限制的例外情况。</p>
+
+<p><code>goog.module</code> 的整个参数定义了一个命名空间。它是包名称（反映代码所在目录结构片段的标识符）加上可选的主要类/枚举/接口，这些在末尾以 <code>lowerCamelCase</code> 形式连接。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">goog.module('search.urlHistory.urlHistoryService');
+</code></pre>
+
+<h4 id="naming-hierarchy">3.3.1 层次结构</h4>
+
+<p>模块命名空间永远不能被命名为另一个模块命名空间的<em>直接</em>子级。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">goog.module('foo.bar');   // 'foo.bar.qux' 会是可以的
+goog.module('foo.bar.baz');
+</code></pre>
+
+<p>目录层次结构反映了命名空间层次结构，因此更深层次的子级是高层次父目录的子目录。请注意，这意味着“父”命名空间组的所有者必然知道所有子命名空间，因为它们存在于同一个目录中。</p>
+
+<h4 id="file-declare-legacy-namespace">3.3.2 <code>goog.module.declareLegacyNamespace</code></h4>
+
+<p>单个 <code>goog.module</code> 声明之后可以选择性地跟随一个对 <code>goog.module.declareLegacyNamespace();</code> 的调用。尽可能避免使用 <code>goog.module.declareLegacyNamespace()</code>。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">goog.module('my.test.helpers');
+goog.module.declareLegacyNamespace();
+goog.setTestOnly();
+</code></pre>
+
+<p><code>goog.module.declareLegacyNamespace</code> 存在的目的是为了 easing 从传统基于对象层次结构的命名空间的过渡，但带有一些命名限制。由于子模块名称必须在父命名空间之后创建，因此此名称<strong>不得</strong>是任何其他 <code>goog.module</code> 的子级或父级（例如，<code>goog.module('parent');</code> 和 <code>goog.module('parent.child');</code> 不能同时安全存在，也不能 <code>goog.module('parent');</code> 和 <code>goog.module('parent.child.grandchild');</code>）。</p>
+
+<h4 id="file-goog-module-exports">3.3.3 <code>goog.module</code> 导出</h4>
+
+<p>类、枚举、函数、常量和其他符号使用 <code>exports</code> 对象导出。导出的符号可以直接在 <code>exports</code> 对象上定义，或者在本地声明并单独导出。只有打算在模块外部使用的符号才会被导出。非导出的模块本地符号不声明为 <code>@private</code>。导出和模块本地符号的顺序没有规定。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">const /** !Array&lt;number&gt; */ exportedArray = [1, 2, 3];
+
+const /** !Array&lt;number&gt; */ moduleLocalArray = [4, 5, 6];
+
+/** @return {number} */
+function moduleLocalFunction() {
+  return moduleLocalArray.length;
+}
+
+/** @return {number} */
+function exportedFunction() {
+  return moduleLocalFunction() * 2;
+}
+
+exports = {exportedArray, exportedFunction};
+</code></pre>
+
+<pre><code class="language-js prettyprint good">/** @const {number} */
+exports.CONSTANT_ONE = 1;
+
+/** @const {string} */
+exports.CONSTANT_TWO = 'Another constant';
+</code></pre>
+
+<p>不要将 <code>exports</code> 对象标注为 <code>@const</code>，因为编译器已经将其视为常量。</p>
+
+<pre><code class="language-js prettyprint bad">/** @const */
+exports = {exportedFunction};
+</code></pre>
+
+<p>不要使用默认导出，因为它们不容易转换为 ES 模块语义。</p>
+
+<pre><code class="language-js prettyprint bad">exports = FancyClass;
+</code></pre>
+
+<p><span id="file-es6-modules"></span></p>
+<h3 id="file-es-modules">3.4 ES模块</h3>
+
+<p>ES模块是使用<code>import</code>和<code>export</code>关键字的文件。</p>
+
+<p><span id="es6-module-imports"></span></p>
+
+<h4 id="es-module-imports">3.4.1 导入</h4>
+
+<p>导入语句不能换行，因此是80列限制的例外情况。</p>
+
+<p><span id="es6-import-paths"></span></p>
+
+<h5 id="esm-import-paths">3.4.1.1 导入路径</h5>
+
+<p>ES模块文件必须使用<code>import</code>语句来导入其他ES模块文件。不要使用<code>goog.require</code>来导入另一个ES模块。</p>
+
+<pre><code class="language-js prettyprint good">import './sideeffects.js';
+
+import * as goog from '../closure/goog/goog.js';
+import * as parent from '../parent.js';
+
+import {name} from './sibling.js';
+</code></pre>
+
+<p><span id="es6-import-paths-file-extension"></span></p>
+
+<h6 id="esm-import-paths-file-extension">3.4.1.1.1 导入路径中的文件扩展名</h6>
+
+<p>在导入路径中，<code>.js</code>文件扩展名不是可选的，必须始终包含。</p>
+
+<pre><code class="language-js prettyprint bad">import '../directory/file';
+</code></pre>
+
+<pre><code class="language-js prettyprint good">import '../directory/file.js';
+</code></pre>
+
+<h5 id="importing-the-same-file-multiple-times">3.4.1.2 多次导入同一文件</h5>
+
+<p>不要多次导入同一文件。这可能会使确定文件的总体导入变得困难。</p>
+
+<pre><code class="language-js prettyprint bad">// 导入具有相同的路径，但由于不一致对齐，可能难以发现。
+import {short} from './long/path/to/a/file.js';
+import {aLongNameThatBreaksAlignment} from './long/path/to/a/file.js';
+</code></pre>
+
+<p><span id="naming-es6-imports"></span></p>
+
+<h5 id="naming-esm-imports">3.4.1.3 命名导入</h5>
+
+<h6 id="naming-module-imports">3.4.1.3.1 命名模块导入</h6>
+
+<p>模块导入名称（<code>import * as name</code>）是根据导入文件名派生的<code>lowerCamelCase</code>名称。</p>
+
+<pre><code class="language-js prettyprint good">import * as fileOne from '../file-one.js';
+import * as fileTwo from '../file_two.js';
+import * as fileThree from '../filethree.js';
+</code></pre>
+
+<pre><code class="language-js prettyprint good">import * as libString from './lib/string.js';
+import * as math from './math/math.js';
+import * as vectorMath from './vector/math.js';
+</code></pre>
+
+<p>某些库可能常用违反此命名方案的命名空间导入前缀，但由于开源使用非常普遍，使得违反的样式更易读。目前唯一符合此例外的库是<a href="https://threejs.org/">threejs</a>，使用<code>THREE</code>前缀。</p>
+
+<h6 id="naming-default-imports">3.4.1.3.2 命名默认导入</h6>
+
+<p>默认导入名称根据导入文件名派生，并遵循<a href="#naming-rules-by-identifier-type">??</a>中的规则。</p>
+
+<pre><code class="language-js prettyprint good">import MyClass from '../my-class.js';
+import myFunction from '../my_function.js';
+import SOME_CONSTANT from '../someconstant.js';
+</code></pre>
+
+<p>注意：一般情况下这不应该发生，因为此样式指南禁止默认导出，参见<a href="#named-vs-default-exports">??</a>。默认导入仅用于导入不符合此样式指南的模块。</p>
+
+<h6 id="naming-named-imports">3.4.1.3.3 命名命名导入</h6>
+
+<p>一般通过命名导入（<code>import {name}</code>）导入的符号应保持相同的名称。避免使用别名导入（<code>import {SomeThing as SomeOtherThing}</code>）。优先通过使用模块导入（<code>import *</code>）或重命名导出本身来解决名称冲突。</p>
+
+<pre><code class="language-js prettyprint good">import * as bigAnimals from './biganimals.js';
+import * as domesticatedAnimals from './domesticatedanimals.js';
+
+new bigAnimals.Cat();
+new domesticatedAnimals.Cat();
+</code></pre>
+
+<p>如果需要重命名命名导入，则在生成的别名中使用导入模块的文件名或路径的组成部分。</p>
+
+<pre><code class="language-js prettyprint good">import {Cat as BigCat} from './biganimals.js';
+import {Cat as DomesticatedCat} from './domesticatedanimals.js';
+
+new BigCat();
+new DomesticatedCat();
+</code></pre>
+
+<p><span id="es6-module-exports"></span></p>
+
+<h4 id="es-module-exports">3.4.2 导出</h4>
+
+<p>只有在符号打算在模块外部使用时才导出。未导出的模块本地符号不声明为<code>@private</code>。导出和模块本地符号没有规定的排序顺序。</p>
+
+<h5 id="named-vs-default-exports">3.4.2.1 命名导出与默认导出</h5>
+
+<p>在所有代码中使用命名导出。您可以将<code>export</code>关键字应用于声明，或者使用<code>export {name};</code>语法。</p>
+
+<p>不要使用默认导出。导入模块必须为这些值命名，这可能导致跨模块的命名不一致。</p>
+
+<pre><code class="language-js prettyprint bad">// 不要使用默认导出：
+export default class Foo { ... } // 错误！
+</code></pre>
+
+<pre><code class="language-js prettyprint good">// 使用命名导出：
+export class Foo { ... }
+</code></pre>
+
+<pre><code class="language-js prettyprint good">// 替代风格的命名导出：
+class Foo { ... }
+
+export {Foo};
+</code></pre>
+
+<p><span id="es6-exports-mutability"></span></p>
+
+<h5 id="esm-exports-mutability">3.4.2.2 导出的可变性</h5>
+
+<p>导出的变量在模块初始化之外不得被修改。</p>
+
+<p>如果需要修改，有替代方案，包括导出一个对具有可变字段的对象的常量引用或导出用于可变数据的访问器函数。</p>
+
+<pre><code class="language-js prettyprint bad">// 错误：foo和mutateFoo都被导出并被修改。
+export let /** number */ foo = 0;
+
+/**
+ * 修改foo。
+ */
+export function mutateFoo() {
+  ++foo;
+}
+
+/**
+ * @param {function(number): number} newMutateFoo
+ */
+export function setMutateFoo(newMutateFoo) {
+  // 导出的类和函数可以被修改！
+  mutateFoo = () =&gt; {
+    foo = newMutateFoo(foo);
+  };
+}
+</code></pre>
+<pre><code class="language-js prettyprint good">// 良好做法：与其直接导出可变变量 foo 和 mutateFoo，不如将它们设置为模块作用域，并导出一个用于 foo 的 getter 和一个用于 mutateFooFunc 的包装器。
+let /** number */ foo = 0;
+let /** function(number): number */ mutateFooFunc = (foo) =&gt; foo + 1;
+
+/** @return {number} */
+export function getFoo() {
+  return foo;
+}
+
+export function mutateFoo() {
+  foo = mutateFooFunc(foo);
+}
+
+/** @param {function(number): number} mutateFoo */
+export function setMutateFoo(mutateFoo) {
+  mutateFooFunc = mutateFoo;
+}
+</code></pre>
+
+<p><span id="es6-module-circular-dependencies"></span></p>
+
+<h5 id="es-module-export-from">3.4.2.3 export from</h5>
+
+<p><code>export from</code> 语句不得换行，因此是 80 列限制的例外。这适用于两种 <code>export from</code> 形式。</p>
+
+<pre><code class="language-js prettyprint good">export {specificName} from './other.js';
+export * from './another.js';
+</code></pre>
+
+<h4 id="es-module-circular-dependencies">3.4.3 ES 模块中的循环依赖</h4>
+
+<p>不要在 ES 模块之间创建循环依赖，尽管 ECMAScript 规范允许这样做。请注意，使用 <code>import</code> 和 <code>export</code> 语句都可以创建循环依赖。</p>
+
+<pre><code class="language-js prettyprint bad">// a.js
+import './b.js';
+</code></pre>
+
+<pre><code class="language-js prettyprint bad">// b.js
+import './a.js';
+
+// `export from` 也可能导致循环依赖！
+export {x} from './c.js';
+</code></pre>
+
+<pre><code class="language-js prettyprint bad">// c.js
+import './b.js';
+
+export let x;
+</code></pre>
+
+<p><span id="es6-module-closure-interop"></span></p>
+
+<h4 id="es-module-closure-interop">3.4.4 与 Closure 的互操作</h4>
+
+<p><span id="es6-module-referencing-goog"></span></p>
+
+<h5 id="es-module-referencing-goog">3.4.4.1 引用 goog</h5>
+
+<p>要引用 Closure 的 <code>goog</code> 命名空间，请导入 Closure 的 <code>goog.js</code>。</p>
+
+<pre><code class="language-js prettyprint good">import * as goog from '../closure/goog/goog.js';
+
+const {compute} = goog.require('a.name');
+
+export const CONSTANT = compute();
+</code></pre>
+
+<p><code>goog.js</code> 仅导出全局 <code>goog</code> 中可在 ES 模块中使用的属性子集。</p>
+
+<p><span id="goog-require-in-es6-module"></span></p>
+
+<h5 id="goog-require-in-es-module">3.4.4.2 在 ES 模块中使用 goog.require</h5>
+
+<p>在 ES 模块中，<code>goog.require</code> 的工作方式与在 <code>goog.module</code> 文件中相同。您可以要求任何 Closure 命名空间符号（即由 <code>goog.provide</code> 或 <code>goog.module</code> 创建的符号），<code>goog.require</code> 将返回该值。</p>
+
+<pre><code class="language-js prettyprint good">import * as goog from '../closure/goog/goog.js';
+import * as anEsModule from './anEsModule.js';
+
+const GoogPromise = goog.require('goog.Promise');
+const myNamespace = goog.require('my.namespace');
+</code></pre>
+
+<p><span id="closure-module-id-in-es6-module"></span></p>
+
+<h5 id="closure-module-id-in-es-module">3.4.4.3 在 ES 模块中声明 Closure 模块 ID</h5>
+
+<p>在 ES 模块中可以使用 <code>goog.declareModuleId</code> 来声明一个类似 <code>goog.module</code> 的模块 ID。这意味着这个模块 ID 可以被 <code>goog.require</code>、<code>goog.module.get</code> 等调用，就好像它是一个没有调用 <code>goog.module.declareLegacyNamespace</code> 的 <code>goog.module</code>。它不会将模块 ID 创建为全局可用的 JavaScript 符号。</p>
+
+<p>对来自 <code>goog.declareModuleId</code> 的模块 ID 的 <code>goog.require</code>（或 <code>goog.module.get</code>）调用将始终返回模块对象（就像它被 <code>import *</code> 导入一样）。因此，<code>goog.declareModuleId</code> 的参数应始终以 <code>lowerCamelCaseName</code> 结尾。</p>
+
+<p>注意：在 ES 模块中调用 <code>goog.module.declareLegacyNamespace</code> 是错误的，它只能从 <code>goog.module</code> 文件中调用。没有直接的方法将“传统”命名空间与 ES 模块关联。</p>
+
+<p><code>goog.declareModuleId</code> 应仅用于将 Closure 文件原地升级为 ES 模块，其中使用了命名导出。</p>
+
+<pre><code class="language-js prettyprint good">import * as goog from '../closure/goog.js';
+
+goog.declareModuleId('my.esm');
+
+export class Class {};
+</code></pre>
+
+<h3 id="file-set-test-only">3.5 <code>goog.setTestOnly</code></h3>
+
+<p>在 <code>goog.module</code> 文件中，<code>goog.module</code> 语句和（如果存在）<code>goog.module.declareLegacyNamespace()</code> 语句之后可以选择性地调用 <code>goog.setTestOnly()</code>。</p>
+
+<p>在 ES 模块中，<code>import</code> 语句之后可以选择性地调用 <code>goog.setTestOnly()</code>。</p>
+<h3 id="file-goog-require">3.6 <code>goog.require</code> 和 <code>goog.requireType</code> 语句</h3>
+
+<p>导入是通过 <code>goog.require</code> 和 <code>goog.requireType</code> 语句完成的。通过 <code>goog.require</code> 语句导入的名称可以在代码和类型注解中使用，而通过 <code>goog.requireType</code> 导入的名称只能在类型注解中使用。</p>
+
+<p><code>goog.require</code> 和 <code>goog.requireType</code> 语句形成一个连续的块，没有空行。这个块跟在 <code>goog.module</code> 声明之后，中间<a href="#source-file-structure">隔一个空行</a>。传递给 <code>goog.require</code> 或 <code>goog.requireType</code> 的整个参数是由另一个文件中的 <code>goog.module</code> 定义的命名空间。<code>goog.require</code> 和 <code>goog.requireType</code> 语句不能出现在文件的其他任何地方。</p>
+
+<p>每个 <code>goog.require</code> 或 <code>goog.requireType</code> 都被分配给一个单一的常量别名，或者被解构为多个常量别名。这些别名是引用依赖项在类型注解或代码中唯一可接受的方式。完全限定的命名空间不得在任何地方使用，除了作为 <code>goog.require</code> 或 <code>goog.requireType</code> 的参数。</p>
+
+<p><strong>例外</strong>：在外部文件中声明的类型、变量和函数必须在类型注解和代码中使用其完全限定的名称。</p>
+
+<p>当 <code>goog.require</code> 被分配给一个单一的常量别名时，它必须与导入模块命名空间的最后一个点分隔组件匹配。</p>
+
+<p><strong>例外</strong>：在某些情况下，可以使用命名空间的额外组件来形成更长的别名。生成的别名必须保留原始标识符的大小写，以便仍然正确识别其类型。可以使用更长的别名来消除其他相同的别名，或者如果它显著提高了可读性。此外，必须使用更长的别名来防止掩盖原生类型，如 <code>Element</code>、<code>Event</code>、<code>Error</code>、<code>Map</code> 和 <code>Promise</code>（有关更完整的列表，请参见 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects">标准内置对象</a> 和 <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web API</a> 在 MDN）。</p>
+在重命名解构别名时，冒号后面必须有一个空格，如<a href="#formatting-horizontal-whitespace">??</a>中所要求的。</p>
+
+<p>一个文件不应同时包含针对同一命名空间的 <code>goog.require</code> 和 <code>goog.requireType</code> 语句。如果导入的名称在代码和类型注解中都使用，则应通过单个 <code>goog.require</code> 语句导入。</p>
+
+<p>如果一个模块仅为了其副作用而被导入，则调用必须是 <code>goog.require</code>（而不是 <code>goog.requireType</code>），并且可以省略赋值。需要一个注释来解释为什么需要这样做，并抑制编译器警告。</p>
+
+<p>这些行按照以下规则排序：首先是左侧有名称的所有 require，按这些名称字母顺序排序。然后是解构的 require，再次按左侧的名称排序。最后是任何独立的 require 调用（通常这些是仅为了其副作用而导入的模块）。</p>
+
+<p>提示：无需记住这个顺序并手动执行。你可以依赖你的 IDE 来报告未正确排序的 require。</p>
+
+<p>如果一个长的别名或模块名称会导致一行超过 80 列限制，它<strong>不得</strong>被换行：require 行是 80 列限制的例外。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">// 标准别名风格。
+const asserts = goog.require('goog.asserts');
+// 使用命名空间别名来消除歧义。
+const testingAsserts = goog.require('goog.testing.asserts');
+// 标准解构为别名。
+const {MyClass} = goog.require('some.package');
+const {MyType} = goog.requireType('other.package');
+const {clear, clone} = goog.require('goog.array');
+const {Rgb} = goog.require('goog.color');
+// 使用命名空间解构为别名来消除歧义。
+const {MyClass: NsMyClass} = goog.require('other.ns');
+const {SomeType: FooSomeType} = goog.requireType('foo.types');
+const {clear: objectClear, clone: objectClone} = goog.require('goog.object');
+// 使用命名空间解构为别名来防止掩盖原生类型。
+const {Element: RendererElement} = goog.require('web.renderer');
+// 为了提高可读性而使用的非顺序命名空间别名。
+// 此外，超过 80 列的 require 行不得换行。
+const {SomeDataStructure: SomeDataStructureModel} = goog.requireType('identical.package.identifiers.models');
+const {SomeDataStructure: SomeDataStructureProto} = goog.require('proto.identical.package.identifiers');
+// 为了触发副作用而没有别名的 goog.require。
+/** @suppress {extraRequire} 初始化 MyFramework。 */
+goog.require('my.framework.initialization');
+</code></pre>
+
+<p>不鼓励使用：</p>
+
+<pre><code class="language-js prettyprint bad">// 一些旧代码使用“默认导出”风格来导出一个单一的类、枚举、记录类型等。在新的 JS 中不要使用这种模式。
+// 使用“默认导出”时，优先解构为别名。
+const MyClass = goog.require('some.package.MyClass');
+const MyType = goog.requireType('some.package.MyType');
+</code></pre>
+
+<pre><code class="language-js prettyprint bad">// 如果需要消除歧义，优先使用 PackageClass 而不是 SomeClass，因为它更接近模块名称的格式。
+const SomeClass = goog.require('some.package.Class');
+</code></pre>
+
+<p>不允许使用：</p>
+
+<pre><code class="language-js prettyprint bad">// 额外的术语必须来自命名空间。
+const MyClassForBizzing = goog.require('some.package.MyClass');
+// 别名必须包含整个最终命名空间组件。
+const MyClass = goog.require('some.package.MyClassForBizzing');
+// 别名不得掩盖原生类型（此处应为 `const JspbMap`）。
+const Map = goog.require('jspb.Map');
+</code></pre>
+// 不要将goog.require行拆分超过80列。
+const SomeDataStructure =
+    goog.require('proto.identical.package.identifiers.SomeDataStructure');
+// 别名必须基于命名空间。
+const randomName = goog.require('something.else');
+// 冒号后缺少空格。
+const {Foo:FooProto} = goog.require('some.package.proto.Foo');
+// goog.requireType没有别名。
+goog.requireType('some.package.with.a.Type');
+
+
+/**
+ * @param {!some.unimported.Dependency} param 所有在JSDoc注释中使用的外部类型
+ *     必须使用goog.require导入，除非在externs中声明。
+ */
+function someFunction(param) {
+  // goog.require行必须在顶级位置，在任何其他代码之前。
+  const alias = goog.require('my.long.name.alias');
+  // ...
+}
+
+<h3 id="file-implementation">3.7 文件的实现</h3>
+
+<p>在声明所有依赖信息后（至少隔一空行），实际的实现内容会跟随其后。</p>
+
+<p>这可能包括任何模块内声明的内容（常量、变量、类、函数等），以及任何导出的符号。</p>
+
+<h2 id="formatting">4 格式化</h2>
+
+<p><strong>术语说明</strong>：<em>块状结构</em>指的是类、函数、方法或大括号限定的代码块的主体。请注意，根据
+<a href="#features-array-literals">??</a> 和 <a href="#features-object-literals">??</a>，任何数组或对象字面量可以选择性地被视为块状结构处理。</p>
+
+<p>提示：使用 <code>clang-format</code>。JavaScript社区已经投入努力确保clang-format在JavaScript文件上“做正确的事”。<code>clang-format</code> 与多个流行的编辑器有集成。</p>
+
+<h3 id="formatting-braces">4.1 大括号</h3>
+
+<h4 id="formatting-braces-all">4.1.1 所有控制结构使用大括号</h4>
+
+<p>所有控制结构（即 <code>if</code>、<code>else</code>、<code>for</code>、<code>do</code>、<code>while</code>，以及其他任何控制结构）都需要大括号，即使主体只包含一个语句。非空块的第一条语句必须在自己的行上开始。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">if (someVeryLongCondition())
+  doSomething();
+
+for (let i = 0; i &lt; foo.length; i++) bar(foo[i]);
+</code></pre>
+
+<p><strong>例外</strong>：一个简单的if语句如果可以完全在一行内完成且没有换行（并且没有else），可以为了提高可读性而保持在一行上，不使用大括号。这是唯一允许控制结构省略大括号和换行的情形。</p>
+
+<pre><code class="language-js prettyprint good">if (shortCondition()) foo();
+</code></pre>
+
+<h4 id="formatting-nonempty-blocks">4.1.2 非空块：K&amp;R风格</h4>
+
+<p>对于<em>非空</em>块和块状结构，大括号遵循Kernighan和Ritchie风格（<q><a href="https://blog.codinghorror.com/new-programming-jargon/#3">埃及括号</a></q>）：</p>
+
+<ul>
+<li>开括号前没有换行。</li>
+<li>开括号后换行。</li>
+<li>闭括号前换行。</li>
+<li>如果闭括号终止一个语句或函数或类的身体，或类方法的身体，则闭括号后换行。特别是，如果闭括号后跟随的是 <code>else</code>、<code>catch</code>、<code>while</code> 或逗号、分号、右括号，则闭括号后<strong>不</strong>换行。</li>
+</ul>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">class InnerClass {
+  constructor() {}
+
+  /** @param {number} foo */
+  method(foo) {
+    if (condition(foo)) {
+      try {
+        // 注意：这可能会失败。
+        something();
+      } catch (err) {
+        recover();
+      }
+    }
+  }
+}
+</code></pre>
+
+<h4 id="formatting-empty-blocks">4.1.3 空块：可以简洁</h4>
+
+<p>一个空块或块状结构<em>可以</em>在打开后立即关闭，中间没有字符、空格或换行（即 <code>{}</code>），<strong>除非</strong>它是<em>多块语句</em>的一部分（直接包含多个块的语句：<code>if</code>/<code>else</code> 或 <code>try</code>/<code>catch</code>/<code>finally</code>）。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">function doNothing() {}
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">if (condition) {
+  // …
+} else if (otherCondition) {} else {
+  // …
+}
+
+try {
+  // …
+} catch (e) {}
+</code></pre>
+<h3 id="formatting-block-indentation">4.2 块缩进：+2 个空格</h3>
+
+<p>每次打开一个新的块或类似块的结构时，缩进增加两个空格。当块结束时，缩进返回到之前的缩进级别。缩进级别适用于块内的代码和注释。（参见<a href="#formatting-nonempty-blocks">??</a>中的示例）。</p>
+
+<h4 id="formatting-array-literals">4.2.1 数组字面量：可选的“块状”</h4>
+
+<p>任何数组字面量都可以选择性地格式化为“块状结构”。例如，以下都是有效的（<strong>不是</strong>详尽列表）：</p>
+
+<pre><code class="language-js prettyprint good">const a = [
+  0,
+  1,
+  2,
+];
+
+const b =
+    [0, 1, 2];
+
+</code></pre>
+
+<pre><code class="language-js prettyprint good">const c = [0, 1, 2];
+
+someMethod(foo, [
+  0, 1, 2,
+], bar);
+</code></pre>
+
+<p>允许其他组合，特别是在强调元素之间的语义分组时，但不应仅用于减少较大数组的垂直大小。</p>
+
+<h4 id="formatting-object-literals">4.2.2 对象字面量：可选的“块状”</h4>
+
+<p>任何对象字面量都可以选择性地格式化为“块状结构”。与<a href="#formatting-array-literals">??</a>中的示例相同。例如，以下都是有效的（<strong>不是</strong>详尽列表）：</p>
+
+<pre><code class="language-js prettyprint good">const a = {
+  a: 0,
+  b: 1,
+};
+
+const b =
+    {a: 0, b: 1};
+</code></pre>
+
+<pre><code class="language-js prettyprint good">const c = {a: 0, b: 1};
+
+someMethod(foo, {
+  a: 0, b: 1,
+}, bar);
+</code></pre>
+
+<h4 id="formatting-class-literals">4.2.3 类字面量</h4>
+
+<p>类字面量（无论是声明还是表达式）都按块缩进。不要在方法后或类<em>声明</em>的结束大括号后添加分号（包含类<em>表达式</em>的语句——如赋值——仍然以分号结束）。对于继承，<code>extends</code>关键字就足够了，除非超类是模板化的。模板化类型的子类必须在<code>@extends</code> JSDoc注释中明确指定模板类型，即使只是传递相同的模板名称。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/** @template T */
+class Foo {
+  /** @param {T} x */
+  constructor(x) {
+    /** @type {T} */
+    this.x = x;
+  }
+}
+
+/** @extends {Foo&lt;number&gt;} */
+class Bar extends Foo {
+  constructor() {
+    super(42);
+  }
+}
+
+exports.Baz = class extends Bar {
+  /** @return {number} */
+  method() {
+    return this.x;
+  }
+};
+</code></pre>
+
+<pre><code class="language-js prettyprint bad">/** @extends {Bar} */ // &lt;-- 不必要的@extends
+exports.Baz = class extends Bar {
+  /** @return {number} */
+  method() {
+    return this.x;
+  }
+};
+</code></pre>
+
+<h4 id="formatting-function-expressions">4.2.4 函数表达式</h4>
+
+<p>在函数调用的参数列表中声明匿名函数时，函数体的缩进比前面的缩进深度多两个空格。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">prefix.something.reallyLongFunctionName('whatever', (a1, a2) =&gt; {
+  // 相对于上一行的'prefix'语句的缩进深度，函数体缩进+2
+  // 空格。
+  if (a1.equals(a2)) {
+    someOtherLongFunctionName(a1);
+  } else {
+    andNowForSomethingCompletelyDifferent(a2.parrot);
+  }
+});
+
+some.reallyLongFunctionCall(arg1, arg2, arg3)
+    .thatsWrapped()
+    .then((result) =&gt; {
+      // 相对于'.then()'调用的缩进深度，函数体缩进+2
+      // 空格。
+      if (result) {
+        result.use();
+      }
+    });
+</code></pre>
+
+<h4 id="formatting-switch-statements">4.2.5 Switch语句</h4>
+
+<p>与任何其他块一样，switch块的内容缩进+2。</p>
+
+<p>在switch标签之后，会出现一个换行符，并且缩进级别增加+2，就像打开了一个块一样。如果需要词法作用域，可以使用显式块。接下来的switch标签返回到之前的缩进级别，就像关闭了一个块一样。</p>
+
+<p><code>break</code>和下一个case之间可以选择性地添加一个空行。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">switch (animal) {
+  case Animal.BANDERSNATCH:
+    handleBandersnatch();
+    break;
+
+  case Animal.JABBERWOCK:
+    handleJabberwock();
+    break;
+
+  default:
+    throw new Error('未知动物');
+}
+</code></pre>
+
+<h3 id="formatting-statements">4.3 语句</h3>
+
+<h4 id="formatting-one-statement-perline">4.3.1 每行一个语句</h4>
+
+<p>每个语句后面跟随一个换行符。</p>
+
+<h4 id="formatting-semicolons-are-required">4.3.2 必须使用分号</h4>
+
+<p>每个语句必须以分号结束。禁止依赖自动分号插入。</p>
+
+<h3 id="formatting-column-limit">4.4 列限制：80</h3>
+
+<p>JavaScript代码的列限制为80个字符。除下文注明的例外情况外，任何超过此限制的行都必须进行换行，如<a href="#formatting-line-wrapping">??</a>中所解释的。</p>
+
+<p><strong>例外情况：</strong></p>
+
+<ol>
+<li><code>goog.module</code>、<code>goog.require</code>和<code>goog.requireType</code>语句（参见<a href="#file-goog-module">??</a>和<a href="#file-goog-require">??</a>）。</li>
+<li>ES模块的<code>import</code>和<code>export from</code>语句（参见<a href="#es-module-imports">??</a>和<a href="#es-module-export-from">??</a>）。</li>
+<li>遵守列限制是不可能的或会妨碍可发现性的行。示例包括：
+<ul>
+<li>应在源代码中可点击的长URL。</li>
+<li>打算复制粘贴的shell命令。</li>
+<li>可能需要整体复制或搜索的长字符串字面量（例如，长文件路径）。</li>
+</ul></li>
+</ol>
+<h3 id="formatting-line-wrapping">4.5 行包装</h3>
+
+<p><strong>术语说明</strong>：<em>行包装</em>是将一段代码分成多行以遵守列限制，其中该段代码原本可以合法地放在一行中。</p>
+
+<p>没有一个全面的、确定的公式可以准确地展示在每种情况下如何进行行包装。通常情况下，同样的代码片段有几种有效的行包装方式。</p>
+
+<p>注意：虽然行包装的典型原因是为了避免超过列限制，但即使代码实际上可以放在列限制内，作者也可以自行决定进行行包装。</p>
+
+<p>提示：提取方法或局部变量可能可以解决问题，而无需进行行包装。</p>
+
+<h4 id="formatting-where-to-break">4.5.1 在哪里断行</h4>
+
+<p>行包装的主要指令是：优先在<strong>更高的语法级别</strong>处断行。</p>
+
+<p>推荐的做法：</p>
+
+<pre><code class="language-js prettyprint good">currentEstimate =
+    calc(currentEstimate + x * currentEstimate) /
+        2.0;
+</code></pre>
+
+<p>不鼓励的做法：</p>
+
+<pre><code class="language-js prettyprint bad">currentEstimate = calc(currentEstimate + x *
+    currentEstimate) / 2.0;
+</code></pre>
+
+<p>在前面的例子中，从最高到最低的语法级别如下：赋值、除法、函数调用、参数、数字常量。</p>
+
+<p>操作符的包装如下所示：</p>
+
+<ol>
+<li>当在一行中断行时，断行应在符号之后。（请注意，这与Google Java风格指南中的做法不同。）
+<ol>
+<li>这不适用于“点”（<code>.</code>），因为它实际上不是操作符。</li>
+</ol></li>
+<li>方法或构造函数名称应保持与其后的左括号（<code>(</code>）相连。</li>
+<li>逗号（<code>,</code>）应保持与其前面的标记相连。</li>
+<li>在返回值和返回语句之间永远不会添加换行，因为这会改变代码的含义。</li>
+<li>带有类型名称的JSDoc注释在“{”后断行。这是必要的，因为带有可选类型的注释（@const, @private, @param等）不会扫描下一行。</li>
+</ol>
+
+<blockquote>
+<p>注意：行包装的主要目标是使代码清晰，而不是尽可能少地使用行数。</p>
+</blockquote>
+
+<h4 id="formatting-indent">4.5.2 至少缩进+4个空格的续行</h4>
+
+<p>在行包装时，每一行在第一行之后（每个<em>续行</em>）至少从原始行缩进+4个空格，除非它属于块缩进规则。</p>
+
+<p>当有多条续行时，缩进可以根据需要超过+4个空格。在一般情况下，位于更深语法级别的续行会以更大的4的倍数缩进，并且只有当两行以语法上并行的元素开始时，才使用相同的缩进级别。</p>
+
+<p><a href="#formatting-horizontal-alignment">??</a>讨论了不鼓励使用可变数量的空格来与前面的行对齐某些标记的做法。</p>
+<h3 id="formatting-whitespace">4.6 空白</h3>
+
+<h4 id="formatting-vertical-whitespace">4.6.1 垂直空白</h4>
+
+<p>单个空行出现在以下位置：</p>
+
+<ol>
+<li>类或对象字面量中连续的方法之间
+<ol>
+<li>例外：对象字面量中两个连续的属性定义之间的空行是可选的。如果它们之间没有其他代码，这样的空行可以用来创建<em>逻辑分组</em>的字段。</li>
+</ol></li>
+<li>在方法体内，适度使用以创建<em>逻辑分组</em>的语句。函数体开始或结束处的空行是不允许的。</li>
+<li><em>可选地</em>在类或对象字面量的第一个或最后一个方法之前或之后（既不鼓励也不反对）。</li>
+<li>如本文档其他部分所要求的（例如<a href="#file-goog-require">??</a>）。</li>
+</ol>
+
+<p><em>多个</em>连续的空行是允许的，但从不必要（也不鼓励）。</p>
+
+<h4 id="formatting-horizontal-whitespace">4.6.2 水平空白</h4>
+
+<p>水平空白的使用取决于位置，大致分为三类：<em>前导</em>（在行首）、<em>尾随</em>（在行尾）和<em>内部</em>。前导空白（即缩进）在其他地方讨论。尾随空白是不允许的。</p>
+
+<p>除了语言或其他样式规则要求的地方，以及字面量、注释和JSDoc之外，单个内部ASCII空格也仅出现在以下位置：</p>
+
+<ol>
+<li>将任何保留字（如<code>if</code>、<code>for</code>或<code>catch</code>）与其后面的左括号<code>(</code>分开，但<code>function</code>和<code>super</code>除外。</li>
+<li>将任何保留字（如<code>else</code>或<code>catch</code>）与其前面的右大括号<code>}</code>分开。</li>
+<li>在任何左大括号<code>{</code>之前，有两个例外：
+<ol>
+<li>在作为函数的第一个参数或数组字面量的第一个元素的对象字面量之前（例如<code>foo({a: [{c: d}]})</code>）。</li>
+<li>在模板扩展中，因为语言禁止这样做（例如有效的：<code>`ab${1 + 2}cd`</code>，无效的：<code class="badcode">`xy$ {3}z`</code>）。</li>
+</ol></li>
+<li>在任何二元或三元运算符的两侧。</li>
+<li>在逗号<code>,</code>或分号<code>;</code>之后。注意，空格在这些字符之前<em>从不</em>允许。</li>
+<li>在对象字面量的冒号<code>:</code>之后。</li>
+<li>在开始行尾注释的双斜杠<code>//</code>的两侧。这里，允许但不强制使用多个空格。</li>
+<li>在开放块注释字符之后和关闭字符的两侧（例如，对于简短形式的类型声明、强制转换和参数名称注释：<code>this.foo = /** @type {number} */ (bar)</code>；或<code>function(/** string */ foo) {</code>；或<code>baz(/* buzz= */ true)</code>）。</li>
+</ol>
+
+<h4 id="formatting-horizontal-alignment">4.6.3 水平对齐：不鼓励</h4>
+
+<p><strong>术语说明</strong>：<em>水平对齐</em>是指在代码中添加可变数量的额外空格，目的是使某些标记直接出现在前几行上的某些其他标记的正下方。</p>
+
+<p>这种做法是允许的，但Google风格<strong>一般不鼓励</strong>这样做。甚至在已经使用的地方也不需要<em>保持</em>水平对齐。</p>
+
+<p>以下是一个没有对齐的例子，接着是一个有对齐的例子。两者都是允许的，但后者是不鼓励的：</p>
+
+<pre><code class="language-js prettyprint good">{
+  tiny: 42, // 这很好
+  longer: 435, // 这也很好
+};
+
+{
+  tiny:   42,  // 允许，但未来的编辑
+  longer: 435, // 可能使其不对齐
+};
+</code></pre>
+
+<p>提示：对齐可以帮助提高可读性，但它会给未来的维护带来问题。考虑一个只需要修改一行的未来变更。这种变更可能会使之前令人愉悦的格式变得混乱，这是允许的。更常见的情况是，它会促使编码者（可能是你）调整附近行的空白，可能触发一连串的重新格式化。这一个行的变更现在有了“爆炸半径”。在最坏的情况下，这可能导致无意义的繁琐工作，但在最好的情况下，它仍然会破坏版本历史信息，减慢审阅者的速度并加剧合并冲突。</p>
+
+<h4 id="formatting-function-arguments">4.6.4 函数参数</h4>
+
+<p>优先将所有函数参数放在与函数名相同的行上。如果这样做会超过80列限制，则必须以可读的方式换行参数。为了节省空间，你可以尽可能接近80列换行，或者将每个参数放在单独的一行以增强可读性。缩进应为四个空格。允许但不鼓励与括号对齐。以下是参数换行的最常见模式：</p>
+
+<pre><code class="language-js prettyprint good">// 参数从新行开始，缩进四个空格。当参数与函数名（或关键字“function”）不在同一行上但完全适合第二行时首选。适用于非常长的函数名，经重命名后无需重新缩进，节省空间。
+doSomething(
+    descriptiveArgumentOne, descriptiveArgumentTwo, descriptiveArgumentThree) {
+  // …
+}
+
+// 如果参数列表更长，在80列处换行。使用较少的垂直空间，但违反了矩形规则，因此不推荐。
+doSomething(veryDescriptiveArgumentNumberOne, veryDescriptiveArgumentTwo,
+    tableModelEventHandlerProxy, artichokeDescriptorAdapterIterator) {
+  // …
+}
+
+// 四个空格，每个参数一行。适用于长函数名，经重命名后无需重新缩进，并强调每个参数。
+doSomething(
+    veryDescriptiveArgumentNumberOne,
+    veryDescriptiveArgumentTwo,
+    tableModelEventHandlerProxy,
+    artichokeDescriptorAdapterIterator) {
+  // …
+}
+</code></pre>
+<h3 id="formatting-grouping-parentheses">4.7 分组括号：推荐</h3>
+
+<p>只有当作者和审阅者一致认为没有这些括号代码不会被误解，并且没有这些括号不会使代码更易读时，才可以省略可选的分组括号。假设每个读者都记住了整个操作符优先级表是不合理的。</p>
+
+<p>不要在<code>delete</code>、<code>typeof</code>、<code>void</code>、<code>return</code>、<code>throw</code>、<code>case</code>、<code>in</code>、<code>of</code>或<code>yield</code>后面的整个表达式上使用不必要的括号。</p>
+
+<p>类型转换需要括号：<code>/** @type {!Foo} */ (foo)</code>。</p>
+
+<h3 id="formatting-comments">4.8 注释</h3>
+
+<p>本节讨论的是<em>实现注释</em>。JSDoc 在<a href="#jsdoc">??</a>中单独讨论。</p>
+
+<h4 id="formatting-block-comment-style">4.8.1 块注释样式</h4>
+
+<p>块注释与周围代码的缩进级别相同。它们可以是<code>/* … */</code>或<code>//</code>样式。对于多行的<code>/* … */</code>注释，后续行必须以与前一行<code>*</code>对齐的<code>*</code>开头，以便在没有额外上下文的情况下使注释明显可见。</p>
+
+<pre><code class="language-js prettyprint good">/*
+ * 这可以
+ * 接受。
+ */
+
+// 这也
+// 可以。
+
+/* 这也行。 */
+</code></pre>
+
+<p>注释不应使用星号或其他字符绘制的框包围。</p>
+
+<p>不要对实现注释使用JSDoc（<code>/** … */</code>）。</p>
+
+<h4 id="formatting-param-name-comments">4.8.2 参数名称注释</h4>
+
+<p>当值和方法名称不足以传达含义，并且重构方法以使其更清晰不可行时，应使用“参数名称”注释。它们的首选格式是在值之前使用<q>=</q>：</p>
+
+<pre><code class="language-js prettyprint good">someFunction(obviousParam, /* shouldRender= */ true, /* name= */ 'hello');
+</code></pre>
+
+<p>为了与周围代码保持一致，您可以在值之后不使用<q>=</q>的情况下放置它们：</p>
+
+<pre><code class="language-js prettyprint good">someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
+</code></pre>
+
+<h2 id="language-features">5 语言特性</h2>
+
+<p>JavaScript 包含许多可疑（甚至危险）的特性。本节划定了哪些特性可以或不可以使用，以及对其使用的任何额外限制。</p>
+
+<p>本样式指南中未讨论的语言特性可以使用，且对其使用没有建议。</p>
+
+<h3 id="features-local-variable-declarations">5.1 本地变量声明</h3>
+
+<h4 id="features-use-const-and-let">5.1.1 使用<code>const</code>和<code>let</code></h4>
+
+<p>使用<code>const</code>或<code>let</code>声明所有本地变量。默认使用<code>const</code>，除非变量需要重新赋值。禁止使用<code class="badcode">var</code>关键字。</p>
+
+<h4 id="features-one-variable-per-declaration">5.1.2 每个声明一个变量</h4>
+
+<p>每个本地变量声明只声明一个变量：不使用如<code class="badcode">let a = 1, b = 2;</code>这样的声明方式。</p>
+
+<h4 id="features-declared-when-needed">5.1.3 在需要时声明，尽早初始化</h4>
+
+<p>本地变量<strong>不</strong>习惯性地在其包含块或类似块结构的开头声明。相反，本地变量应在首次使用的地方附近声明（合理范围内），以最小化其作用域，并尽早初始化。</p>
+
+<h4 id="features-declare-types-as-needed">5.1.4 根据需要声明类型</h4>
+
+<p>JSDoc类型注释可以添加在声明上方的行上，或者如果没有其他JSDoc存在，则可以内联在变量名前添加。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">const /** !Array&lt;number&gt; */ data = [];
+
+/**
+ * 一些描述。
+ * @type {!Array&lt;number&gt;}
+ */
+const data = [];
+</code></pre>
+
+<p>不允许混合使用内联和JSDoc样式：编译器只会处理第一个JsDoc，而内联注释将丢失。</p>
+
+<pre><code class="language-js prettyprint bad">/** 一些描述。 */
+const /** !Array&lt;number&gt; */ data = [];
+</code></pre>
+
+<p>提示：在许多情况下，编译器可以推断出模板化类型，但不能推断出其参数。特别是当初始化字面量或构造函数调用不包含任何模板参数类型的值时（例如，空数组、对象、<code>Map</code>或<code>Set</code>），或者如果变量在闭包中被修改。本地变量类型注释在这些情况下特别有帮助，因为否则编译器会将模板参数推断为未知类型。</p>
+<h3 id="features-array-literals">5.2 数组字面量</h3>
+
+<h4 id="features-arrays-trailing-comma">5.2.1 使用尾随逗号</h4>
+
+<p>每当最后一个元素和闭合括号之间有换行时，请包含一个尾随逗号。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">const values = [
+  'first value',
+  'second value',
+];
+</code></pre>
+
+<h4 id="features-arrays-ctor">5.2.2 不要使用变参的 <code>Array</code> 构造函数</h4>
+
+<p>如果添加或删除参数，构造函数容易出错。请改用字面量。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">const a1 = new Array(x1, x2, x3);
+const a2 = new Array(x1, x2);
+const a3 = new Array(x1);
+const a4 = new Array();
+</code></pre>
+
+<p>除了第三种情况外，这一切都按预期工作：如果 <code>x1</code> 是一个整数，那么 <code>a3</code> 是一个大小为 <code>x1</code> 的数组，其中所有元素都是 <code>undefined</code>。如果 <code>x1</code> 是任何其他数字，则会抛出异常，如果它是其他任何东西，则它将是一个单元素数组。</p>
+
+<p>相反，编写</p>
+
+<pre><code class="language-js prettyprint good">const a1 = [x1, x2, x3];
+const a2 = [x1, x2];
+const a3 = [x1];
+const a4 = [];
+</code></pre>
+
+<p>在适当的情况下，使用 <code>new Array(length)</code> 明确分配给定长度的数组是允许的。</p>
+
+<h4 id="features-arrays-non-numeric-properties">5.2.3 非数字属性</h4>
+
+<p>不要在数组上定义或使用非数字属性（除了 <code>length</code>）。请改用 <code>Map</code>（或 <code>Object</code>）。</p>
+
+<h4 id="features-arrays-destructuring">5.2.4 解构</h4>
+
+<p>数组字面量可以在赋值的左侧使用以执行解构（例如，当从单个数组或可迭代对象中解包多个值时）。可以包含一个最终的“剩余”元素（在 <code>...</code> 和变量名之间没有空格）。如果元素未使用，应省略它们。</p>
+
+<pre><code class="language-js prettyprint good">const [a, b, c, ...rest] = generateResults();
+let [, b,, d] = someArray;
+</code></pre>
+
+<p>解构也可用于函数参数（请注意，需要一个参数名但会被忽略）。如果解构的数组参数是可选的，始终指定 <code>[]</code> 作为默认值，并在左侧提供默认值：</p>
+
+<pre><code class="language-js prettyprint good">/** @param {!Array&lt;number&gt;=} param1 */
+function optionalDestructuring([a = 4, b = 2] = []) { … };
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">function badDestructuring([a, b] = [4, 2]) { … };
+</code></pre>
+
+<p>提示：对于将多个值打包或解包到函数的参数或返回值中，尽可能使用对象解构而不是数组解构，因为它允许命名各个元素并为每个元素指定不同的类型。</p>
+
+<h4 id="features-arrays-spread-operator">5.2.5 展开运算符</h4>
+
+<p>数组字面量可以包含展开运算符（<code>...</code>）以从一个或多个其他可迭代对象中展平元素。展开运算符应代替使用 <code>Array.prototype</code> 的更笨拙的构造。在 <code>...</code> 之后没有空格。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">[...foo]   // 优于 Array.prototype.slice.call(foo)
+[...foo, ...bar]   // 优于 foo.concat(bar)
+</code></pre>
+<h3 id="features-object-literals">5.3 对象字面量</h3>
+
+<h4 id="features-objects-use-trailing-comma">5.3.1 使用尾随逗号</h4>
+
+<p>每当最后一个属性和闭合大括号之间有换行时，请包含一个尾随逗号。</p>
+
+<h4 id="features-objects-ctor">5.3.2 不要使用 <code>Object</code> 构造函数</h4>
+
+<p>虽然 <code>Object</code> 没有 <code>Array</code> 同样的问题，但为了保持一致性，仍然不允许使用。请改用对象字面量（<code>{}</code> 或 <code>{a: 0, b: 1, c: 2}</code>）。</p>
+
+<h4 id="features-objects-mixing-keys">5.3.3 不要混合使用带引号和不带引号的键</h4>
+
+<p>对象字面量可以表示 <em>结构体</em>（使用不带引号的键和/或符号）或 <em>字典</em>（使用带引号的和/或计算的键）。不要在一个对象字面量中混合这些键类型。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">{
+  width: 42, // 结构体风格的不带引号键
+  'maxWidth': 43, // 字典风格的带引号键
+}
+</code></pre>
+
+<p>这也扩展到将属性名称传递给函数，如 <code>hasOwnProperty</code>。特别是，这样做会在编译后的代码中导致问题，因为编译器无法重命名/混淆字符串字面量。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">/** @type {{width: number, maxWidth: (number|undefined)}} */
+const o = {width: 42};
+if (o.hasOwnProperty('maxWidth')) {
+  ...
+}
+</code></pre>
+
+<p>最佳实现方式如下：</p>
+
+<pre><code class="language-js prettyprint good">/** @type {{width: number, maxWidth: (number|undefined)}} */
+const o = {width: 42};
+if (o.maxWidth != null) {
+  ...
+}
+</code></pre>
+
+<h4 id="features-objects-computed-property-names">5.3.4 计算属性名称</h4>
+
+<p>计算属性名称（例如，<code>{['key' + foo()]: 42}</code>）是允许的，并且被视为字典风格（带引号）的键（即，不得与非带引号键混合），除非计算属性是一个 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">符号</a>（例如，<code>[Symbol.iterator]</code>）。枚举值也可以用于计算键，但不应与非枚举键在同一个字面量中混合使用。</p>
+
+<h4 id="features-objects-method-shorthand">5.3.5 方法简写</h4>
+
+<p>可以在对象字面量上使用方法简写（<code>{method() {… }}</code>）来定义方法，而不是使用冒号后紧跟的 <code>function</code> 或箭头函数字面量。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">return {
+  stuff: 'candy',
+  method() {
+    return this.stuff;  // 返回 'candy'
+  },
+};
+</code></pre>
+
+<p>请注意，方法简写或 <code>function</code> 中的 <code>this</code> 指的是对象字面量本身，而箭头函数中的 <code>this</code> 指的是对象字面量之外的作用域。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">class {
+  getObjectLiteral() {
+    this.stuff = 'fruit';
+    return {
+      stuff: 'candy',
+      method: () =&gt; this.stuff,  // 返回 'fruit'
+    };
+  }
+}
+</code></pre>
+
+<h4 id="features-objects-shorthand-properties">5.3.6 简写属性</h4>
+
+<p>对象字面量上的简写属性是允许的。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">const foo = 1;
+const bar = 2;
+const obj = {
+  foo,
+  bar,
+  method() { return this.foo + this.bar; },
+};
+assertEquals(3, obj.method());
+</code></pre>
+
+<h4 id="features-objects-destructuring">5.3.7 解构</h4>
+
+<p>对象解构模式可以在赋值的左侧使用，以执行解构并从单个对象中解包多个值。</p>
+
+<p>解构对象也可以用作函数参数，但应尽可能简单：只使用一级不带引号的简写属性。在参数解构中不允许使用更深层次的嵌套和计算属性。在解构参数的左侧指定任何默认值（<code>{str = 'some default'} = {}</code>，而不是 <code class="badcode">{str} = {str: 'some default'}</code>），如果解构对象本身是可选的，则必须默认为 <code>{}</code>。解构参数的 JSDoc 可以使用任何名称（名称未使用但编译器要求）。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @param {string} ordinary
+ * @param {{num: (number|undefined), str: (string|undefined)}=} param1
+ *     num: 执行某事的次数。
+ *     str: 要处理的字符串。
+ */
+function destructured(ordinary, {num, str = 'some default'} = {}) {}
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">/** @param {{x: {num: (number|undefined), str: (string|undefined)}}} param1 */
+function nestedTooDeeply({x: {num, str}}) {};
+/** @param {{num: (number|undefined), str: (string|undefined)}=} param1 */
+function nonShorthandProperty({num: a, str: b} = {}) {};
+/** @param {{a: number, b: number}} param1 */
+function computedKey({a, b, [a + b]: c}) {};
+/** @param {{a: number, b: string}=} param1 */
+function nontrivialDefault({a, b} = {a: 2, b: 4}) {};
+</code></pre>
+
+<p>解构也可以用于 <code>goog.require</code> 语句，在这种情况下必须不换行：整个语句占据一行，无论其长度如何（参见 <a href="#file-goog-require">??</a>）。</p>
+
+<h4 id="features-objects-enums">5.3.8 枚举</h4>
+
+<p>通过在对象字面量上添加 <code>@enum</code> 注解来定义枚举。枚举必须是模块局部的或直接分配在 <code>exports</code> 上，不得嵌套在类型或对象下。</p>
+
+<p>在定义枚举后，不得添加额外的属性。枚举必须是常量。所有枚举值必须是字符串字面量或数字。
+<pre><code class="language-js prettyprint good">/**
+ * 支持的温度单位。
+ * @enum {string}
+ */
+const TemperatureScale = {
+  CELSIUS: 'celsius',
+  FAHRENHEIT: 'fahrenheit',
+};
+
+/**
+ * 包含两个值的枚举。
+ * @enum {number}
+ */
+const Value = {
+  /** 使用的值应为第一个。 */
+  FIRST_VALUE: 1,
+  /** 两个值中的第二个。 */
+  SECOND_VALUE: 2,
+};
+</code></pre>
+
+<p>对于字符串枚举，所有值必须静态初始化，不能使用算术运算符、模板字面量替换、函数调用甚至变量引用进行计算。</p>
+
+<pre><code class="language-js prettyprint bad">const ABSOLUTE_ZERO = '-273°F';
+
+/**
+ * 不支持在字符串枚举中计算值。
+ * @enum {string}
+ */
+const TemperatureInFahrenheit = {
+  MIN_POSSIBLE: ABSOLUTE_ZERO,
+  ZERO_FAHRENHEIT: 0 + '°F',
+  ONE_FAHRENHEIT: `${Values.FIRST_VALUE}°F`,
+  TWO_FAHRENHEIT: Values.SECOND_VALUE + '°F',
+  SOME_FAHRENHEIT: getTemperatureInFahrenheit() + '°F',
+};
+</code></pre>
+
+<p>注意：尽管TypeScript支持一些其他模式的枚举值（例如<code>A: 'a'+'b'</code>等），但只允许使用字符串字面量和数字作为枚举值的限制是为了帮助迁移到TypeScript。对于复杂值，请考虑使用不带<code>@enum</code>的const对象。</p>
+<h3 id="features-classes">5.4 类</h3>
+
+<h4 id="features-classes-constructors">5.4.1 构造函数</h4>
+
+<p>构造函数是可选的。子类构造函数必须在设置任何字段或访问<code>this</code>之前调用<code>super()</code>。接口应在构造函数中声明非方法属性。</p>
+
+<h4 id="features-classes-fields">5.4.2 字段</h4>
+
+<p>在构造函数中定义具体对象的所有字段（即除方法之外的所有属性）。用<code>@const</code>注释那些永远不会被重新赋值的字段（这些字段不需要深度不可变）。用适当的可见性注释（<code>@private</code>、<code>@protected</code>、<code>@package</code>）注释非公共字段。<code>@private</code>字段的名称可以选择以 underscores 结尾。字段不得在构造函数的嵌套作用域内定义，也不得在具体类的<code>prototype</code>上定义。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">class Foo {
+  constructor() {
+    /** @private @const {!Bar} */
+    this.bar_ = computeBar();
+
+    /** @protected @const {!Baz} */
+    this.baz = computeBaz();
+  }
+}
+</code></pre>
+
+<p>提示：在构造函数完成后，不应向实例添加或删除属性，因为这会显著阻碍虚拟机的优化能力。如果需要，稍后初始化的字段应在构造函数中显式设置为<code>undefined</code>，以防止后续形状变化。向对象添加<code>@struct</code>将检查是否添加/访问了未声明的属性。类默认添加此功能。</p>
+
+<h4 id="features-classes-computed-properties">5.4.3 计算属性</h4>
+
+<p>计算属性只能在类中使用，当属性是符号时。字典风格的属性（即引号或计算的非符号键，如<a href="#features-objects-mixing-keys">??</a>中定义的）是不允许的。对于逻辑上可迭代的类，应定义<code>[Symbol.iterator]</code>方法。除此之外，应谨慎使用<code>Symbol</code>。</p>
+
+<p>提示：小心使用其他内置符号（例如，<code>Symbol.isConcatSpreadable</code>），因为它们不会被编译器填充，因此在旧版浏览器中无法工作。</p>
+
+<h4 id="features-classes-static-methods">5.4.4 静态方法</h4>
+
+<p>在不影响可读性的情况下，优先选择模块本地函数而不是私有静态方法。</p>
+
+<p>代码不应依赖静态方法的动态调度，因为这会干扰Closure编译器的优化。静态方法只能在基类本身上调用。静态方法不应在包含可能为构造函数或子类构造函数的动态实例的变量上调用（如果这样做，必须使用<code>@nocollapse</code>定义），并且不得直接在未定义该方法本身的子类上调用。静态方法中不得访问<code>this</code>。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">// 下面的示例的上下文；仅此代码本身是允许的。
+class Base {
+  /** @nocollapse */ static foo() {}
+}
+class Sub extends Base {}
+
+// 不鼓励：不要动态调用静态方法
+function callFoo(cls) { cls.foo(); }
+
+// 不允许：不要在未定义该方法本身的子类上调用静态方法
+Sub.foo();
+
+// 不允许：不要在静态方法中访问this。
+class Clazz {
+  static foo() {
+    return this.staticField;
+  }
+}
+Class.staticField = 1;
+</code></pre>
+
+<h4 id="features-classes-old-style">5.4.5 旧式类声明</h4>
+
+<p>虽然ES6类是首选，但在某些情况下，ES6类可能不可行。例如：</p>
+
+<ol>
+<li><p>如果存在或将存在子类，包括无法立即更改为使用ES6类语法的框架创建的子类。如果这样的类使用ES6语法，所有未使用ES6类语法的下游子类都需要进行修改。</p></li>
+<li><p>需要在调用超类构造函数之前知道<code>this</code>值的框架，因为使用ES6超类的构造函数在调用<code>super</code>返回之前无法访问实例<code>this</code>值。</p></li>
+</ol>
+
+<p>在所有其他方面，样式指南仍然适用于此代码：应在适当的情况下使用<code>let</code>、<code>const</code>、默认参数、rest和箭头函数。</p>
+
+<p><code>goog.defineClass</code>允许类似于ES6类语法的类定义：</p>
+
+<pre><code class="language-js prettyprint good">let C = goog.defineClass(S, {
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    S.call(this, 2);
+    /** @const */
+    this.prop = value;
+  },
+
+  /**
+   * @param {string} param
+   * @return {number}
+   */
+  method(param) {
+    return 0;
+  },
+});
+</code></pre>
+
+<p>或者，虽然<code>goog.defineClass</code>应优先用于所有新代码，但也允许使用更传统的语法。</p>
+
+<pre><code class="language-js prettyprint good">/**
+  * @constructor @extends {S}
+  * @param {string} value
+  */
+function C(value) {
+  S.call(this, 2);
+  /** @const */
+  this.prop = value;
+}
+goog.inherits(C, S);
+
+/**
+ * @param {string} param
+ * @return {number}
+ */
+C.prototype.method = function(param) {
+  return 0;
+};
+</code></pre>
+
+<p>每个实例的属性应在调用超类构造函数之后在构造函数中定义，如果有超类。方法应在构造函数的原型上定义。</p>
+
+<p>正确定义构造函数原型层次结构比初看时更难！因此，最好使用来自<a href="http://code.google.com/closure/library/">Closure库</a>的<code>goog.inherits</code>。</p>
+
+<h4 id="features-classes-prototypes">5.4.6 不要直接操作<code>prototype</code></h4>
+
+<p><code>class</code>关键字允许比定义<code>prototype</code>属性更清晰和更易读的类定义。普通实现代码没有理由操作这些对象，尽管它们在定义类时仍然有用，如<a href="#features-classes-old-style">??</a>中定义的。明确禁止使用混入和修改内置对象的原型。</p>
+<p><strong>例外</strong>：框架代码（如Polymer或Angular）可能需要使用<code>prototype</code>，不应采用更糟糕的变通方法来避免这样做。</p>
+
+<h4 id="features-classes-getters-and-setters">5.4.7 获取器和设置器</h4>
+
+<p>不要使用<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get">JavaScript的获取器和设置器属性</a>。它们可能令人惊讶且难以推理，并且在编译器中的支持有限。请提供普通方法来替代。</p>
+
+<p><strong>例外</strong>：有些情况下定义获取器或设置器是不可避免的（例如数据绑定框架如Angular和Polymer，或为了与无法调整的外部API兼容）。在这些情况下，获取器和设置器可以谨慎使用，<em>前提是</em>它们使用<code>get</code>和<code>set</code>简写方法关键字或<code>Object.defineProperties</code>定义（不使用<code>Object.defineProperty</code>，因为它会干扰属性重命名）。获取器<strong>不得</strong>更改可观察状态。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">class Foo {
+  get next() { return this.nextId++; }
+}
+</code></pre>
+
+<h4 id="features-classes-overriding-tostring">5.4.8 重写toString</h4>
+
+<p><code>toString</code>方法可以被重写，但必须始终成功且没有可见的副作用。</p>
+
+<p>提示：特别要注意从<code>toString</code>调用其他方法，因为异常情况可能导致无限循环。</p>
+
+<h4 id="features-classes-interfaces">5.4.9 接口</h4>
+
+<p>接口可以使用<code>@interface</code>或<code>@record</code>声明。使用<code>@record</code>声明的接口可以由类或对象字面量显式（即通过<code>@implements</code>）或隐式实现。</p>
+
+<p>接口上的所有方法必须是非静态的，且方法体必须是空块。字段必须在类构造函数中声明为未初始化的成员。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 可以进行frobnication的对象。
+ * @record
+ */
+class Frobnicator {
+  constructor() {
+    /** @type {number} 在放弃前的尝试次数。 */
+    this.attempts;
+  }
+
+  /**
+   * 根据给定的策略执行frobnication。
+   * @param {!FrobnicationStrategy} strategy
+   */
+  frobnicate(strategy) {}
+}
+
+</code></pre>
+
+<h4 id="features-classes-abstract-classes">5.4.10 抽象类</h4>
+
+<p>在适当的情况下使用抽象类。抽象类和方法必须使用<code>@abstract</code>进行注释。不要使用<code>goog.abstractMethod</code>。参见<a href="https://github.com/google/closure-compiler/wiki/@abstract-classes-and-methods">抽象类和方法</a>。</p>
+
+<h4 id="static-containers">5.4.11 不要创建静态容器类</h4>
+
+<p>不要为了命名空间而使用仅包含静态方法或属性的容器类。</p>
+
+<pre><code class="language-js prettyprint bad">// container.js
+// 错误：Container是一个导出的类，仅有静态方法和字段。
+class Container {
+  /** @return {number} */
+  static bar() {
+    return 1;
+  }
+}
+
+/** @const {number} */
+Container.FOO = 1;
+
+exports = {Container};
+</code></pre>
+
+<p>相反，导出单个常量和函数：</p>
+
+<pre><code class="language-js prettyprint good">/** @return {number} */
+exports.bar = () =&gt; {
+  return 1;
+}
+
+/** @const {number} */
+exports.FOO = 1;
+</code></pre>
+
+<h4 id="nested-namespaces">5.4.12 不要定义嵌套命名空间</h4>
+
+<p>不要在另一个模块本地名称上定义嵌套类型（例如类、类型定义、枚举、接口）。</p>
+
+<pre><code class="language-js prettyprint bad">// foo.js
+goog.module('my.namespace');
+
+class Foo {...}
+
+Foo.Bar = class {...};
+
+/** @enum {number} */
+Foo.Baz = {...};
+
+/** @typedef {{value: number}} */
+Foo.Qux;
+
+/** @interface */
+Foo.Quuz = class {...}
+
+exports.Foo = Foo;
+</code></pre>
+
+<p>这些值应该是顶级导出。为这些值选择清晰的名称（例如，对于可能嵌套在Foo上的转换器，可以使用FooConverter）。然而，当模块名称与类名的一部分冗余时，考虑省略冗余部分：<code>foo.Foo</code>和<code>foo.Converter</code>而不是<code>foo.Foo</code>和<code>foo.FooConverter</code>。导入者可以在必要时为清晰性添加前缀（例如<code>import {Converter as FooConverter} from './foo';</code>），但在将整个模块作为命名空间导入时无法轻易去除冗余部分。</p>
+
+<pre><code class="language-js prettyprint good">// foo.js
+goog.module('my.namespace');
+
+class Foo {...}
+
+class FooBar {...}
+
+/** @enum {string} */
+let FooBaz = {...};
+
+/** @typedef {{value: number}} */
+let FooQux;
+
+/** @interface */
+class FooQuuz {...};
+
+export = {
+  Foo,
+  FooBar,
+  FooBaz,
+  FooQux,
+  FooQuuz,
+};
+</code></pre>
+<h3 id="features-functions">5.5 函数</h3>
+
+<h4 id="features-functions-top-level-functions">5.5.1 顶级函数</h4>
+
+<p>顶级函数可以直接在 <code>exports</code> 对象上定义，或者在本地声明并选择性地导出。有关导出的更多信息，请参见 <a href="#file-goog-module-exports">??</a>。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/** @param {string} str */
+exports.processString = (str) =&gt; {
+  // 处理字符串。
+};
+</code></pre>
+
+<pre><code class="language-js prettyprint good">/** @param {string} str */
+const processString = (str) =&gt; {
+  // 处理字符串。
+};
+
+exports = {processString};
+</code></pre>
+
+<h4 id="features-functions-nested-functions">5.5.2 嵌套函数和闭包</h4>
+
+<p>函数可以包含嵌套的函数定义。如果给函数命名是有用的，应该将其分配给本地 <code>const</code>。</p>
+
+<h4 id="features-functions-arrow-functions">5.5.3 箭头函数</h4>
+
+<p>箭头函数提供了一种简洁的函数语法，并简化了嵌套函数的 <code>this</code> 作用域。对于嵌套函数，优先使用箭头函数而不是 <code>function</code> 关键字（但请参见 <a href="#features-objects-method-shorthand">??</a>）。</p>
+
+<p>优先使用箭头函数而不是其他 <code>this</code> 作用域方法，如 <code>f.bind(this)</code>、<code>goog.bind(f, this)</code> 和 <code>const self = this</code>。箭头函数在调用回调时特别有用，因为它们允许明确指定要传递给回调的参数，而绑定会盲目地传递所有参数。</p>
+
+<p>箭头左侧包含零个或多个参数。如果只有一个非解构参数，参数周围的括号是可选的。当使用括号时，可以指定内联参数类型（参见 <a href="#jsdoc-method-and-function-comments">??</a>）。</p>
+
+<p>提示：即使对于单参数箭头函数，也始终使用括号可以避免在添加参数时忘记添加括号，导致解析代码不再按预期工作的情况。</p>
+
+<p>箭头右侧包含函数体。默认情况下，函数体是一个块语句（由大括号包围的零个或多个语句）。如果程序逻辑需要返回一个值，或者 <code>void</code> 操作符在单个函数或方法调用之前，函数体也可以是隐式返回的单个表达式（使用 <code>void</code> 确保返回 <code>undefined</code>，防止泄露值，并传达意图）。如果单个表达式形式能提高可读性（例如，对于短或简单的表达式），则优先使用它。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 箭头函数可以像普通函数一样进行文档化。
+ * @param {number} numParam 要加的数字。
+ * @param {string} strParam 另一个要加的数字，恰好是字符串。
+ * @return {number} 两个参数的和。
+ */
+const moduleLocalFunc = (numParam, strParam) =&gt; numParam + Number(strParam);
+
+// 使用单表达式语法和 `void`，因为程序逻辑不需要返回值。
+getValue((result) =&gt; void alert(`Got ${result}`));
+
+class CallbackExample {
+  constructor() {
+    /** @private {number} */
+    this.cachedValue_ = 0;
+
+    // 对于内联回调，可以对参数使用内联类型。
+    // 使用块语句，因为单个表达式的值不应返回，并且表达式不是单个函数调用。
+    getNullableValue((/** ?number */ result) =&gt; {
+      this.cachedValue_ = result == null ? 0 : result;
+    });
+  }
+}
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">/**
+ * 没有参数且没有返回值的函数。
+ * 这种单表达式体使用是非法的，因为程序逻辑不需要返回值，并且缺少 `void` 操作符。
+ */
+const moduleLocalFunc = () =&gt; anotherFunction();
+</code></pre>
+
+<h4 id="features-functions-generators">5.5.4 生成器</h4>
+
+<p>生成器启用了一些有用的抽象，可以根据需要使用。</p>
+
+<p>在定义生成器函数时，将 <code>*</code> 附加到 <code>function</code> 关键字上（如果存在），并与函数名称用空格分隔。使用委托 yield 时，将 <code>*</code> 附加到 <code>yield</code> 关键字上。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/** @return {!Iterator&lt;number&gt;} */
+function* gen1() {
+  yield 42;
+}
+
+/** @return {!Iterator&lt;number&gt;} */
+const gen2 = function*() {
+  yield* gen1();
+}
+
+class SomeClass {
+  /** @return {!Iterator&lt;number&gt;} */
+  * gen() {
+    yield 42;
+  }
+}
+</code></pre>
+
+<h4 id="features-functions-parameter-return-types">5.5.5 参数和返回类型</h4>
+
+<p>函数参数和返回类型通常应使用 JSDoc 注释进行文档化。有关更多信息，请参见 <a href="#jsdoc-method-and-function-comments">??</a>。</p>
+
+<h5 id="features-functions-default-parameters">5.5.5.1 默认参数</h5>
+
+<p>允许使用参数列表中的等号操作符来指定可选参数。可选参数必须在等号操作符的两侧包含空格，命名必须与必需参数完全相同（即，不以 <code>opt_</code> 为前缀），在其 JSDoc 类型中使用 <code>=</code> 后缀，位于必需参数之后，并且不使用产生可观察副作用的初始化器。所有具体函数的可选参数必须有默认值，即使该值是 <code>undefined</code>。与具体函数相反，抽象方法和接口方法必须省略默认参数值。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @param {string} required 此参数始终需要。
+ * @param {string=} optional 此参数可以省略。
+ * @param {!Node=} node 另一个可选参数。
+ */
+function maybeDoSomething(required, optional = '', node = undefined) {}
+
+/** @interface */
+class MyInterface {
+  /**
+   * 接口和抽象方法必须省略默认参数值。
+   * @param {string=} optional
+   */
+  someMethod(optional) {}
+</code></pre>
+
+<p>谨慎使用默认参数。 当有多个可选参数且没有自然顺序时，优先使用解构（如<a href="#features-objects-destructuring">??</a>）来创建可读的API。</p>
+
+<p>注意：与Python的默认参数不同，使用返回新可变对象（如<code>{}</code>或<code>[]</code>）的初始化器是可以的，因为每次使用默认值时都会评估初始化器，因此单个对象不会在调用之间共享。</p>
+
+<p>提示：虽然可以使用包括函数调用在内的任意表达式作为初始化器，但这些应该尽可能简单。避免使用暴露共享可变状态的初始化器，因为这很容易在函数调用之间引入意外的耦合。</p>
+
+<h5 id="features-functions-rest-parameters">5.5.5.2 剩余参数</h5>
+
+<p>使用<em>剩余</em>参数而不是访问<code>arguments</code>。剩余参数在其JSDoc中使用<code>...</code>前缀进行类型标注。剩余参数必须是参数列表中的最后一个参数。<code>...</code>与参数名之间没有空格。不要将剩余参数命名为<code>var_args</code>。永远不要将局部变量或参数命名为<code>arguments</code>，这会令人困惑地遮蔽内置名称。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @param {!Array&lt;string&gt;} array 这是一个普通参数。
+ * @param {...number} numbers 剩余的参数都是数字。
+ */
+function variadic(array, ...numbers) {}
+</code></pre>
+
+<h4 id="features-functions-generics">5.5.6 泛型</h4>
+
+<p>在函数或方法定义上方的JSDoc中使用<code>@template TYPE</code>声明泛型函数和方法时必要的。</p>
+
+<h4 id="features-functions-spread-operator">5.5.7 展开运算符</h4>
+
+<p>函数调用可以使用展开运算符（<code>...</code>）。当数组或可迭代对象被解包成变参函数的多个参数时，优先使用展开运算符而不是<code>Function.prototype.apply</code>。<code>...</code>之后没有空格。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">function myFunction(...elements) {}
+myFunction(...array, ...iterable, ...generator());
+</code></pre>
+
+<h3 id="features-string-literals">5.6 字符串字面量</h3>
+
+<h4 id="features-strings-use-single-quotes">5.6.1 使用单引号</h4>
+
+<p>普通字符串字面量使用单引号（<code>'</code>）而不是双引号（<code>"</code>）进行分隔。</p>
+
+<p>提示：如果字符串包含单引号字符，考虑使用模板字符串以避免转义引号。</p>
+
+<p>普通字符串字面量不能跨多行。</p>
+
+<h4 id="features-strings-template-strings">5.6.2 模板字面量</h4>
+
+<p>在涉及多个字符串字面量的情况下，使用模板字面量（用<code>`</code>分隔）而不是复杂的字符串拼接。模板字面量可以跨多行。</p>
+
+<p>如果模板字面量跨多行，它不需要遵循封闭块的缩进，尽管如果添加的空白不重要的话可以这样做。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">function arithmetic(a, b) {
+  return `这里是算术运算表：
+${a} + ${b} = ${a + b}
+${a} - ${b} = ${a - b}
+${a} * ${b} = ${a * b}
+${a} / ${b} = ${a / b}`;
+}
+</code></pre>
+
+<h4 id="features-strings-no-line-continuations">5.6.3 不使用行继续符</h4>
+
+<p>在普通或模板字符串字面量中，不要使用<em>行继续符</em>（即在字符串字面量内以反斜杠结束一行）。尽管ES5允许这样做，但如果反斜杠后有任何尾随空格，可能会导致棘手的错误，并且对读者来说不太明显。</p>
+
+<p>不允许：</p>
+
+<pre><code class="language-js prettyprint bad">const longString = '这是一个非常长的字符串，远远超过了80 \
+    列限制。不幸的是，由于继续行的缩进方式，它包含了长段的空格。';
+</code></pre>
+
+<p>相反，编写</p>
+
+<pre><code class="language-js prettyprint good">const longString = '这是一个非常长的字符串，远远超过了80 ' +
+    '列限制。由于拼接的字符串更清晰，它不包含长段的空格。';
+</code></pre>
+
+<h3 id="features-number-literals">5.7 数字字面量</h3>
+
+<p>数字可以用十进制、十六进制、八进制或二进制指定。对于十六进制、八进制和二进制，分别使用<code>0x</code>、<code>0o</code>和<code>0b</code>前缀，且使用小写字母。除非紧跟<code>x</code>、<code>o</code>或<code>b</code>，否则永远不要使用前导零。</p>
+<h3 id="features-control-structures">5.8 控制结构</h3>
+
+<h4 id="features-for-loops">5.8.1 For循环</h4>
+
+<p>在ES6中，语言现在有三种不同的<code>for</code>循环类型。所有类型都可以使用，但应尽可能优先使用<code>for</code>-<code>of</code>循环。</p>
+
+<p><code>for</code>-<code>in</code>循环只能用于字典风格的对象（参见<a href="#features-objects-mixing-keys">??</a>），并且不应用于遍历数组。在<code>for</code>-<code>in</code>循环中应使用<code>Object.prototype.hasOwnProperty</code>来排除不需要的原型属性。尽可能优先使用<code>for</code>-<code>of</code>和<code>Object.keys</code>而不是<code>for</code>-<code>in</code>。</p>
+
+<h4 id="features-exceptions">5.8.2 异常</h4>
+
+<p>异常是语言的重要组成部分，应在发生异常情况时使用。始终抛出<code>Error</code>或<code>Error</code>的子类：永远不要抛出字符串字面量或其他对象。在构造<code>Error</code>时始终使用<code>new</code>。</p>
+
+<p>这种处理方式也适用于<code>Promise</code>的拒绝值，因为<code>Promise.reject(obj)</code>在异步函数中等同于<code>throw obj;</code>。</p>
+
+<p>自定义异常提供了一种很好的方式来从函数中传达额外的错误信息。它们应该在原生<code>Error</code>类型不足以使用时定义和使用。</p>
+
+<p>优先抛出异常而不是使用临时错误处理方法（例如传递错误容器引用类型，或返回带有错误属性的对象）。</p>
+
+<h5 id="features-empty-catch-blocks">5.8.2.1 空的catch块</h5>
+
+<p>在捕获到异常时几乎很少正确地什么都不做。当在catch块中确实适当不采取任何行动时，应在注释中解释这样做的理由是合理的。</p>
+
+<pre><code class="language-js prettyprint good">try {
+  return handleNumericResponse(response);
+} catch (ok) {
+  // 它不是数字；没关系，继续
+}
+return handleTextResponse(response);
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-js prettyprint bad">  try {
+    shouldFail();
+    fail('expected an error');
+  } catch (expected) {
+  }
+</code></pre>
+
+<p>提示：与某些其他语言不同，像上面的模式根本不起作用，因为这将捕获<code>fail</code>抛出的错误。请改用<code>assertThrows()</code>。</p>
+
+<h4 id="features-switch-statements">5.8.3 Switch语句</h4>
+
+<p>术语说明：在switch块的大括号内有一个或多个语句组。每个语句组由一个或多个switch标签（<code>case FOO:</code>或<code>default:</code>）组成，后跟一个或多个语句。</p>
+
+<h5 id="features-switch-fall-through">5.8.3.1 继续执行：带注释</h5>
+
+<p>在switch块内，每个语句组要么突然终止（使用<code>break</code>、<code>return</code>或抛出异常），要么用注释标记以指示执行将或可能继续到下一个语句组。任何传达继续执行概念的注释都足够（通常是<code>// fall through</code>）。在switch块的最后一个语句组中不需要此特殊注释。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">switch (input) {
+  case 1:
+  case 2:
+    prepareOneOrTwo();
+  // fall through
+  case 3:
+    handleOneTwoOrThree();
+    break;
+  default:
+    handleLargeNumber(input);
+}
+</code></pre>
+
+<h5 id="features-switch-default-case">5.8.3.2 <code>default</code>情况存在</h5>
+
+<p>每个switch语句都包含一个<code>default</code>语句组，即使它不包含任何代码。<code>default</code>语句组必须位于最后。</p>
+
+<h3 id="features-this">5.9 this</h3>
+
+<p>仅在类构造函数和方法中、在类构造函数和方法中定义的箭头函数中，或在具有明确<code>@this</code>声明的紧邻封闭函数的JSDoc中使用<code>this</code>。</p>
+
+<p>永远不要使用<code>this</code>来引用全局对象、<code>eval</code>的上下文、事件的目标，或不必要地使用<code>call()</code>或<code>apply()</code>的函数。</p>
+
+<h3 id="features-equality-checks">5.10 等式检查</h3>
+
+<p>使用身份运算符（<code>===</code>/<code>!==</code>），除了下文记录的情况外。</p>
+
+<h4 id="features-equality-checks-exceptions">5.10.1 希望进行强制转换的例外情况</h4>
+
+<p>捕获<code>null</code>和<code>undefined</code>值：</p>
+
+<pre><code class="language-js prettyprint good">if (someObjectOrPrimitive == null) {
+  // 检查null可以捕获对象和原始值的null和undefined，但不会捕获其他假值如0或空字符串。
+}
+</code></pre>
+<h3 id="disallowed-features">5.11 禁止使用的功能</h3>
+
+<h4 id="disallowed-features-with">5.11.1 with</h4>
+
+<p>不要使用 <code>with</code> 关键字。它会使你的代码更难理解，并且自 ES5 以来在严格模式下已被禁止使用。</p>
+
+<h4 id="disallowed-features-dynamic-code-evaluation">5.11.2 动态代码评估</h4>
+
+<p>不要使用 <code>eval</code> 或 <code>Function(...string)</code> 构造函数（代码加载器除外）。这些功能可能存在危险，并且在 CSP 环境中无法工作。</p>
+
+<h4 id="disallowed-features-automatic-semicolon-insertion">5.11.3 自动分号插入</h4>
+
+<p>始终用分号结束语句（如上所述，函数和类声明除外）。</p>
+
+<h4 id="disallowed-features-non-standard-features">5.11.4 非标准功能</h4>
+
+<p>不要使用非标准功能。这包括已被移除的旧功能（例如，<code>WeakMap.clear</code>）、尚未标准化的新功能（例如，当前的 TC39 工作草案、任何阶段的提案，或已提出但尚未完成的网络标准），或仅在某些浏览器中实现的专有功能。仅使用当前 ECMA-262 或 WHATWG 标准中定义的功能。（请注意，针对特定 API 编写的项目，如 Chrome 扩展或 Node.js，显然可以使用这些 API）。禁止使用非标准的语言“扩展”（例如，一些外部转译器提供的扩展）。</p>
+
+<h4 id="disallowed-features-wrapper-objects">5.11.5 原始类型包装对象</h4>
+
+<p>永远不要在原始对象包装器（<code>Boolean</code>、<code>Number</code>、<code>String</code>、<code>Symbol</code>）上使用 <code>new</code>，也不要在类型注解中包含它们。</p>
+
+<p>禁止使用：</p>
+
+<pre><code class="language-js prettyprint bad">const /** Boolean */ x = new Boolean(false);
+if (x) alert(typeof x);  // 提示 'object' - WAT?
+</code></pre>
+
+<p>可以将包装器作为函数调用以进行强制转换（这比使用 <code>+</code> 或连接空字符串更可取）或创建符号。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">const /** boolean */ x = Boolean(0);
+if (!x) alert(typeof x);  // 提示 'boolean'，如预期
+</code></pre>
+
+<h4 id="disallowed-features-modifying-builtin-objects">5.11.6 修改内置对象</h4>
+
+<p>永远不要修改内置类型，无论是通过向它们的构造函数或原型添加方法。避免依赖执行此操作的库。请注意，JSCompiler 的运行时库将在可能的情况下提供符合标准的 polyfill；其他任何东西都不得修改内置对象。</p>
+
+<p>除非绝对必要（例如，第三方 API 要求），否则不要向全局对象添加符号。</p>
+
+<h4 id="disallowed-features-omitting-parents-with-new">5.11.7 在调用构造函数时省略 <code>()</code></h4>
+
+<p>在 <code>new</code> 语句中调用构造函数时，永远不要不使用括号 <code>()</code>。</p>
+
+<p>禁止使用：</p>
+
+<pre><code class="language-js prettyprint bad">new Foo;
+</code></pre>
+
+<p>应使用：</p>
+
+<pre><code class="language-js prettyprint good">new Foo();
+</code></pre>
+
+<p>省略括号可能会导致细微的错误。这两行是不等价的：</p>
+
+<pre><code class="language-js prettyprint good">new Foo().Bar();
+new Foo.Bar();
+</code></pre>
+
+<h2 id="naming">6 命名</h2>
+
+<h3 id="naming-rules-common-to-all-identifiers">6.1 所有标识符通用的规则</h3>
+
+<p>标识符仅使用 ASCII 字母和数字，在少数情况下（如下所述）使用下划线和极少数情况下（如 Angular 等框架要求时）使用美元符号。</p>
+
+<p>在合理范围内，尽可能使用描述性名称。不要担心节省水平空间，因为让你的代码立即可被新读者理解更为重要。不要使用项目外部的读者可能不熟悉或含糊不清的缩写，也不要通过删除单词内部的字母来缩写。</p>
+
+<pre><code class="language-js prettyprint good">errorCount          // 没有缩写。
+dnsConnectionIndex  // 大多数人都知道 "DNS" 代表什么。
+referrerUrl         // 同样适用于 "URL"。
+customerId          // "Id" 既普遍又不太可能被误解。
+</code></pre>
+
+<p>禁止使用：</p>
+
+<pre><code class="language-js prettyprint bad">n                   // 无意义。
+nErr                // 含糊不清的缩写。
+nCompConns          // 含糊不清的缩写。
+wgcConnections      // 只有你们小组知道这是什么意思。
+pcReader            // 很多东西都可以缩写为 "pc"。
+cstmrId             // 删除内部字母。
+kSecondsPerDay      // 不要使用匈牙利命名法。
+</code></pre>
+
+<p><strong>例外</strong>：作用域在 10 行或更少的变量，包括不是导出 API 的一部分的参数，<em>可以</em>使用简短的（例如单字母）变量名。</p>
+<h3 id="naming-rules-by-identifier-type">6.2 按标识符类型划分的命名规则</h3>
+
+<h4 id="naming-package-names">6.2.1 包名</h4>
+
+<p>包名全部使用 <code>lowerCamelCase</code>。例如，<code>my.exampleCode.deepSpace</code>，
+但不能是 <code class="badcode">my.examplecode.deepspace</code> 或
+<code class="badcode">my.example_code.deep_space</code>。</p>
+
+<p><strong>例外</strong>：包名可以符合 TypeScript 的基于路径的模式。这通常是全小写，并在文件名中出现下划线时使用下划线。</p>
+
+<h4 id="naming-class-names">6.2.2 类名</h4>
+
+<p>类、接口、记录和类型定义的名称使用 <code>UpperCamelCase</code> 书写。
+未导出的类只是局部类：它们不标记为 <code>@private</code>。</p>
+
+<p>类型名称通常是名词或名词短语。例如，<code>Request</code>，
+<code>ImmutableView</code>，或 <code>VisibilityMode</code>。此外，接口名称有时也可以是形容词或形容词短语（例如，<code>Readable</code>）。</p>
+
+<h4 id="naming-method-names">6.2.3 方法名</h4>
+
+<p>方法名使用 <code>lowerCamelCase</code> 书写。<code>@private</code> 方法的名称可以选择性地以尾随下划线结束。</p>
+
+<p>方法名通常是动词或动词短语。例如，<code>sendMessage</code> 或
+<code>stop_</code>。属性getter和setter方法不是必需的，但如果使用它们，它们应该命名为 <code>getFoo</code>（或可选地 <code>isFoo</code> 或 <code>hasFoo</code>
+用于布尔值），或 <code>setFoo(value)</code> 用于setter方法。</p>
+
+<p>下划线也可能出现在 JsUnit 测试方法名称中，以分隔名称的逻辑组件。一个典型的模式是
+<code>test&lt;MethodUnderTest&gt;_&lt;state&gt;_&lt;expectedOutcome&gt;</code>，例如
+<code>testPop_emptyStack_throws</code>。命名测试方法没有唯一正确的方法。</p>
+
+<h4 id="naming-enum-names">6.2.4 枚举名</h4>
+
+<p>枚举名使用 <code>UpperCamelCase</code> 书写，类似于类，并且通常应该是单数名词。枚举中的各个项目使用
+<code>CONSTANT_CASE</code> 命名。</p>
+
+<h4 id="naming-constant-names">6.2.5 常量名</h4>
+
+<p>常量名使用 <code>CONSTANT_CASE</code>：全大写字母，单词之间用下划线分隔。没有理由让常量名称以尾随下划线结束，因为私有静态属性可以被（隐式私有的）模块局部变量替代。</p>
+
+<h5 id="naming-definition-of-constant">6.2.5.1 “常量”的定义</h5>
+
+<p>每个常量都是 <code>@const</code> 静态属性或模块局部 <code>const</code>
+声明，但并非所有 <code>@const</code> 静态属性和模块局部 <code>const</code> 都是常量。在选择常量命名方式之前，请考虑该字段是否真的感觉像一个<em>深度不可变</em>的常量。例如，如果该实例的任何可观察状态可以改变，那么它几乎肯定不是常量。仅仅打算永远不改变对象通常是不够的。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">// 常量
+const NUMBER = 5;
+/** @const */ exports.NAMES = goog.debug.freeze(['Ed', 'Ann']);
+/** @enum */ exports.SomeEnum = { ENUM_CONSTANT: 'value' };
+
+// 不是常量
+let letVariable = 'non-const';
+
+class MyClass {
+  constructor() { /** @const {string} */ this.nonStatic = 'non-static'; }
+};
+/** @type {string} */
+MyClass.staticButMutable = 'not @const, can be reassigned';
+
+const /** Set&lt;string&gt; */ mutableCollection = new Set();
+
+const /** MyImmutableContainer&lt;SomeMutableType&gt; */ stillMutable =
+    new MyImmutableContainer(mutableInner);
+
+const {Foo} = goog.require('my.foo');  // 镜像导入的名称
+
+const logger = log.getLogger('loggers.are.not.immutable');
+</code></pre>
+
+<p>常量的名称通常是名词或名词短语。</p>
+
+<h5 id="naming-local-aliases">6.2.5.2 本地别名</h5>
+
+<p>只要本地别名能提高可读性，就应该使用它们，而不是使用完全限定名称。遵循与 <code>goog.require</code>
+相同的规则（<a href="#file-goog-require">??</a>），保持别名名称的最后一部分。
+别名也可以在函数内使用。别名必须是 <code>const</code>。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">const staticHelper = importedNamespace.staticHelper;
+const CONSTANT_NAME = ImportedClass.CONSTANT_NAME;
+const {assert, assertInstanceof} = asserts;
+</code></pre>
+
+<h4 id="naming-non-constant-field-names">6.2.6 非常量字段名</h4>
+
+<p>非常量字段名（静态或其他）使用 <code>lowerCamelCase</code> 书写，私有字段可以选择性地以尾随下划线结束。</p>
+
+<p>这些名称通常是名词或名词短语。例如，<code>computedValues</code>
+或 <code>index_</code>。</p>
+
+<h4 id="naming-parameter-names">6.2.7 参数名</h4>
+
+<p>参数名使用 <code>lowerCamelCase</code> 书写。请注意，即使参数期望一个构造函数，也适用此规则。</p>
+
+<p>公共方法中不应使用单字符参数名。</p>
+
+<p><strong>例外</strong>：当第三方框架要求时，参数名可以以 <code>$</code> 开头。此例外不适用于任何其他标识符（例如，局部变量或属性）。</p>
+
+<h4 id="naming-local-variable-names">6.2.8 局部变量名</h4>
+
+<p>局部变量名使用 <code>lowerCamelCase</code> 书写，除了如上所述的模块局部（顶级）常量。函数作用域内的常量仍然使用 <code>lowerCamelCase</code> 命名。请注意，即使变量持有一个构造函数，也使用 <code>lowerCamelCase</code>。</p>
+
+<h4 id="naming-template-parameter-names">6.2.9 模板参数名</h4>
+
+<p>模板参数名应简洁，单词或单字母标识符，并且必须全部大写，例如 <code>TYPE</code> 或 <code>THIS</code>。</p>
+
+<h4 id="naming-module-local-names">6.2.10 模块局部名称</h4>
+
+<p>未导出的模块局部名称隐式为私有。它们不标记为 <code>@private</code>。这适用于类、函数、变量、常量、枚举和其他模块局部标识符。</p>
+<h3 id="naming-camel-case-defined">6.3 驼峰命名法：定义</h3>
+
+<p>有时将一个英文短语转换为驼峰命名法有多种合理的方式，例如当包含缩写或像<q>IPv6</q>或<q>iOS</q>这样的特殊构造时。为了提高可预测性，Google Style 指定了以下（几乎）确定性的方案。</p>
+
+<p>从名称的散文形式开始：</p>
+
+<ol>
+<li>将短语转换为纯 ASCII 并删除任何撇号。例如，<q>Müller's algorithm</q>可能会变成<q>Muellers algorithm</q>。</li>
+<li>将结果分成单词，按空格和任何剩余的标点符号（通常是连字符）进行分割。
+<ol>
+<li>推荐：如果任何单词在常用中已经具有常规的驼峰命名法外观，则将其拆分为其组成部分（例如，<q>AdWords</q>变成<q>ad words</q>）。请注意，像<q>iOS</q>这样的单词实际上并不真正属于驼峰命名法；它不遵循任何惯例，因此此建议不适用。</li>
+</ol></li>
+<li>现在将所有内容转换为小写（包括缩写），然后仅将以下内容的第一个字符大写：
+<ol>
+<li>…每个单词，以生成<code>UpperCamelCase</code>，或</li>
+<li>…除第一个单词之外的每个单词，以生成<code>lowerCamelCase</code></li>
+</ol></li>
+<li>最后，将所有单词连接成一个单一的标识符。</li>
+</ol>
+
+<p>请注意，原始单词的大小写几乎完全被忽略。</p>
+
+<p><code>lowerCamelCase</code>的示例：</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center">散文形式</th>
+<th style="text-align: center">正确</th>
+<th style="text-align: center">错误</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center"><q>XML HTTP request</q></td>
+<td style="text-align: center"><code>xmlHttpRequest</code></td>
+<td style="text-align: center"><code>XMLHTTPRequest</code></td>
+</tr>
+<tr>
+<td style="text-align: center"><q>new customer ID</q></td>
+<td style="text-align: center"><code>newCustomerId</code></td>
+<td style="text-align: center"><code>newCustomerID</code></td>
+</tr>
+<tr>
+<td style="text-align: center"><q>inner stopwatch</q></td>
+<td style="text-align: center"><code>innerStopwatch</code></td>
+<td style="text-align: center"><code>innerStopWatch</code></td>
+</tr>
+<tr>
+<td style="text-align: center"><q>supports IPv6 on iOS?</q></td>
+<td style="text-align: center"><code>supportsIpv6OnIos</code></td>
+<td style="text-align: center"><code>supportsIPv6OnIOS</code></td>
+</tr>
+<tr>
+<td style="text-align: center"><q>YouTube importer</q></td>
+<td style="text-align: center"><code>youTubeImporter</code></td>
+<td style="text-align: center"><code>youtubeImporter</code>*</td>
+</tr>
+</tbody>
+</table>
+
+<p>*可接受，但不推荐。</p>
+
+<p>对于<code>UpperCamelCase</code>的示例，将每个正确<code>lowerCamelCase</code>示例的第一个字母大写即可。</p>
+
+<p>注意：在英语中，一些单词的连字符使用是模糊的：例如，<q>nonempty</q>和<q>non-empty</q>都是正确的，因此方法名称<code>checkNonempty</code>和<code>checkNonEmpty</code>同样都是正确的。</p>
+
+<h2 id="jsdoc">7 JSDoc</h2>
+
+<p><a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">JSDoc</a>用于所有类、字段和方法。</p>
+
+<h3 id="jsdoc-general-form">7.1 一般形式</h3>
+
+<p>JSDoc块的基本格式如以下示例所示：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 多行的JSDoc文本写在这里，
+ * 正常换行。
+ * @param {number} arg 要处理的一个数字。
+ */
+function doSomething(arg) { … }
+</code></pre>
+
+<p>或者在这一行示例中：</p>
+
+<pre><code class="language-js prettyprint good">/** @const @private {!Foo} 一小段JSDoc。 */
+this.foo_ = foo;
+</code></pre>
+
+<p>如果单行注释溢出到多行，必须使用多行样式，使用<code>/**</code>和<code>*/</code>单独占一行。</p>
+
+<p>许多工具从JSDoc注释中提取元数据以执行代码验证和优化。因此，这些注释<strong>必须</strong>格式正确。</p>
+
+<h3 id="jsdoc-markdown">7.2 Markdown</h3>
+
+<p>JSDoc使用Markdown编写，尽管必要时可以包含HTML。</p>
+
+<p>请注意，自动提取JSDoc的工具（例如<a href="https://github.com/jleyba/js-dossier">JsDossier</a>）通常会忽略纯文本格式，因此如果您这样做：</p>
+
+<pre><code class="language-js prettyprint bad">/**
+ * 计算基于三个因素的权重：
+ *   发送的项目
+ *   接收的项目
+ *   最后的时间戳
+ */
+</code></pre>
+
+<p>它会显示为：</p>
+
+<pre><code>计算基于三个因素的权重：发送的项目接收的项目最后的时间戳
+</code></pre>
+
+<p>相反，编写一个Markdown列表：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 计算基于三个因素的权重：
+ *
+ *  - 发送的项目
+ *  - 接收的项目
+ *  - 最后的时间戳
+ */
+</code></pre>
+<h3 id="jsdoc-tags">7.3 JSDoc 标签</h3>
+
+<p>Google 风格允许使用 JSDoc 标签的一个子集。完整列表请参见
+<a href="#appendices-jsdoc-tag-reference">??</a>。大多数标签必须占用单独一行，且标签位于行首。</p>
+
+<p>不允许的做法：</p>
+
+<pre><code class="language-js prettyprint bad">/**
+ * "param" 标签必须占用单独一行，不能合并。
+ * @param {number} left @param {number} right
+ */
+function add(left, right) { ... }
+</code></pre>
+
+<p>不需要额外数据的简单标签（如 <code>@private</code>、
+<code>@const</code>、<code>@final</code>、<code>@export</code>）可以合并到同一行，并在适当情况下添加可选类型。</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 将更复杂的注释（如 "implements" 和 "template"）
+ * 放在单独的行上。多个简单的标签（如 "export" 和 "final"）
+ * 可以合并在一行。
+ * @export @final
+ * @implements {Iterable&lt;TYPE&gt;}
+ * @template TYPE
+ */
+class MyClass {
+  /**
+   * @param {!ObjType} obj 某个对象。
+   * @param {number=} num 一个可选的数字。
+   */
+  constructor(obj, num = 42) {
+    /** @private @const {!Array&lt;!ObjType|number&gt;} */
+    this.data_ = [obj, num];
+  }
+}
+</code></pre>
+
+<p>关于何时合并标签或标签的顺序没有硬性规定，但要保持一致性。</p>
+
+<p>有关在 JavaScript 中注释类型的常规信息，请参见
+<a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">为 Closure 编译器注释 JavaScript</a> 和
+<a href="https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System">Closure 类型系统中的类型</a>。</p>
+
+<h3 id="jsdoc-line-wrapping">7.4 行包装</h3>
+
+<p>行包装的块标签缩进四个空格。包装的描述文本可以与前一行的描述对齐，但这种水平对齐是不鼓励的。</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 说明长参数/返回值描述的行包装。
+ * @param {string} foo 这是一个参数，其描述太长无法在一行内显示。
+ *     这是一个参数，其描述太长无法在一行内显示。
+ * @return {number} 这返回一些东西，其描述太长无法在一行内显示。
+ *     这返回一些东西，其描述太长无法在一行内显示。
+ */
+exports.method = function(foo) {
+  return 5;
+};
+</code></pre>
+
+<p>包装 <code>@desc</code> 或 <code>@fileoverview</code> 描述时不应缩进。</p>
+
+<h3 id="jsdoc-top-file-level-comments">7.5 顶级/文件级注释</h3>
+
+<p>一个文件可以有一个顶级文件概述。版权声明、作者信息和默认的
+<a href="#jsdoc-visibility-annotations">可见性级别</a> 是可选的。
+一般建议在文件包含多个类定义时提供文件概述。顶级注释旨在帮助不熟悉代码的读者了解文件中的内容。如果存在，它可以提供文件内容的描述以及任何依赖或兼容性信息。包装的行不应缩进。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @fileoverview 关于文件的描述、用途及其依赖信息。
+ * @package
+ */
+</code></pre>
+
+<h3 id="jsdoc-class-comments">7.6 类注释</h3>
+
+<p>类、接口和记录必须使用描述和任何模板参数、实现的接口、可见性或其他适当的标签进行文档化。类描述应为读者提供足够的信息，了解如何以及何时使用该类，以及正确使用该类所需的任何其他考虑。构造函数的文本描述可以省略。定义类时，除非扩展泛型类，否则不使用 <code>@constructor</code> 和 <code>@extends</code> 注释与 <code>class</code> 关键字一起使用。定义 <code>@interface</code> 或 <code>@record</code> 时，定义子类时使用 <code>@extends</code> 注释，且从不使用 <code>extends</code> 关键字。</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 一个做酷事情的高级事件目标。
+ * @implements {Iterable&lt;string&gt;}
+ */
+class MyFancyTarget extends EventTarget {
+  /**
+   * @param {string} arg1 使这更有趣的参数。
+   * @param {!Array&lt;number&gt;} arg2 要处理的数字列表。
+   */
+  constructor(arg1, arg2) {
+    // ...
+  }
+};
+
+/**
+ * 记录也很有帮助。
+ * @extends {Iterator&lt;TYPE&gt;}
+ * @record
+ * @template TYPE
+ */
+class Listable {
+  /** @return {TYPE} 下一个要返回的项目。 */
+  next() {}
+}
+</code></pre>
+
+<h3 id="jsdoc-enum-and-typedef-comments">7.7 枚举和类型定义注释</h3>
+
+<p>所有枚举和类型定义必须在前一行使用适当的 JSDoc 标签（<code>@typedef</code> 或 <code>@enum</code>）进行文档化。公共枚举和类型定义还必须有描述。单个枚举项可以在前一行使用 JSDoc 注释进行文档化。</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 一个常用的有用类型联合。
+ * @typedef {!Bandersnatch|!BandersnatchType}
+ */
+let CoolUnionType;
+
+
+/**
+ * 班德斯纳奇的类型。
+ * @enum {string}
+ */
+const BandersnatchType = {
+  /** 这种类型非常愤怒。 */
+  FRUMIOUS: 'frumious',
+  /** 较不愤怒的类型。 */
+  MANXOME: 'manxome',
+};
+</code></pre>
+
+<p>类型定义对于定义简短的记录类型或联合、复杂函数或泛型类型的别名很有用。对于具有许多字段的记录类型，应避免使用类型定义，因为它们不允许文档化各个字段，也不能使用模板或递归引用。对于大型记录类型，建议使用 <code>@record</code>。</p>
+<h3 id="jsdoc-method-and-function-comments">7.8 方法和函数注释</h3>
+
+<p>在方法和命名函数中，必须记录参数和返回类型，即使是相同签名的<code>@override</code>。必要时应记录<code>this</code>类型。如果函数没有非空的<code>return</code>语句，可以省略返回类型。</p>
+
+<p>如果方法、参数和返回值的描述从方法的JSDoc其余部分或其签名中显而易见，则可以省略这些描述（但不能省略类型）。</p>
+
+<p>方法描述应以描述方法功能的动词短语开始。这个短语不是祈使句，而是以第三人称书写，好像在它之前有一个隐含的<q>此方法...</q>。</p>
+
+<p>如果一个方法覆盖了超类方法，则必须包含一个<code>@override</code>注解。对于被覆盖的方法，即使没有从超类方法中细化任何类型，也必须明确指定所有<code>@param</code>和<code>@return</code>注解。这是为了与TypeScript保持一致。</p>
+
+<pre><code class="language-js prettyprint good">/** 一个执行某些操作的类。 */
+class SomeClass extends SomeBaseClass {
+  /**
+   * 对MyClass的实例进行操作并返回某些内容。
+   * @param {!MyClass} obj 一个对象，由于某些原因需要详细的
+   *     跨多行的解释。
+   * @param {!OtherClass} obviousOtherClass
+   * @return {boolean} 是否发生了某些事情。
+   */
+  someMethod(obj, obviousOtherClass) { ... }
+
+  /**
+   * @param {string} param
+   * @return {string}
+   * @override
+   */
+  overriddenMethod(param) { ... }
+}
+
+/**
+ * 演示顶级函数如何遵循相同的规则。这个函数
+ * 创建一个数组。
+ * @param {TYPE} arg
+ * @return {!Array&lt;TYPE&gt;}
+ * @template TYPE
+ */
+function makeArray(arg) { ... }
+</code></pre>
+
+<p>如果您只需要记录函数的参数和返回类型，您可以选择在函数签名中使用内联JSDoc。这些内联JSDoc指定返回和参数类型，而不使用标签。</p>
+
+<pre><code class="language-js prettyprint good">function /** string */ foo(/** number */ arg) {...}
+</code></pre>
+
+<p>如果您需要描述或标签，请在方法上方使用单个JSDoc注释。例如，返回值的方法需要一个<code>@return</code>标签。</p>
+
+<pre><code class="language-js prettyprint good">class MyClass {
+  /**
+   * @param {number} arg
+   * @return {string}
+   */
+  bar(arg) {...}
+}
+</code></pre>
+
+<pre><code class="language-js prettyprint bad">// 非法的内联JSDoc。
+
+class MyClass {
+  /** @return {string} */ foo() {...}
+}
+
+/** 此处不允许内联函数描述。 */ function bar() {...}
+
+function /** 此处函数描述也是非法的。 */ baz() {...}
+</code></pre>
+
+<p>在匿名函数中，注解通常是可选的。如果自动类型推断不足或明确注解能提高可读性，则像这样注解参数和返回类型：</p>
+
+<pre><code class="language-js prettyprint good">promise.then(
+    /** @return {string} */
+    (/** !Array&lt;string&gt; */ items) =&gt; {
+      doSomethingWith(items);
+      return items[0];
+    });
+</code></pre>
+
+<p>有关函数类型表达式的内容，请参见<a href="#jsdoc-function-types">??</a>。</p>
+
+<h3 id="jsdoc-property-comments">7.9 属性注释</h3>
+
+<p>必须记录属性类型。对于私有属性，如果名称和类型足以理解代码，则可以省略描述。</p>
+
+<p>公开导出的常量与属性以相同的方式进行注释。</p>
+
+<pre><code class="language-js prettyprint good">/** 我的类。 */
+class MyClass {
+  /** @param {string=} someString */
+  constructor(someString = 'default string') {
+    /** @private @const {string} */
+    this.someString_ = someString;
+
+    /** @private @const {!OtherType} */
+    this.someOtherThing_ = functionThatReturnsAThing();
+
+    /**
+     * 每个窗格的最大事物数量。
+     * @type {number}
+     */
+    this.someProperty = 4;
+  }
+}
+
+/**
+ * 我们尝试的次数上限。
+ * @const {number}
+ */
+MyClass.RETRY_COUNT = 33;
+</code></pre>
+<h3 id="jsdoc-type-annotations">7.10 类型注解</h3>
+
+<p>类型注解出现在 <code>@param</code>、<code>@return</code>、<code>@this</code> 和 <code>@type</code> 标签上，
+还可以选择性地出现在 <code>@const</code>、<code>@export</code> 和任何可见性标签上。附加在 JSDoc 标签上的类型注解必须始终用大括号括起来。</p>
+
+<h4 id="jsdoc-nullability">7.10.1 可空性</h4>
+
+<p>类型系统定义了 <code>!</code> 和 <code>?</code> 修饰符，分别表示非空和可空。
+这些修饰符必须放在类型之前。</p>
+
+<p>可空性修饰符对不同类型的要求不同，这些类型大致分为两类：</p>
+
+<ol>
+<li>基本类型（<code>string</code>、<code>number</code>、<code>boolean</code>、<code>symbol</code>、
+<code>undefined</code>、<code>null</code>）和字面量（<code>{function(...): ...}</code> 和 <code>{{foo:
+string...}}</code>）的类型注解默认总是非空的。使用 <code>?</code> 修饰符使其可空，但应省略多余的 <code>!</code>。</li>
+<li>引用类型（通常是 <code>UpperCamelCase</code> 形式的任何内容，包括
+<code>some.namespace.ReferenceType</code>）指的是在其他地方定义的类、枚举、记录或类型定义。由于这些类型可能可空也可能不可空，仅从名称无法判断其是否可空。对于这些类型，始终使用明确的 <code>?</code> 和 <code>!</code> 修饰符，以防止在使用地点产生歧义。</li>
+</ol>
+
+<p>错误示例：</p>
+
+<pre><code class="language-js prettyprint bad">const /** MyObject */ myObject = null; // 非基本类型必须进行注解。
+const /** !number */ someNum = 5; // 基本类型默认是非空的。
+const /** number? */ someNullableNum = null; // ? 应放在类型之前。
+const /** !{foo: string, bar: number} */ record = ...; // 已经是非空的。
+const /** MyTypeDef */ def = ...; // 不确定 MyTypeDef 是否可空。
+
+// 不确定是对象（可空）、枚举（除非另有说明，否则不可空）还是类型定义（取决于定义）。
+const /** SomeCamelCaseName */ n = ...;
+</code></pre>
+
+<p>正确示例：</p>
+
+<pre><code class="language-js prettyprint good">const /** ?MyObject */ myObject = null;
+const /** number */ someNum = 5;
+const /** ?number */ someNullableNum = null;
+const /** {foo: string, bar: number} */ record = ...;
+const /** !MyTypeDef */ def = ...;
+const /** ?SomeCamelCaseName */ n = ...;
+</code></pre>
+
+<h4 id="jsdoc-type-casts">7.10.2 类型转换</h4>
+
+<p>在编译器无法准确推断表达式类型的情况下，并且
+<a href="https://google.github.io/closure-library/api/goog.asserts.html">goog.asserts</a>
+中的断言函数无法解决时，可以通过添加类型注解注释并将表达式括在括号中来收紧类型。请注意，括号是必需的。</p>
+
+<pre><code class="language-js prettyprint good">/** @type {number} */ (x)
+</code></pre>
+
+<h4 id="jsdoc-template-parameter-types">7.10.3 模板参数类型</h4>
+
+<p>始终指定模板参数。这样编译器可以更好地工作，并且使读者更容易理解代码的作用。</p>
+
+<p>错误示例：</p>
+
+<pre><code class="language-js prettyprint bad">const /** !Object */ users = {};
+const /** !Array */ books = [];
+const /** !Promise */ response = ...;
+</code></pre>
+
+<p>正确示例：</p>
+
+<pre><code class="language-js prettyprint good">const /** !Object&lt;string, !User&gt; */ users = {};
+const /** !Array&lt;string&gt; */ books = [];
+const /** !Promise&lt;!Response&gt; */ response = ...;
+
+const /** !Promise&lt;undefined&gt; */ thisPromiseReturnsNothingButParameterIsStillUseful = ...;
+const /** !Object&lt;string, *&gt; */ mapOfEverything = {};
+</code></pre>
+
+<p>不应使用模板参数的情况：</p>
+
+<ul>
+<li><code>Object</code> 用于类型层次结构而不是类似于映射的结构时。</li>
+</ul>
+
+<h4 id="jsdoc-function-types">7.10.4 函数类型表达式</h4>
+
+<p><strong>术语说明</strong>：<em>函数类型表达式</em> 指的是带有 <code>function</code> 关键字的函数类型的类型注解（见下面的示例）。</p>
+
+<p>在给出函数定义的地方，不应使用函数类型表达式。使用 <code>@param</code> 和 <code>@return</code> 或内联注解指定参数和返回类型（参见 <a href="#jsdoc-method-and-function-comments">??</a>）。这包括匿名函数和定义并分配给常量的函数（其中函数的 JSDoc 出现在整个赋值表达式上方）。</p>
+
+<p>函数类型表达式在 <code>@typedef</code>、<code>@param</code> 或 <code>@return</code> 内部需要使用。对于函数类型的变量或属性，如果它们不是立即用函数定义初始化的，也应使用它。</p>
+
+<pre><code class="language-js prettyprint good">  /** @private {function(string): string} */
+  this.idGenerator_ = googFunctions.identity;
+</code></pre>
+
+<p>在使用函数类型表达式时，始终明确指定返回类型。否则，默认返回类型为 <q>未知</q>（<code>?</code>），这会导致奇怪且意外的行为，并且很少是实际想要的。</p>
+
+<p>错误示例 - 类型错误，但未给出警告：</p>
+
+<pre><code class="language-js prettyprint bad">/** @param {function()} generateNumber */
+function foo(generateNumber) {
+  const /** number */ x = generateNumber();  // 此处没有编译时类型错误。
+}
+
+foo(() =&gt; '显然不是数字');
+</code></pre>
+
+<p>正确示例：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @param {function(): *} inputFunction1 可以返回任何类型。
+ * @param {function(): undefined} inputFunction2 肯定不返回任何东西。
+ * 注意：`foo` 本身的返回类型安全地隐含为 {undefined}。
+ */
+function foo(inputFunction1, inputFunction2) {...}
+</code></pre>
+
+<h4 id="jsdoc-whitespace">7.10.5 空白</h4>
+
+<p>在类型注解中，每个逗号或冒号之后需要一个空格或换行符。可以插入额外的换行符以提高可读性或避免超过列限制。这些换行符的选择和缩进
+遵循适用的指导原则（例如<a href="#formatting-line-wrapping">??</a>和
+<a href="#formatting-block-indentation">??</a>）。类型注释中不允许有其他空白字符。</p>
+
+<p>良好示例：</p>
+
+<pre><code class="language-js prettyprint good">/** @type {function(string): number} */
+
+/** @type {{foo: number, bar: number}} */
+
+/** @type {number|string} */
+
+/** @type {!Object&lt;string, string&gt;} */
+
+/** @type {function(this: Object&lt;string, string&gt;, number): string} */
+
+/**
+ * @type {function(
+ *     !SuperDuperReallyReallyLongTypedefThatForcesTheLineBreak,
+ *     !OtherVeryLongTypedef): string}
+ */
+
+/**
+ * @type {!SuperDuperReallyReallyLongTypedefThatForcesTheLineBreak|
+ *     !OtherVeryLongTypedef}
+ */
+</code></pre>
+
+<p>不良示例：</p>
+
+<pre><code class="language-js prettyprint bad">// 冒号后只添加一个空格
+/** @type {function(string) : number} */
+
+// 冒号和逗号后添加空格
+/** @type {{foo:number,bar:number}} */
+
+// 联合类型中不添加空格
+/** @type {number | string} */
+</code></pre>
+
+<h3 id="jsdoc-visibility-annotations">7.11 可见性注释</h3>
+
+<p>可见性注释（<code>@private</code>、<code>@package</code>、<code>@protected</code>）可以在<code>@fileoverview</code>块中指定，也可以在任何导出的符号或属性上指定。不要为局部变量指定可见性，无论是在函数内还是在模块的顶级。<code>@private</code>名称可以选择以 underscore 结尾。</p>
+
+<h2 id="policies">8 政策</h2>
+
+<h3 id="policies-be-consistent">8.1 未由 Google 风格明确规定的问题：保持一致性！</h3>
+
+<p>对于本规范未明确解决的任何风格问题，优先选择同一文件中其他代码已经在做的事情。如果这不能解决问题，可以考虑模仿同一包中的其他文件。</p>
+
+<h3 id="policies-compiler-warnings">8.2 编译器警告</h3>
+
+<h4 id="policies-use-a-standard-warning-set">8.2.1 使用标准警告集</h4>
+
+<p>项目应尽可能使用
+<code>--warning_level=VERBOSE</code>。</p>
+
+<h4 id="policies-how-to-handle-a-warning">8.2.2 如何处理警告</h4>
+
+<p>在采取任何行动之前，请确保您完全理解警告告诉您的内容。如果您不确定警告出现的原因，请寻求帮助
+。</p>
+
+<p>一旦您理解了警告，请按以下顺序尝试以下解决方案：</p>
+
+<ol>
+<li><strong>首先，修复它或绕过它。</strong> 尽最大努力实际解决警告，或者找到另一种方法来完成任务，从而完全避免这种情况。</li>
+<li><strong>否则，确定它是否是误报。</strong> 如果您确信警告是无效的，并且代码实际上是安全且正确的，请添加注释来说明这一事实，并应用<code>@suppress</code>注释。</li>
+<li><strong>否则，留下一个 TODO 注释。</strong> 这是<strong>最后的手段</strong>。
+ 如果您这样做，<strong>不要抑制警告。</strong> 警告应保持可见，直到可以正确处理为止。</li>
+</ol>
+
+<h4 id="policies-suppress-a-warning-at-the-narrowest-reasonable-scope">8.2.3 在最窄合理的范围内抑制警告</h4>
+
+<p>警告在最窄合理的范围内被抑制，通常是一个单一的局部变量或非常小的方法。通常为了这个原因单独提取一个变量或方法。</p>
+
+<p>示例</p>
+
+<pre><code class="language-js prettyprint good">/** @suppress {uselessCode} 未识别的 'use asm' 声明 */
+function fn() {
+  'use asm';
+  return 0;
+}
+</code></pre>
+
+<p>即使在一个类中抑制了大量警告，仍然比将整个类对这种类型的警告视而不见要好。</p>
+
+<h3 id="policies-deprecation">8.3 废弃</h3>
+
+<p>使用<code>@deprecated</code>注释标记废弃的方法、类或接口。废弃注释必须包括简单、清晰的指示，供人们修复他们的调用点。</p>
+
+<h3 id="policies-code-not-in-google-style">8.4 非 Google 风格的代码</h3>
+
+<p>您偶尔会在代码库中遇到不符合 Google 风格的文件。这些文件可能来自收购，或者可能是在 Google 风格对某些问题采取立场之前编写的，或者可能由于任何其他原因不符合 Google 风格。</p>
+
+<h4 id="policies-reformatting-existing-code">8.4.1 重新格式化现有代码</h4>
+
+<p>在更新现有代码的风格时，请遵循以下指导原则。</p>
+
+<ol>
+<li>不需要更改所有现有代码以符合当前风格指南。重新格式化现有代码是在代码变动和一致性之间进行权衡。风格规则随时间演变，这些类型的调整以保持合规性会造成不必要的变动。然而，如果对文件进行了重大更改，预期该文件将符合 Google 风格。</li>
+<li>小心不要让机会主义的风格修复模糊了 CL 的焦点。如果您发现自己在做很多与 CL 中心焦点无关的风格更改，请将这些更改提升到一个单独的 CL 中。</li>
+</ol>
+
+<h4 id="policies-newly-added-code-use-google-style">8.4.2 新增代码：使用 Google 风格</h4>
+
+<p>全新文件使用 Google 风格，无论同一包中其他文件的风格选择如何。</p>
+
+<p>在向不符合 Google 风格的文件添加新代码时，建议首先重新格式化现有代码，遵循
+<a href="#policies-reformatting-existing-code">??</a>中的建议。</p>
+
+<p>如果未进行此重新格式化，则新代码应尽可能与同一文件中的现有代码保持一致，但不得违反风格指南。</p>
+
+<h3 id="policies-local-style-rules">8.5 本地风格规则</h3>
+
+<p>团队和项目可以采用本文档之外的额外风格规则，但必须接受清理更改可能不遵守这些额外规则，并且不得因违反任何额外规则而阻止此类清理更改。注意避免过多的无用规则。风格指南并不寻求在每种可能的情况下定义风格，您也不应该这样做。</p>
+
+<h3 id="policies-generated-code-mostly-exempt">8.6 生成的代码：大部分豁免</h3>
+
+<p>构建过程中生成的源代码不需要符合 Google 风格。然而，任何将从手写源代码中引用的生成标识符必须遵循命名要求。作为特殊例外，此类标识符允许包含下划线，这可能有助于避免与手写标识符的冲突。</p>
+
+<h2 id="appendices">9 附录</h2>
+<h3 id="appendices-jsdoc-tag-reference">9.1 JSDoc标签参考</h3>
+
+<p>JSDoc在JavaScript中有多种用途。除了用于生成文档外，它还用于控制工具。最著名的就是Closure编译器的类型注解。</p>
+
+<h4 id="appendices-type-annotations">9.1.1 类型注解和其他Closure编译器注解</h4>
+
+<p>Closure编译器使用的JSDoc文档在
+<a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">为Closure编译器注释JavaScript</a>和
+<a href="https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System">Closure类型系统中的类型</a>中描述。</p>
+
+<h4 id="appendices-documentation-annotations">9.1.2 文档注解</h4>
+
+<p>除了在
+<a href="https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler">为Closure编译器注释JavaScript</a>中描述的JSDoc外，以下标签在各种文档生成工具（如
+<a href="https://github.com/jleyba/js-dossier">JsDossier</a>）中常见且得到良好支持，仅用于文档目的。</p>
+
+<section class="zippy">
+
+<h5>9.1.2.1 <code>@author</code> 或 <code>@owner</code> - <em>不推荐使用。</em></h5>
+
+<p><strong>不推荐使用。</strong></p>
+
+<p>语法: <code>@author username@google.com (First Last)</code></p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @fileoverview 处理文本区域的实用工具。
+ * @author kuth@google.com (Uthur Pendragon)
+ */
+</code></pre>
+
+<p>记录文件的作者或测试的所有者，通常仅在<code>@fileoverview</code>注释中使用。<code>@owner</code>标签由单元测试仪表板使用，以确定谁拥有测试结果。</p>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.2.2 <code>@bug</code></h5>
+
+<p>语法: <code>@bug bugnumber</code></p>
+
+<pre><code class="language-js prettyprint good">/** @bug 1234567 */
+function testSomething() {
+  // …
+}
+
+/**
+ * @bug 1234568
+ * @bug 1234569
+ */
+function testTwoBugs() {
+  // …
+}
+</code></pre>
+
+<p>指示给定测试函数回归测试的哪些错误。</p>
+
+<p>多个错误应各自有自己的<code>@bug</code>行，以便尽可能容易地搜索回归测试。</p>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.2.3 <code>@code</code> - <em>已废弃。请勿使用。</em></h5>
+
+<p><strong>已废弃。请勿使用。改用Markdown反引号。</strong></p>
+
+<p>语法: <code>{@code ...}</code></p>
+
+<p>历史上，<code>`BatchItem`</code> 写成
+<code class="badcode">{@code BatchItem}</code>。</p>
+
+<pre><code class="language-js prettyprint good">/** 处理待处理的`BatchItem`实例。 */
+function processBatchItems() {}
+</code></pre>
+
+<p>指示JSDoc描述中的一个术语是代码，以便在生成的文档中正确格式化。</p>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.2.4 <code>@desc</code></h5>
+
+<p>语法: <code>@desc 消息描述</code></p>
+
+<pre><code class="language-js prettyprint good">/** @desc 通知用户其账户已创建。 */
+exports.MSG_ACCOUNT_CREATED = goog.getMsg(
+    '您的账户已成功创建。');
+</code></pre>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.2.5 <code>@link</code></h5>
+
+<p>语法: <code>{@link ...}</code></p>
+
+<p>此标签用于在生成的文档中生成交叉引用链接。</p>
+
+<pre><code class="language-js prettyprint good">/** 处理待处理的{@link BatchItem}实例。 */
+function processBatchItems() {}
+</code></pre>
+
+<p><strong>历史说明：</strong> @link标签也曾用于在生成的文档中创建外部链接。对于外部链接，始终使用Markdown的链接语法：</p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 此类实现了有用的[原生Event接口](https://dom.spec.whatwg.org/#event)子集。
+ */
+class ApplicationEvent {}
+</code></pre>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.2.6 <code>@see</code></h5>
+
+<p>语法: <code>@see Link</code></p>
+
+<pre><code class="language-js prettyprint good">/**
+ * 添加单个项目，鲁莽地。
+ * @see #addSafely
+ * @see goog.Collect
+ * @see goog.RecklessAdder#add
+ */
+</code></pre>
+
+<p>引用到另一个类函数或方法的查找。</p>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.2.7 <code>@supported</code></h5>
+
+<p>语法: <code>@supported 描述</code></p>
+
+<pre><code class="language-js prettyprint good">/**
+ * @fileoverview 事件管理器
+ * 为浏览器的事件系统提供了一个抽象接口。
+ * @supported IE10+, Chrome, Safari
+ */
+</code></pre>
+
+<p>在fileoverview中使用，以指示文件支持哪些浏览器。</p>
+
+</section>
+
+<p>您还可能在第三方代码中看到其他类型的JSDoc注解。这些注解出现在<a href="http://code.google.com/p/jsdoc-toolkit/wiki/TagReference">JSDoc Toolkit标签参考</a>中，但不被视为有效的Google风格的一部分。</p>
+
+<h4 id="appendices-framework-specific-annotations">9.1.3 特定框架的注解</h4>
+
+<p>以下注解特定于某个特定框架。</p>
+
+<section class="zippy">
+
+<h5>9.1.3.1 <code>@ngInject</code> 用于Angular 1</h5>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.3.2 <code>@polymerBehavior</code> 用于Polymer</h5>
+
+<p><a href="https://github.com/google/closure-compiler/wiki/Polymer-Pass">https://github.com/google/closure-compiler/wiki/Polymer-Pass</a>
+</p>
+
+</section>
+
+<section class="zippy">
+
+</section>
+
+<h4 id="appendices-notes-about-standard-closure-compiler-annotations">9.1.4 关于标准Closure编译器注解的说明</h4>
+
+<p>以下标签曾经是标准的，但现在已被废弃。</p>
+
+<section class="zippy">
+
+<h5>9.1.4.1 <code>@expose</code> - <em>已废弃。请勿使用。</em></h5>
+
+<p><strong>已废弃。请勿使用。改用<code>@export</code>和/或<code>@nocollapse</code>。</strong></p>
+
+</section>
+
+<section class="zippy">
+
+<h5>9.1.4.2 <code>@inheritDoc</code> - <em>已废弃。请勿使用。</em></h5>
+
+<p><strong>已废弃。请勿使用。改用<code>@override</code>。</strong></p>
+
+</section>
+<h3 id="appendices-commonly-misunderstood-style-rules">9.2 常被误解的风格规则</h3>
+
+<p>以下是关于Google JavaScript风格的一些鲜为人知或常被误解的事实。（以下是真实的陈述；这不是一个“神话”列表。）</p>
+
+<ul>
+<li>源文件中不需要版权声明或<code>@author</code>署名。（也不明确推荐使用这些。）</li>
+<li>关于如何排序类成员没有“硬性规定”（<a href="#features-classes">??</a>）。</li>
+<li>空块通常可以简洁地表示为<code>{}</code>，详见（<a href="#formatting-empty-blocks">??</a>）。</li>
+<li>换行的首要指令是：优先在更高的语法级别上断行（<a href="#formatting-where-to-break">??</a>）。</li>
+<li>在字符串字面量、注释和JSDoc中允许使用非ASCII字符，实际上，当它们比等效的Unicode转义更易于阅读时，推荐使用（<a href="#non-ascii-characters">??</a>）。</li>
+</ul>
+
+<h3 id="appendices-style-related-tools">9.3 与风格相关的工具</h3>
+
+<p>以下工具存在以支持Google风格的各个方面。</p>
+
+<h4 id="appendices-tools-closure-compiler">9.3.1 Closure编译器</h4>
+
+<p>该程序执行类型检查和其他检查、优化和其他转换（例如将代码降级到ECMAScript 5）。</p>
+
+<h4 id="appendices-clang-format">9.3.2 <code>clang-format</code></h4>
+
+<p>该程序将JavaScript源代码重新格式化为Google风格，并且还遵循许多非必需但经常增强可读性的格式化实践。<code>clang-format</code>生成的输出符合风格指南。
+</p>
+
+<p><code>clang-format</code>不是必需的。作者可以更改其输出，审阅者可以要求这样的更改；争议通过通常的方式解决。然而，子树可以选择在本地选择执行此类强制措施。</p>
+
+<h4 id="appendices-closure-compiler-linter">9.3.3 Closure编译器Linter</h4>
+
+<p>该程序检查各种错误步骤和反模式。</p>
+
+<h4 id="appendices-conformance-framework">9.3.4 一致性框架</h4>
+
+<p>JS一致性框架是Closure编译器的一部分工具，它为开发者提供了一种简单的方法来指定一组额外的检查，这些检查将在标准检查之上运行在他们的代码库上。例如，一致性检查可以禁止访问某个属性，或调用某个函数，或缺少类型信息（未知）。</p>
+
+<p>这些规则通常用于强制执行关键限制（例如定义全局变量，这可能会破坏代码库）和安全模式（例如使用<code>eval</code>或分配给<code>innerHTML</code>），或更宽松地提高代码质量。</p>
+
+<p>有关更多信息，请参阅<a href="https://github.com/google/closure-compiler/wiki/JS-Conformance-Framework">JS一致性框架</a>的官方文档。</p>
+<h3 id="appendices-legacy-exceptions">9.4 旧平台的例外情况</h3>
+
+<h4 id="appendices-legacy-exceptions-overview">9.4.1 概述</h4>
+
+<p>本节描述了当代码作者无法使用现代ECMAScript语法时应遵循的例外和附加规则。当无法使用现代ECMAScript语法时，需要对推荐的样式进行例外处理，这里进行了概述：</p>
+
+<ul>
+<li>允许使用<code>var</code>声明</li>
+<li>允许使用<code>arguments</code></li>
+<li>允许使用没有默认值的可选参数</li>
+</ul>
+
+<h4 id="appendices-legacy-exceptions-var">9.4.2 使用<code>var</code></h4>
+
+<h5 id="appendices-legacy-exceptions-var-scope">9.4.2.1 <code>var</code>声明不是块作用域</h5>
+
+<p><code>var</code>声明作用域为最接近的封闭函数、脚本或模块的开始，这可能导致意外的行为，特别是当函数闭包引用循环内的<code>var</code>声明时。以下代码给出了一个示例：</p>
+
+<pre><code class="language-js prettyprint bad">for (var i = 0; i &lt; 3; ++i) {
+  var iteration = i;
+  setTimeout(function() { console.log(iteration); }, i*1000);
+}
+
+// 输出 2, 2, 2 -- 而不是 0, 1, 2
+// 因为`iteration`是函数作用域，而不是循环内的局部变量。
+
+</code></pre>
+
+<h5 id="appendices-legacy-exceptions-var-declare">9.4.2.2 尽可能靠近首次使用处声明变量</h5>
+
+<p>尽管<code>var</code>声明作用域为封闭函数的开始，但为了可读性，<code>var</code>声明应尽可能靠近其首次使用处。然而，如果该变量在块外被引用，则不要将<code>var</code>声明放在块内。例如：</p>
+
+<pre><code class="language-js prettyprint good">function sillyFunction() {
+  var count = 0;
+  for (var x in y) {
+    // "count"可以在这里声明，但不要这样做。
+    count++;
+  }
+  console.log(count + ' items in y');
+}
+</code></pre>
+
+<h5 id="appendices-legacy-exceptions-var-const">9.4.2.3 对常量变量使用@const</h5>
+
+<p>对于全局声明，如果可以使用<code>const</code>关键字，则应使用<code>@const</code>注释<code>var</code>声明（对于局部变量这是可选的）。</p>
+
+<h4 id="appendices-legacy-exceptions-function">9.4.3 不要使用块作用域函数声明</h4>
+
+<p>不要这样做：</p>
+
+<pre><code class="language-js prettyprint bad">if (x) {
+  function foo() {}
+}
+</code></pre>
+
+<p>虽然大多数在ECMAScript 6之前实现的JavaScript虚拟机支持块内的函数声明，但这并未标准化。实现之间以及与现在标准的ECMAScript块作用域函数声明的行为不一致。ECMAScript 5标准及之前版本仅允许在脚本或函数的根语句列表中进行函数声明，并且在严格模式下明确禁止在块作用域中使用它们。</p>
+
+<p>为了获得一致的行为，应使用初始化为函数表达式的<code>var</code>来在块内定义函数：</p>
+
+<pre><code class="language-js prettyprint good">if (x) {
+  var foo = function() {};
+}
+</code></pre>
+
+<h4 id="appendices-legacy-exceptions-goog-provide">9.4.4 使用<code>goog.provide</code>/<code>goog.require</code>进行依赖管理</h4>
+
+<h5 id="appendices-legacy-exceptions-goog-provide-summary">9.4.4.1 概述</h5>
+
+<p><strong>警告：<code>goog.provide</code>依赖管理已被废弃。</strong> 所有新文件，即使在使用<code>goog.provide</code>的旧文件的项目中，也应使用<a href="#source-file-structure"><code>goog.module</code></a>。以下规则仅适用于现有的<code>goog.provide</code>文件。</p>
+
+<ul>
+<li>将所有<code>goog.provide</code>放在首位，<code>goog.require</code>放在第二位。用空行将提供和要求分隔开。</li>
+<li>按字母顺序排序条目（先大写字母）。</li>
+<li>不要换行<code>goog.provide</code>和<code>goog.require</code>语句。必要时超过80列。</li>
+<li>只提供顶级符号。</li>
+</ul>
+
+<p><code>goog.provide</code>语句应集中在一起并放在首位。所有<code>goog.require</code>语句应跟随其后。两者之间应以空行分隔。</p>
+
+<p>类似于其他语言中的导入语句，<code>goog.provide</code>和<code>goog.require</code>语句应写在一行内，即使它们超过了80列的行长度限制。</p>
+
+<p>这些行应按字母顺序排序，大写字母优先：</p>
+
+<pre><code class="language-js prettyprint good">goog.provide('namespace.MyClass');
+goog.provide('namespace.helperFoo');
+
+goog.require('an.extremelyLongNamespace.thatSomeoneThought.wouldBeNice.andNowItIsLonger.Than80Columns');
+goog.require('goog.dom');
+goog.require('goog.dom.TagName');
+goog.require('goog.dom.classes');
+goog.require('goog.dominoes');
+
+</code></pre>
+
+<p>类上定义的所有成员应在同一文件中。仅应在包含同一类上定义的多个成员（例如枚举、内部类等）的文件中提供顶级类。</p>
+
+<p>这样做：</p>
+
+<pre><code class="language-js prettyprint good">goog.provide('namespace.MyClass');
+</code></pre>
+
+<p>而不是这样做：</p>
+
+<pre><code class="language-js prettyprint bad">goog.provide('namespace.MyClass');
+goog.provide('namespace.MyClass.CONSTANT');
+goog.provide('namespace.MyClass.Enum');
+goog.provide('namespace.MyClass.InnerClass');
+goog.provide('namespace.MyClass.TypeDef');
+goog.provide('namespace.MyClass.staticMethod');
+</code></pre>
+
+<p>命名空间上的成员也可以提供：</p>
+
+<pre><code class="language-js prettyprint good">goog.provide('foo.bar');
+goog.provide('foo.bar.CONSTANT');
+goog.provide('foo.bar.method');
+</code></pre>
+
+<h5 id="appendices-legacy-exceptions-goog-scope">9.4.4.2 使用<code>goog.scope</code>进行别名</h5>
+
+<p><strong>警告：<code>goog.scope</code>已被废弃。</strong> 即使在有现有<code>goog.scope</code>用法的项目中，新文件也不应使用<code>goog.scope</code>。</p>
+<p><code>goog.scope</code> 可用于缩短使用 <code>goog.provide</code>/<code>goog.require</code> 依赖管理的代码中对命名空间符号的引用。</p>
+
+<p>每个文件中只能添加一个 <code>goog.scope</code> 调用。始终将其放置在全局作用域中。</p>
+
+<p>打开的 <code>goog.scope(function() {</code> 调用之前必须恰好有一行空行，并且跟随在任何 <code>goog.provide</code> 语句、<code>goog.require</code> 语句或顶级注释之后。该调用必须在文件的最后一行关闭。在作用域的关闭语句后附加 <code>// goog.scope</code>。用两个空格将注释与分号分隔开。</p>
+
+<p>类似于 C++ 命名空间，在 <code>goog.scope</code> 声明下不要缩进。相反，从第 0 列继续。</p>
+
+<p>只为不会重新分配给其他对象的名称创建别名（例如，大多数构造函数、枚举和命名空间）。不要这样做（有关如何为构造函数创建别名的方法，请参见下文）：</p>
+
+<pre><code class="language-js prettyprint bad">goog.scope(function() {
+var Button = goog.ui.Button;
+
+Button = function() { ... };
+...
+</code></pre>
+
+<p>名称必须与它们所别名的全局的最后一个属性相同。</p>
+
+<pre><code class="language-js prettyprint good">goog.provide('my.module.SomeType');
+
+goog.require('goog.dom');
+goog.require('goog.ui.Button');
+
+goog.scope(function() {
+var Button = goog.ui.Button;
+var dom = goog.dom;
+
+// 在构造函数声明后为新类型创建别名。
+my.module.SomeType = function() { ... };
+var SomeType = my.module.SomeType;
+
+// 如常在原型上声明方法：
+SomeType.prototype.findButton = function() {
+  // 如上所述的 Button 别名。
+  this.button = new Button(dom.getElement('my-button'));
+};
+...
+});  // goog.scope
+</code></pre>
+
+<h5 id="appendices-legacy-exceptions-forward-declare">9.4.4.3 <code>goog.forwardDeclare</code></h5>
+
+<p>优先使用 <code>goog.requireType</code> 而不是 <code>goog.forwardDeclare</code> 来打破同一库中文件之间的循环依赖。与 <code>goog.require</code> 不同，<code>goog.requireType</code> 语句允许在命名空间定义之前导入它。</p>
+
+<p><code>goog.forwardDeclare</code> 语句必须遵循与 <code>goog.require</code> 和 <code>goog.requireType</code> 相同的样式规则。<code>goog.forwardDeclare</code>、<code>goog.require</code> 和 <code>goog.requireType</code> 语句的整个块按字母顺序排序。</p>
+
+<p><code>goog.forwardDeclare</code> 用于旧代码中，以打破跨越<em>库边界</em>的循环引用。然而，这种模式在构建工具中支持不佳，不应使用。代码应组织起来以避免跨库的循环依赖（通过拆分/合并库）。</p>
+
+<h5 id="appendices-legacy-exceptions-module-get">9.4.4.4 <code>goog.module.get(name)</code></h5>
+
+<p>如果一个 <code>goog.provide</code> 文件依赖于一个 <code>goog.module</code> 文件，<code>goog.provide</code> 文件通常无法通过全局名称引用模块的导出。相反，除了 <code>goog.require()</code> 模块外，<code>goog.provide</code> 文件还必须通过调用 <code>goog.module.get('module.name')</code> 来获取模块的导出对象。</p>
+
+<p>注意：仅调用 <code>goog.module.get('module.name')</code> 不会在构建时创建您的代码对模块的依赖。需要 <code>goog.require</code> 来建立依赖关系。</p>
+
+<h5 id="appendices-legacy-exceptions-declareLegacyNamespace">9.4.4.5 <code>goog.module.declareLegacyNamespace()</code></h5>
+
+<p><strong>警告：<code>goog.module.declareLegacyNamespace</code> 仅用于过渡使用。</strong></p>
+
+<p><code>goog.module.declareLegacyNamespace</code> 仅在将 JavaScript 文件及其消费者从 <code>goog.provide</code> 迁移到 <code>goog.module</code> 时使用。更新您的 <a href="#source-file-structure"><code>goog.module</code></a> 的消费者以使用 <code>goog.module</code>。尽可能删除对 <code>goog.module.declareLegacyNamespace</code> 的调用。</p>
+
+<p>如果您无法很快将旧命名空间的消费者从 <code>goog.provide</code> 更新到 <code>goog.module</code>，请将文件内容包装在对 <code>goog.scope</code> 的调用中，使用 <code>goog.module.get</code> 导入旧命名空间——然后在您的 <code>goog.module</code> 中删除对 <code>goog.module.declareLegacyNamespace</code> 的调用。</p>
+
+<p>在 <code>goog.module(name)</code> 内调用 <code>goog.module.declareLegacyNamespace()</code> 将像 <code>goog.provide()</code> 调用一样声明模块的命名空间为全局名称。这允许非 <code>goog.module</code> 命名空间访问模块的导出，而无需调用 <code>goog.module.get(name)</code>。</p>
+
+</div>
+</body>
+</html>

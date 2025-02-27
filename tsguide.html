@@ -1,0 +1,3375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Google TypeScript 风格指南</title>
+<link rel="stylesheet" href="javaguide.css">
+<script src="include/styleguide.js"></script>
+<link rel="shortcut icon" href="/styleguide/favicon.ico">
+<script src="include/jsguide.js"></script>
+</head>
+<body onload="initStyleGuide();">
+<div id="content">
+<h1>Google TypeScript 风格指南</h1>
+
+
+<section>
+
+<p>本指南基于内部的 Google TypeScript 风格指南，但已略作调整以删除 Google 内部部分。Google 的内部环境对 TypeScript 的约束与您在 Google 外部可能遇到的不同。这里的建议特别适用于那些打算将代码导入 Google 的作者，但在您的外部环境中可能不适用。</p>
+
+<p>此版本没有自动部署过程，因为它是由志愿者按需推送的。</p>
+
+</section> 
+
+<h2 id="introduction" class="numbered">简介</h2>
+
+ 
+
+<h3 id="terminology-notes" class="numbered">术语说明</h3>
+
+<p>本风格指南在使用短语 <em>必须</em>、<em>禁止</em>、<em>应当</em>、<em>不应当</em> 和 <em>可以</em> 时，使用 <a href="https://tools.ietf.org/html/rfc2119">RFC 2119</a> 的术语。术语 <em>偏好</em> 和 <em>避免</em> 分别对应于 <em>应当</em> 和 <em>不应当</em>。命令式和陈述式语句是规定性的，对应于 <em>必须</em>。</p>
+
+<h3 id="guide-notes" class="numbered">指南说明</h3>
+
+<p>所有给出的示例都是 <strong>非规范性</strong> 的，仅用于说明风格指南的规范语言。也就是说，虽然示例符合 Google 风格，但它们可能不是表示代码的唯一风格化方式。示例中所做的可选格式选择不得作为规则强制执行。</p>
+
+ 
+
+<h2 id="source-file-basics" class="numbered">源文件基础</h2>
+
+ 
+
+ 
+
+<p><a id="file-encoding"></a></p>
+
+<h3 id="file-encoding-utf-8" class="numbered">文件编码：UTF-8</h3>
+
+<p>源文件使用 <strong>UTF-8</strong> 编码。</p>
+
+<p><a id="special-characters"></a></p>
+
+<h4 id="whitespace-characters" class="numbered">空白字符</h4>
+
+<p>除了行终止符序列外，ASCII 水平空格字符 (0x20) 是源文件中唯一出现的空白字符。这意味着字符串字面值中的所有其他空白字符都已被转义。</p>
+
+<h4 id="special-escape-sequences" class="numbered">特殊转义序列</h4>
+
+<p>对于任何具有特殊转义序列的字符（<code>\'</code>, <code>\"</code>, <code>\\</code>, <code>\b</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\v</code>），使用该序列而不是相应的数字转义（例如 <code>\x0a</code>, <code>\u000a</code>, 或 <code>\u{a}</code>）。从不使用旧的八进制转义。</p>
+
+<h4 id="non-ascii-characters" class="numbered">非 ASCII 字符</h4>
+
+<p>对于剩余的非 ASCII 字符，使用实际的 Unicode 字符（例如 <code>∞</code>）。对于不可打印字符，可以使用等效的十六进制或 Unicode 转义（例如 <code>\u221e</code>），并附带解释性注释。</p>
+
+<pre><code class="language-ts good">// 即使没有注释也非常清晰。
+const units = 'μs';
+
+// 对不可打印字符使用转义。
+const output = '\ufeff' + content;  // 字节顺序标记
+</code></pre>
+
+<pre><code class="language-ts bad">// 难以阅读且容易出错，即使有注释。
+const units = '\u03bcs'; // 希腊字母 mu, 's'
+
+// 读者不知道这是什么。
+const output = '\ufeff' + content;
+</code></pre>
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+<p><a id="modules"></a>
+<a id="source-organization"></a></p>
+
+<h2 id="source-file-structure" class="numbered">源文件结构</h2>
+
+<p>文件由以下内容组成，<strong>按顺序</strong>：</p>
+
+<ol>
+<li>版权信息（如果存在）</li>
+<li>带有 <code>@fileoverview</code> 的 JSDoc（如果存在）</li>
+<li>导入（如果存在）</li>
+<li>文件的实现</li>
+</ol>
+
+<p>每个存在的部分之间用 <strong>恰好一行空白</strong> 分隔。</p>
+
+ 
+
+<h3 id="file-copyright" class="numbered">版权信息</h3>
+
+ 
+
+<p>如果文件中需要许可或版权信息，请在文件顶部添加一个 JSDoc。</p>
+
+<p><a id="file-fileoverview"></a>
+<a id="jsdoc-top-file-level-comments"></a></p>
+
+<h3 id="fileoverview" class="numbered"><code>@fileoverview</code> JSDoc</h3>
+
+<p>文件可能有一个顶级的 <code>@fileoverview</code> JSDoc。如果存在，它可以提供文件内容的描述、其用途或关于其依赖的信息。换行不缩进。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-ts good">/**
+ * @fileoverview 文件描述。Lorem ipsum dolor sit amet, consectetur
+ * adipiscing elit, sed do eiusmod tempor incididunt.
+ */
+</code></pre>
+
+
+<h3 id="imports" class="numbered">导入</h3>
+
+<p>在ES6和TypeScript中，有四种导入语句的变体：</p>
+
+ 
+
+<section>
+
+<table>
+<thead>
+<tr>
+<th>导入类型</th>
+<th>示例</th>
+<th>用途</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>module[<sup>module_import]</sup>
+</td>
+<td><code>import * as foo from
+'...';</code></td>
+<td>TypeScript导入
+</td>
+</tr>
+<tr>
+<td>named[<sup>destructuring_import]</sup>
+</td>
+<td><code>import {SomeThing}
+from '...';</code></td>
+<td>TypeScript导入
+</td>
+</tr>
+<tr>
+<td>default
+
+</td>
+<td><code>import SomeThing
+from '...';</code>
+</td>
+<td>仅用于需要它们的其他外部代码</td>
+</tr>
+<tr>
+<td>side-effect
+
+
+
+</td>
+<td><code>import '...';</code>
+
+
+
+</td>
+<td>仅用于导入库以实现其加载时的副作用（如自定义元素）</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-ts good">// 良好：根据需要在两个选项之间选择（见下文）。
+import * as ng from '@angular/core';
+import {Foo} from './foo';
+
+// 仅在需要时使用：默认导入。
+import Button from 'Button';
+
+// 有时需要导入库以实现其副作用：
+import 'jasmine';
+import '@polymer/paper-button';
+</code></pre>
+
+</section> 
+
+<h4 id="import-paths" class="numbered">导入路径</h4>
+
+<p>TypeScript代码<em>必须</em>使用路径来导入其他TypeScript代码。路径<em>可以</em>是相对的，即以<code>.</code>或<code>..</code>开头，或者以基础目录为根，例如<code>root/path/to/file</code>。</p>
+
+<p>代码<em>应该</em>使用相对导入（<code>./foo</code>）而不是绝对导入<code>path/to/foo</code>，当引用同一（逻辑）项目内的文件时，这样可以移动项目而无需更改这些导入。</p>
+
+<p>考虑限制父级步骤的数量（<code>../../../</code>），因为这些可能会使模块和路径结构难以理解。</p>
+
+<pre><code class="language-ts good">import {Symbol1} from 'path/from/root';
+import {Symbol2} from '../parent/file';
+import {Symbol3} from './sibling';
+</code></pre>
+
+ 
+
+<p><a id="module-versus-destructuring-import"></a></p>
+
+<h4 id="namespace-versus-named-imports" class="numbered">命名空间与命名导入</h4>
+
+<p>可以使用命名空间和命名导入两种方式。</p>
+
+<p>对于在文件中频繁使用的符号或具有清晰名称的符号，优先使用命名导入，例如Jasmine的<code>describe</code>和<code>it</code>。根据需要，可以使用<code>as</code>为命名导入设置别名以获得更清晰的名称。</p>
+
+<p>当从大型API中使用许多不同的符号时，优先使用命名空间导入。尽管命名空间导入使用<code>*</code>字符，但它与其他语言中的“通配符”导入不可比。相反，命名空间导入为模块的所有导出提供了一个名称，模块的每个导出符号成为模块名称上的一个属性。命名空间导入有助于提高具有常见名称（如<code>Model</code>或<code>Controller</code>）的导出符号的可读性，而无需声明别名。</p>
+
+<pre><code class="language-ts bad">// 不好：导入语句过长且不必要地命名空间化名称。
+import {Item as TableviewItem, Header as TableviewHeader, Row as TableviewRow,
+  Model as TableviewModel, Renderer as TableviewRenderer} from './tableview';
+
+let item: TableviewItem|undefined;
+</code></pre>
+
+<pre><code class="language-ts good">// 更好：使用模块进行命名空间化。
+import * as tableview from './tableview';
+
+let item: tableview.Item|undefined;
+</code></pre>
+
+<pre><code class="language-ts bad">import * as testing from './testing';
+
+// 不好：模块名称没有提高可读性。
+testing.describe('foo', () =&gt; {
+  testing.it('bar', () =&gt; {
+    testing.expect(null).toBeNull();
+    testing.expect(undefined).toBeUndefined();
+  });
+});
+</code></pre>
+
+<pre><code class="language-ts good">// 更好：为这些常用函数提供本地名称。
+import {describe, it, expect} from './testing';
+
+describe('foo', () =&gt; {
+  it('bar', () =&gt; {
+    expect(null).toBeNull();
+    expect(undefined).toBeUndefined();
+  });
+});
+</code></pre>
+
+<h5 id="jspb-import-by-path" class="numbered">特殊情况：Apps JSPB protos</h5>
+
+<p>Apps JSPB protos必须使用命名导入，即使这会导致导入行变长。</p>
+
+<p>此规则的存在是为了帮助构建性能和死代码消除，因为<code>.proto</code>文件通常包含许多<code>message</code>，而这些<code>message</code>并非总是需要一起使用。通过利用解构导入，构建系统可以创建更细粒度的Apps JSPB消息依赖，同时保留基于路径的导入的易用性。</p>
+
+<pre><code class="language-ts good">// 良好：从proto文件中导入你需要的确切符号集。
+import {Foo, Bar} from './foo.proto';
+
+function copyFooBar(foo: Foo, bar: Bar) {...}
+</code></pre>
+
+ 
+
+<h4 id="renaming-imports" class="numbered">重命名导入</h4>
+
+<p>代码<em>应该</em>通过使用命名空间导入或重命名导出本身来解决名称冲突。代码<em>可以</em>在需要时重命名导入（<code>import {SomeThing as SomeOtherThing}</code>）。</p>
+
+<p>重命名可能有帮助的三个例子：</p>
+
+<ol>
+<li>如果需要避免与其他导入符号的冲突。</li>
+<li>如果导入的符号名称是生成的。</li>
+<li>如果导入的符号名称本身不清晰，重命名可以提高代码的清晰度。例如，使用RxJS时，将<code>from</code>函数重命名为<code>observableFrom</code>可能更易读。</li>
+</ol>
+<h3 id="exports" class="numbered">导出</h3>
+
+<p>在所有代码中使用命名导出：</p>
+
+<pre><code class="language-ts good">// 使用命名导出：
+export class Foo { ... }
+</code></pre>
+
+<p>不要使用默认导出。这样可以确保所有导入遵循统一的模式。</p>
+
+<pre><code class="language-ts bad">// 不要使用默认导出：
+export default class Foo { ... } // 错误！
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>默认导出没有规范名称，这使得集中维护变得困难，而对代码所有者的好处相对较小，包括可能降低可读性：</p>
+
+<pre><code class="language-ts bad">import Foo from './bar';  // 合法。
+import Bar from './bar';  // 同样合法。
+</code></pre>
+
+<p>命名导出有助于在导入语句尝试导入未声明的内容时报错。在 <code>foo.ts</code> 中：</p>
+
+<pre><code class="language-ts bad">const foo = 'blah';
+export default foo;
+</code></pre>
+
+<p>在 <code>bar.ts</code> 中：</p>
+
+<pre><code class="language-ts bad">import {fizz} from './foo';
+</code></pre>
+
+<p>结果是 <code>error TS2614: Module '"./foo"' has no exported member 'fizz'.</code> 而在 <code>bar.ts</code> 中：</p>
+
+<pre><code class="language-ts bad">import fizz from './foo';
+</code></pre>
+
+<p>结果是 <code>fizz === foo</code>，这可能是意料之外的，并且难以调试。</p>
+
+<p>此外，默认导出鼓励人们将所有内容放入一个大的对象中以便命名空间化：</p>
+
+<pre><code class="language-ts bad">export default class Foo {
+  static SOME_CONSTANT = ...
+  static someHelpfulFunction() { ... }
+  ...
+}
+</code></pre>
+
+<p>使用上述模式，我们有文件范围，可以用作命名空间。我们还可能有一个不必要的第二个范围（类 <code>Foo</code>），它可以在其他文件中被模糊地用作类型和值。</p>
+
+<p>相反，优先使用文件范围进行命名空间化，以及命名导出：</p>
+
+<pre><code class="language-ts good">export const SOME_CONSTANT = ...
+export function someHelpfulFunction()
+export class Foo {
+  // 这里只有类相关内容
+}
+</code></pre>
+
+</section> 
+
+<h4 id="export-visibility" class="numbered">导出可见性</h4>
+
+<p>TypeScript 不支持限制导出符号的可见性。仅导出模块外部使用的符号。通常应尽量减少模块的导出 API 表面积。</p>
+
+ 
+
+<h4 id="mutable-exports" class="numbered">可变导出</h4>
+
+ 
+
+<p>无论技术支持如何，可变导出可能会导致难以理解和调试的代码，特别是在多个模块之间重新导出时。一种概括此风格点的说法是 <code>export let</code> 不被允许。</p>
+
+<section>
+
+<pre><code class="language-ts bad">export let foo = 3;
+// 在纯 ES6 中，foo 是可变的，导入者将在第二次后观察到值的变化。
+// 在 TS 中，如果 foo 被第二个文件重新导出，导入者将不会看到值的变化。
+window.setTimeout(() =&gt; {
+  foo = 4;
+}, 1000 /* ms */);
+</code></pre>
+
+</section> 
+
+<p>如果需要支持外部可访问且可变的绑定，<em>应该</em>使用显式的 getter 函数来代替。</p>
+
+<pre><code class="language-ts good">let foo = 3;
+window.setTimeout(() =&gt; {
+  foo = 4;
+}, 1000 /* ms */);
+// 使用显式的 getter 来访问可变导出。
+export function getFoo() { return foo; };
+</code></pre>
+
+<p>对于常见的条件导出两种值之一的模式，首先进行条件检查，然后进行导出。确保在模块主体执行后所有导出都是最终的。</p>
+
+<pre><code class="language-ts good">function pickApi() {
+  if (useOtherApi()) return OtherApi;
+  return RegularApi;
+}
+export const SomeApi = pickApi();
+</code></pre>
+
+<p><a id="static-containers"></a></p>
+
+<h4 id="container-classes" class="numbered">容器类</h4>
+
+<p>不要为了命名空间而创建带有静态方法或属性的容器类。</p>
+
+<pre><code class="language-ts bad">export class Container {
+  static FOO = 1;
+  static bar() { return 1; }
+}
+</code></pre>
+
+<p>相反，导出单个常量和函数：</p>
+
+<pre><code class="language-ts good">export const FOO = 1;
+export function bar() { return 1; }
+</code></pre>
+<h3 id="import-export-type" class="numbered">导入和导出类型</h3>
+
+<h4 id="import-type" class="numbered">导入类型</h4>
+
+<p>当您仅将导入的符号用作类型时，可以使用 <code>import type {...}</code>。
+对于值，请使用常规导入：</p>
+
+<pre><code class="language-ts good">import type {Foo} from './foo';
+import {Bar} from './foo';
+
+import {type Foo, Bar} from './foo';
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>TypeScript 编译器会自动处理区分，并且不会为类型引用插入运行时加载。那么为什么要标注类型导入呢？</p>
+
+<p>TypeScript 编译器可以运行在两种模式下：</p>
+
+<ul>
+<li>在开发模式下，我们通常希望快速迭代。编译器会将代码转换为不包含完整类型信息的 JavaScript。这更快，但某些情况下需要 <code>import type</code>。</li>
+<li>在生产模式下，我们希望确保正确性。编译器会对所有内容进行类型检查，并确保正确使用 <code>import type</code>。</li>
+</ul>
+
+<p>注意：如果您需要强制为副作用进行运行时加载，请使用 <code>import '...';</code>。
+参见 </p>
+
+</section> 
+
+<h4 id="export-type" class="numbered">导出类型</h4>
+
+<p>在重新导出类型时，使用 <code>export type</code>，例如：</p>
+
+<pre><code class="language-ts good">export type {AnInterface} from './foo';
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p><code>export type</code> 在文件逐个编译时允许类型重新导出很有用。
+参见
+<a href="https://www.typescriptlang.org/tsconfig#exports-of-non-value-identifiers"><code>isolatedModules</code> 文档</a>。</p>
+
+<p><code>export type</code> 似乎也对避免为 API 导出值符号有用。然而，它并不能提供保证：下游代码可能仍然通过不同的路径导入 API。更好的方法是将 API 的类型和值使用分开，例如将符号分成 <code>UserService</code> 和 <code>AjaxUserService</code>。这种方法更不容易出错，并且更好地传达意图。</p>
+
+</section> 
+
+<p><a id="namespaces-vs-modules"></a></p>
+
+<h4 id="use-modules-not-namespaces" class="numbered">使用模块而不是命名空间</h4>
+
+<p>TypeScript 支持两种组织代码的方法：<em>命名空间</em>和<em>模块</em>，
+但命名空间是被禁止的。也就是说，您的代码<em>必须</em>使用 <code>import {foo} from 'bar';</code> 形式的导入和导出来引用其他文件中的代码</p>
+
+<p>您的代码<em>不得</em>使用 <code>namespace Foo { ... }</code> 结构。只有在需要与外部第三方代码接口时，<code>namespace</code> 才<em>可以</em>使用。
+要在语义上命名空间您的代码，请使用单独的文件。</p>
+
+ 
+
+<p>代码<em>不得</em>使用 <code>require</code>（如 <code>import x = require('...');</code>）进行导入。
+使用 ES6 模块语法。</p>
+
+<pre><code class="language-ts bad">// 错误：不要使用命名空间：
+namespace Rocket {
+  function launch() { ... }
+}
+
+// 错误：不要使用 &lt;reference&gt;
+/// &lt;reference path="..."/&gt;
+
+// 错误：不要使用 require()
+import x = require('mydep');
+</code></pre>
+
+ 
+
+<blockquote>
+<p>注意：TypeScript 的 <code>namespace</code> 以前被称为内部模块，并使用 <code>module</code> 关键字以 <code>module Foo { ... }</code> 形式。这也不要使用。
+始终使用 ES6 导入。</p>
+</blockquote>
+
+<p><a id="language-rules"></a></p>
+
+<h2 id="language-features" class="numbered">语言特性</h2>
+
+<p>本节划定了哪些特性可以使用或不可以使用，以及对其使用的任何额外约束。</p>
+
+<p>本风格指南中未讨论的语言特性<em>可以</em>使用，且对其使用没有建议。</p>
+
+<p><a id="features-local-variable-declarations"></a></p>
+
+<h3 id="local-variable-declarations" class="numbered">局部变量声明</h3>
+
+<p><a id="variables"></a>
+<a id="features-use-const-and-let"></a></p>
+
+<h4 id="use-const-and-let" class="numbered">使用 const 和 let</h4>
+
+<p>始终使用 <code>const</code> 或 <code>let</code> 声明变量。默认使用 <code>const</code>，除非变量需要重新赋值。永远不要使用 <code>var</code>。</p>
+
+<pre><code class="language-ts good">const foo = otherValue;  // 如果 "foo" 永远不变，则使用。
+let bar = someValue;     // 如果 "bar" 稍后会被重新赋值，则使用。
+</code></pre>
+
+<p><code>const</code> 和 <code>let</code> 是块作用域的，类似于大多数其他语言中的变量。
+JavaScript 中的 <code>var</code> 是函数作用域的，这可能导致难以理解的错误。不要使用它。</p>
+
+<pre><code class="language-ts bad">var foo = someValue;     // 不要使用 - var 作用域复杂且会导致错误。
+</code></pre>
+
+<p>变量<em>不得</em>在声明之前使用。</p>
+
+<p><a id="features-one-variable-per-declaration"></a></p>
+
+<h4 id="one-variable-per-declaration" class="numbered">每个声明一个变量</h4>
+
+<p>每个局部变量声明只声明一个变量：不使用像 <code class="badcode">let a = 1, b = 2;</code> 这样的声明。</p>
+
+<p><a id="features-array-literals"></a></p>
+<h3 id="array-literals" class="numbered">数组字面量</h3>
+
+<p><a id="features-arrays-ctor"></a></p>
+
+<h4 id="array-constructor" class="numbered">不要使用 <code>Array</code> 构造函数</h4>
+
+<p><em>不要</em> 使用带有或不带有 <code>new</code> 的 <code>Array()</code> 构造函数。它具有令人困惑且矛盾的用法：</p>
+
+<pre><code class="language-ts bad">const a = new Array(2); // [undefined, undefined]
+const b = new Array(2, 3); // [2, 3];
+</code></pre>
+
+<p>相反，始终使用括号表示法来初始化数组，或者使用 <code>from</code> 来初始化具有特定大小的 <code>Array</code>：</p>
+
+<pre><code class="language-ts good">const a = [2];
+const b = [2, 3];
+
+// 相当于 Array(2):
+const c = [];
+c.length = 2;
+
+// [0, 0, 0, 0, 0]
+Array.from&lt;number&gt;({length: 5}).fill(0);
+</code></pre>
+
+<p><a id="features-arrays-non-numeric-properties"></a></p>
+
+<h4 id="do-not-define-properties-on-arrays" class="numbered">不要在数组上定义属性</h4>
+
+<p>不要在数组上定义或使用非数字属性（除了 <code>length</code>）。请改用 <code>Map</code>（或 <code>Object</code>）。</p>
+
+<p><a id="features-arrays-spread-operator"></a></p>
+
+<h4 id="array-spread-syntax" class="numbered">使用展开语法</h4>
+
+<p>使用展开语法 <code>[...foo];</code> 是浅拷贝或连接可迭代对象的便捷简写方式。</p>
+
+<pre><code class="language-ts good">const foo = [
+  1,
+];
+
+const foo2 = [
+  ...foo,
+  6,
+  7,
+];
+
+const foo3 = [
+  5,
+  ...foo,
+];
+
+foo2[1] === 6;
+foo3[1] === 1;
+</code></pre>
+
+<p>在使用展开语法时，被展开的值<em>必须</em>与正在创建的内容相匹配。在创建数组时，仅展开可迭代对象。基本类型（包括 <code>null</code> 和 <code>undefined</code>）<em>不得</em>被展开。</p>
+
+<pre><code class="language-ts bad">const foo = [7];
+const bar = [5, ...(shouldUseFoo &amp;&amp; foo)]; // 可能为 undefined
+
+// 创建 {0: 'a', 1: 'b', 2: 'c'} 但没有 length
+const fooStrings = ['a', 'b', 'c'];
+const ids = {...fooStrings};
+</code></pre>
+
+<pre><code class="language-ts good">const foo = shouldUseFoo ? [7] : [];
+const bar = [5, ...foo];
+const fooStrings = ['a', 'b', 'c'];
+const ids = [...fooStrings, 'd', 'e'];
+</code></pre>
+
+<p><a id="features-arrays-destructuring"></a></p>
+
+<h4 id="array-destructuring" class="numbered">数组解构</h4>
+
+<p>数组字面量可以在赋值的左侧使用，以执行解构（例如，当从单个数组或可迭代对象中解包多个值时）。可以包含一个最终的“剩余”元素（在 <code>...</code> 和变量名之间没有空格）。如果元素未使用，则应省略它们。</p>
+
+<pre><code class="language-ts good">const [a, b, c, ...rest] = generateResults();
+let [, b,, d] = someArray;
+</code></pre>
+
+<p>解构也可用于函数参数。如果解构的数组参数是可选的，始终指定 <code>[]</code> 作为默认值，并在左侧提供默认值：</p>
+
+<pre><code class="language-ts good">function destructured([a = 4, b = 2] = []) { … }
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-ts bad">function badDestructuring([a, b] = [4, 2]) { … }
+</code></pre>
+
+<p>提示：对于将多个值打包或解包到函数的参数或返回值中，尽可能使用对象解构而不是数组解构，因为它允许命名各个元素并为每个元素指定不同的类型。</p>
+
+<p><a id="features-object-literals"></a></p>
+<h3 id="object-literals" class="numbered">对象字面量</h3>
+
+<p><a id="features-objects-ctor"></a></p>
+
+<h4 id="object-constructor" class="numbered">不要使用 <code>Object</code> 构造函数</h4>
+
+<p><code>Object</code> 构造函数是被禁止的。请使用对象字面量（<code>{}</code> 或 <code>{a: 0,
+b: 1, c: 2}</code>）代替。</p>
+
+<h4 id="iterating-objects" class="numbered">遍历对象</h4>
+
+<p>使用 <code>for (... in ...)</code> 遍历对象容易出错。它会包括原型链上的可枚举属性。</p>
+
+<p>不要使用未过滤的 <code>for (... in ...)</code> 语句：</p>
+
+<pre><code class="language-ts bad">for (const x in someObj) {
+  // x 可能来自某个父原型！
+}
+</code></pre>
+
+<p>要么使用 <code>if</code> 语句显式过滤值，要么使用 <code>for (... of
+Object.keys(...))</code>。</p>
+
+<pre><code class="language-ts good">for (const x in someObj) {
+  if (!someObj.hasOwnProperty(x)) continue;
+  // 现在 x 肯定是在 someObj 上定义的
+}
+for (const x of Object.keys(someObj)) { // 注意：使用 _of_！
+  // 现在 x 肯定是在 someObj 上定义的
+}
+for (const [key, value] of Object.entries(someObj)) { // 注意：使用 _of_！
+  // 现在 key 肯定是在 someObj 上定义的
+}
+</code></pre>
+
+<p><a id="using-the-spread-operator"></a></p>
+
+<h4 id="object-spread-syntax" class="numbered">使用展开语法</h4>
+
+<p>使用展开语法 <code>{...bar}</code> 是一种创建对象浅拷贝的便捷简写。在对象初始化中使用展开语法时，后面的值会替换相同键的早期值。</p>
+
+<pre><code class="language-ts good">const foo = {
+  num: 1,
+};
+
+const foo2 = {
+  ...foo,
+  num: 5,
+};
+
+const foo3 = {
+  num: 5,
+  ...foo,
+}
+
+foo2.num === 5;
+foo3.num === 1;
+
+</code></pre>
+
+<p>在使用展开语法时，被展开的值<em>必须</em>与正在创建的内容匹配。也就是说，在创建对象时，只能展开对象；数组和原始值（包括 <code>null</code> 和 <code>undefined</code>）<em>不得</em>展开。避免展开原型不是 Object 原型的对象（例如类定义、类实例、函数），因为行为不直观（只会浅拷贝可枚举的非原型属性）。</p>
+
+<pre><code class="language-ts bad">const foo = {num: 7};
+const bar = {num: 5, ...(shouldUseFoo &amp;&amp; foo)}; // 可能为 undefined
+
+// 创建 {0: 'a', 1: 'b', 2: 'c'} 但没有 length
+const fooStrings = ['a', 'b', 'c'];
+const ids = {...fooStrings};
+</code></pre>
+
+<pre><code class="language-ts good">const foo = shouldUseFoo ? {num: 7} : {};
+const bar = {num: 5, ...foo};
+</code></pre>
+
+<p><a id="features-objects-computed-property-names"></a></p>
+
+<h4 id="computed-property-names" class="numbered">计算属性名</h4>
+
+<p>计算属性名（例如 <code>{['key' + foo()]: 42}</code>）是被允许的，并且被视为字典风格（带引号）的键（即，不得与非带引号的键混合），除非计算属性是一个
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">symbol</a>
+（例如 <code>[Symbol.iterator]</code>）。</p>
+
+ 
+
+<p><a id="features-objects-destructuring"></a></p>
+
+<h4 id="object-destructuring" class="numbered">对象解构</h4>
+
+<p>对象解构模式可以在赋值的左侧使用，以执行解构并从单个对象中解包多个值。</p>
+
+<p>解构的对象也可以用作函数参数，但应尽可能简单：只使用一级未带引号的简写属性。参数解构中不允许使用更深层次的嵌套和计算属性。在解构参数的左侧指定任何默认值（<code>{str = 'some default'} = {}</code>，而不是
+<code class="badcode">{str} = {str: 'some default'}</code>），如果解构的对象本身是可选的，它必须默认为 <code>{}</code>。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-ts good">interface Options {
+  /** 执行某事的次数。 */
+  num?: number;
+
+  /** 要处理的字符串。 */
+  str?: string;
+}
+
+function destructured({num, str = 'default'}: Options = {}) {}
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-ts bad">function nestedTooDeeply({x: {num, str}}: {x: Options}) {}
+function nontrivialDefault({num, str}: Options = {num: 42, str: 'default'}) {}
+</code></pre>
+
+ 
+
+ 
+
+<p><a id="formatting-class-literals"></a>
+<a id="features-classes"></a></p>
+<h3 id="classes" class="numbered">类</h3>
+
+<h4 id="class-declarations" class="numbered">类声明</h4>
+
+<p>类声明<em>不得</em>以分号结束：</p>
+
+<pre><code class="language-ts good">class Foo {
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Foo {
+}; // 不必要的分号
+</code></pre>
+
+<p>相反，包含类表达式的语句<em>必须</em>以分号结束：</p>
+
+<pre><code class="language-ts good">export const Baz = class extends Bar {
+  method(): number {
+    return this.x;
+  }
+}; // 这里需要分号，因为这是一个语句，不是声明
+</code></pre>
+
+<pre><code class="language-ts bad">exports const Baz = class extends Bar {
+  method(): number {
+    return this.x;
+  }
+}
+</code></pre>
+
+<p>类声明大括号与其他类内容之间是否有空行隔开，既不鼓励也不反对：</p>
+
+<pre><code class="language-ts good">// 大括号周围没有空格 - 可以。
+class Baz {
+  method(): number {
+    return this.x;
+  }
+}
+
+// 大括号周围各有一个空格 - 也可以。
+class Foo {
+
+  method(): number {
+    return this.x;
+  }
+
+}
+</code></pre>
+
+<h4 id="class-method-declarations" class="numbered">类方法声明</h4>
+
+<p>类方法声明<em>不得</em>使用分号来分隔各个方法声明：</p>
+
+<pre><code class="language-ts good">class Foo {
+  doThing() {
+    console.log("A");
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Foo {
+  doThing() {
+    console.log("A");
+  }; // &lt;-- 不必要
+}
+</code></pre>
+
+<p>方法声明应与周围代码用单个空行隔开：</p>
+
+<pre><code class="language-ts good">class Foo {
+  doThing() {
+    console.log("A");
+  }
+
+  getOtherThing(): number {
+    return 4;
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Foo {
+  doThing() {
+    console.log("A");
+  }
+  getOtherThing(): number {
+    return 4;
+  }
+}
+</code></pre>
+
+<p><a id="features-classes-overriding-tostring"></a></p>
+
+<h5 id="overriding-tostring" class="numbered">重写 toString</h5>
+
+<p><code>toString</code> 方法可以被重写，但必须始终成功，并且不得有可见的副作用。</p>
+
+<p>提示：特别要注意，不要从 toString 中调用其他方法，因为异常情况可能导致无限循环。</p>
+
+<p><a id="features-classes-static-methods"></a></p>
+
+<h4 id="static-methods" class="numbered">静态方法</h4>
+
+<h5 id="avoid-private-static-methods" class="numbered">避免使用私有静态方法</h5>
+
+<p>在不影响可读性的情况下，优先使用模块局部函数而不是私有静态方法。</p>
+
+<h5 id="avoid-static-method-dynamic-dispatch" class="numbered">不要依赖动态调度</h5>
+
+<p>代码<em>不应</em>依赖静态方法的动态调度。静态方法<em>应</em>仅在定义它的基类本身上调用。静态方法<em>不应</em>在包含动态实例的变量上调用，该变量可能是构造函数或子类构造函数（如果这样做，<em>必须</em>使用 <code>@nocollapse</code> 定义），并且<em>不得</em>直接在未定义该方法的子类上调用。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-ts bad">// 下面的示例的上下文（这个类本身是可以的）
+class Base {
+  /** @nocollapse */ static foo() {}
+}
+class Sub extends Base {}
+
+// 不鼓励：不要动态调用静态方法
+function callFoo(cls: typeof Base) {
+  cls.foo();
+}
+
+// 不允许：不要在未定义该方法的子类上调用静态方法
+Sub.foo();
+
+// 不允许：不要在静态方法中访问 this。
+class MyClass {
+  static foo() {
+    return this.staticField;
+  }
+}
+MyClass.staticField = 1;
+</code></pre>
+
+<h5 id="static-this" class="numbered">避免静态的 <code>this</code> 引用</h5>
+
+<p>代码<em>不得</em>在静态上下文中使用 <code>this</code>。</p>
+
+<p>JavaScript 允许通过 <code>this</code> 访问静态字段。与其他语言不同，静态字段也是可继承的。</p>
+
+<pre><code class="bad">class ShoeStore {
+  static storage: Storage = ...;
+
+  static isAvailable(s: Shoe) {
+    // 不好：不要在静态方法中使用 `this`。
+    return this.storage.has(s.id);
+  }
+}
+
+class EmptyShoeStore extends ShoeStore {
+  static storage: Storage = EMPTY_STORE;  // 覆盖 ShoeStore 中的 storage
+}
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>这种代码通常令人惊讶：作者可能不期望可以通过 this 指针访问静态字段，并且可能会惊讶地发现它们可以被覆盖 - 这个功能并不常用。</p>
+
+<p>这种代码还鼓励了一种反模式，即拥有大量静态状态，这会导致测试性问题。</p>
+
+</section> 
+
+<p><a id="disallowed-features-omitting-parents-with-new"></a>
+<a id="features-classes-constructors"></a></p>
+
+<h4 id="constructors" class="numbered">构造函数</h4>
+
+<p>构造函数调用<em>必须</em>使用括号，即使没有传递参数：</p>
+
+<pre><code class="language-ts bad">const x = new Foo;
+</code></pre>
+
+<pre><code class="language-ts good">const x = new Foo();
+</code></pre>
+
+<p>省略括号可能会导致细微的错误。这两行是不等价的：</p>
+
+<pre><code class="language-js good">new Foo().Bar();
+new Foo.Bar();
+</code></pre>
+
+<p>如果没有指定构造函数，ES2015 会提供一个默认的类构造函数。然而，具有参数属性、可见性修饰符或参数装饰器的构造函数，即使构造函数体为空，<em>也不应</em>被省略。</p>
+
+<pre><code class="language-ts bad">class UnnecessaryConstructor {
+  constructor() {}
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class UnnecessaryConstructorOverride extends Base {
+    constructor(value: number) {
+      super(value);
+    }
+}
+</code></pre>
+<pre><code class="language-ts good">class DefaultConstructor {
+}
+
+class ParameterProperties {
+  constructor(private myService) {}
+}
+
+class ParameterDecorators {
+  constructor(@SideEffectDecorator myService) {}
+}
+
+class NoInstantiation {
+  private constructor() {}
+}
+</code></pre>
+
+<p>构造函数应与其上方和下方的代码用一个空行隔开：</p>
+
+<pre><code class="language-ts good">class Foo {
+  myField = 10;
+
+  constructor(private readonly ctorParam) {}
+
+  doThing() {
+    console.log(ctorParam.getThing() + myField);
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Foo {
+  myField = 10;
+  constructor(private readonly ctorParam) {}
+  doThing() {
+    console.log(ctorParam.getThing() + myField);
+  }
+}
+</code></pre>
+
+<h4 id="class-members" class="numbered">类成员</h4>
+
+<h5 id="private-fields" class="numbered">不使用私有字段</h5>
+
+<p>不要使用私有字段（也称为私有标识符）：</p>
+
+<pre><code class="language-ts bad">class Clazz {
+  #ident = 1;
+}
+</code></pre>
+
+<p>相反，使用TypeScript的可见性注解：</p>
+
+<pre><code class="language-ts good">class Clazz {
+  private ident = 1;
+}
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>私有标识符在由TypeScript向下级别转换时会导致显著的发射大小和性能回退，并且在ES2015之前不受支持。它们只能向下级别转换到ES2015，而不能更低。同时，当使用静态类型检查来强制执行可见性时，它们不会提供实质性的好处。</p>
+
+</section> 
+
+<h5 id="use-readonly" class="numbered">使用readonly</h5>
+
+<p>对于在构造函数之外永远不会重新赋值的属性，使用<code>readonly</code>修饰符标记（这些属性不需要是深度不可变的）。</p>
+
+<h5 id="parameter-properties" class="numbered">参数属性</h5>
+
+<p>与其将一个明显的初始化器传递给类成员，不如使用TypeScript的
+<a href="https://www.typescriptlang.org/docs/handbook/2/classes.html#parameter-properties">参数属性</a>。</p>
+
+<pre><code class="language-ts bad">class Foo {
+  private readonly barService: BarService;
+
+  constructor(barService: BarService) {
+    this.barService = barService;
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts good">class Foo {
+  constructor(private readonly barService: BarService) {}
+}
+</code></pre>
+
+<p>如果参数属性需要文档，
+<a href="#parameter-property-comments">使用<code>@param</code> JSDoc标签</a>。</p>
+
+<h5 id="field-initializers" class="numbered">字段初始化器</h5>
+
+<p>如果类成员不是参数，则在声明时初始化它，这有时可以完全省略构造函数。</p>
+
+<pre><code class="language-ts bad">class Foo {
+  private readonly userList: string[];
+
+  constructor() {
+    this.userList = [];
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts good">class Foo {
+  private readonly userList: string[] = [];
+}
+</code></pre>
+
+<p>提示：在构造函数完成后，永远不应向实例添加或删除属性，因为这会显著阻碍虚拟机优化类的“形状”。可能会稍后填充的可选字段应明确初始化为<code>undefined</code>，以防止后续的形状变化。</p>
+
+<h5 id="properties-used-outside-of-class-lexical-scope" class="numbered">类词法作用域之外使用的属性</h5>
+
+<p>从类词法作用域之外使用的属性，例如从模板中使用的Angular组件的属性，<em>不得</em>使用<code>private</code>可见性，因为它们在包含它们的类的词法作用域之外使用。</p>
+
+<p>根据属性的具体情况，使用<code>protected</code>或<code>public</code>。Angular和AngularJS模板属性应使用<code>protected</code>，但Polymer应使用<code>public</code>。</p>
+
+<p>TypeScript代码<em>不得</em>使用<code>obj['foo']</code>来绕过属性的可见性。</p>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>当属性是<code>private</code>时，你是在向自动化系统和人类声明属性访问被限定在声明类的所有方法中，它们将依赖于此。例如，未使用代码的检查将标记一个看似未使用的私有属性，即使其他文件设法绕过了可见性限制。</p>
+
+<p>尽管<code>obj['foo']</code>似乎可以在TypeScript编译器中绕过可见性，但这种模式可以通过重新排列构建规则来打破，并且还违反了<a href="#optimization-compatibility">优化兼容性</a>。</p>
+
+</section> 
+
+<p><a id="features-classes-getters-and-setters"></a></p>
+
+<h5 id="classes-getters-and-setters" class="numbered">getter和setter</h5>
+
+ 
+
+<p>类成员的getter和setter，也称为访问器，<em>可以</em>使用。getter方法<em>必须</em>是
+<a href="https://en.wikipedia.org/wiki/Pure_function">纯函数</a>（即，结果一致且没有副作用：getter<em>不得</em>更改可观察状态）。它们还可以作为一种手段来限制内部或冗长的实现细节的可见性（如下所示）。</p>
+
+<pre><code class="language-ts good">class Foo {
+  constructor(private readonly someService: SomeService) {}
+
+  get someMember(): string {
+    return this.someService.someVariable;
+  }
+
+  set someMember(newValue: string) {
+    this.someService.someVariable = newValue;
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Foo {
+  nextId = 0;
+  get next() {
+    return this.nextId++; // 错误：getter更改了可观察状态
+  }
+}
+</code></pre>
+
+<p>如果使用访问器来隐藏类属性，隐藏的属性<em>可以</em>使用任何完整单词作为前缀或后缀，如<code>internal</code>或<code>wrapped</code>。在使用这些私有属性时，尽可能通过访问器访问值。至少一个访问器必须是非平凡的：不要仅为隐藏属性而定义“直通”访问器。相反，使属性公开（或者考虑将其设为<code>readonly</code>而不是仅定义一个没有setter的getter）。</p>
+
+<pre><code class="language-ts good">class Foo {
+```typescript
+private wrappedBar = '';
+get bar() {
+  return this.wrappedBar || 'bar';
+}
+
+set bar(wrapped: string) {
+  this.wrappedBar = wrapped.trim();
+}
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Bar {
+  private barInternal = '';
+  // 这两个访问器都没有逻辑，所以只需将bar设为公共的。
+  get bar() {
+    return this.barInternal;
+  }
+
+  set bar(value: string) {
+    this.barInternal = value;
+  }
+}
+</code></pre>
+
+<p>不允许使用 <code>Object.defineProperty</code> 来定义getter和setter，因为这会干扰属性重命名。</p>
+
+<p><a id="features-classes-computed-properties"></a></p>
+
+<h5 id="class-computed-properties" class="numbered">计算属性</h5>
+
+<p>计算属性只能在类中使用，当属性是一个符号时。字典风格的属性（即引号或计算的非符号键）是不允许的（参见
+<a href="#features-objects-mixing-keys">不混合键类型的理由</a>）。对于逻辑上可迭代的类，应定义一个 <code>[Symbol.iterator]</code> 方法。除此之外，应谨慎使用 <code>Symbol</code>。</p>
+
+<p>提示：小心使用其他内置符号（例如 <code>Symbol.isConcatSpreadable</code>），因为它们没有被编译器填充，因此在旧版浏览器中无法工作。</p>
+
+ 
+
+<h4 id="visibility" class="numbered">可见性</h4>
+
+<p>限制属性、方法和整个类型的可见性有助于保持代码的解耦。</p>
+
+<ul>
+<li>尽可能限制符号的可见性。</li>
+<li>考虑将私有方法转换为同一文件中但不在任何类之外的非导出函数，并将私有属性移动到一个单独的、非导出的类中。</li>
+<li>TypeScript符号默认是公共的。除了在构造函数中声明非只读公共参数属性外，永远不要使用 <code>public</code> 修饰符。</li>
+</ul>
+
+<pre><code class="language-ts bad">class Foo {
+  public bar = new Bar();  // 错误：不需要public修饰符
+
+  constructor(public readonly baz: Baz) {}  // 错误：readonly意味着它是一个属性，默认是公共的
+}
+</code></pre>
+
+<pre><code class="language-ts good">class Foo {
+  bar = new Bar();  // 正确：不需要public修饰符
+
+  constructor(public baz: Baz) {}  // 允许使用public修饰符
+}
+</code></pre>
+
+<p>另见 <a href="#export-visibility">导出可见性</a>。</p>
+
+<h4 id="disallowed-class-patterns" class="numbered">禁止的类模式</h4>
+
+<p><a id="features-classes-prototypes"></a></p>
+
+<h5 id="class-prototypes" class="numbered">不要直接操作 <code>prototype</code></h5>
+
+<p><code>class</code> 关键字允许比定义 <code>prototype</code> 属性更清晰和更易读的类定义。普通实现代码没有理由操作这些对象。禁止使用混入和修改内置对象的原型。</p>
+
+<p><strong>例外</strong>：框架代码（如Polymer或Angular）可能需要使用 <code>prototype</code>，不应为了避免使用而采用更糟糕的解决方案。</p>
+
+ 
+
+ 
+
+<p><a id="features-functions"></a></p>
+<h3 id="functions" class="numbered">函数</h3>
+
+<h4 id="terminology" class="numbered">术语</h4>
+
+<p>函数有很多不同类型，它们之间有细微的区别。本指南使用以下术语，与<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions">MDN</a>一致：</p>
+
+<ul>
+<li><q>函数声明</q>：使用<code>function</code>关键字的声明（即非表达式）</li>
+<li><q>函数表达式</q>：使用<code>function</code>关键字的表达式，通常用于赋值或作为参数传递</li>
+<li><q>箭头函数</q>：使用<code>=&gt;</code>语法定义的表达式</li>
+<li><q>块体</q>：箭头函数右侧带有大括号的部分</li>
+<li><q>简洁体</q>：箭头函数右侧不带大括号的部分</li>
+</ul>
+
+<p>本节不包括方法和类/构造函数的讨论。</p>
+
+<h4 id="function-declarations" class="numbered">对于命名函数，优先使用函数声明</h4>
+
+<p>在定义命名函数时，优先使用函数声明而不是箭头函数或函数表达式。</p>
+
+<pre><code class="language-.ts good">function foo() {
+  return 42;
+}
+</code></pre>
+
+<pre><code class="language-ts bad">const foo = () =&gt; 42;
+</code></pre>
+
+<p>箭头函数<em>可以</em>在需要显式类型注解时使用，例如：</p>
+
+<pre><code class="language-ts good">interface SearchFunction {
+  (source: string, subString: string): boolean;
+}
+
+const fooSearch: SearchFunction = (source, subString) =&gt; { ... };
+</code></pre>
+
+<p><a id="features-functions-nested-functions"></a></p>
+
+<h4 id="nested-functions" class="numbered">嵌套函数</h4>
+
+<p>嵌套在其他方法或函数中的函数<em>可以</em>根据需要使用函数声明或箭头函数。特别是在方法体中，优先使用箭头函数，因为它们可以访问外部的<code>this</code>。</p>
+
+<p><a id="use-arrow-functions-in-expressions"></a></p>
+
+<h4 id="function-expressions" class="numbered">不要使用函数表达式</h4>
+
+<p>不要使用函数表达式。改用箭头函数。</p>
+
+<pre><code class="language-ts good">bar(() =&gt; { this.doSomething(); })
+</code></pre>
+
+<pre><code class="language-ts bad">bar(function() { ... })
+</code></pre>
+
+<p><strong>例外：</strong>函数表达式<em>可以</em>仅在需要动态重新绑定<code>this</code>时使用（但这被<a href="#rebinding-this">不鼓励</a>），或用于生成器函数（它们没有箭头语法）。</p>
+
+<p><a id="features-functions-arrow-functions"></a>
+<a id="expression-bodies-vs-block-bodies"></a></p>
+
+<h4 id="arrow-function-bodies" class="numbered">箭头函数体</h4>
+
+<p>根据需要使用箭头函数的简洁体（即表达式）或块体。</p>
+
+<pre><code class="language-ts good">// 顶级函数使用函数声明。
+function someFunction() {
+  // 块体是可以的：
+  const receipts = books.map((b: Book) =&gt; {
+    const receipt = payMoney(b.price);
+    recordTransaction(receipt);
+    return receipt;
+  });
+
+  // 简洁体也可以，如果返回值被使用：
+  const longThings = myValues.filter(v =&gt; v.length &gt; 1000).map(v =&gt; String(v));
+
+  function payMoney(amount: number) {
+    // 函数声明是可以的，但不能访问`this`。
+  }
+
+  // 嵌套的箭头函数可以赋值给const。
+  const computeTax = (amount: number) =&gt; amount * 0.12;
+}
+</code></pre>
+
+<p>只有在函数的返回值实际被使用时才使用简洁体。块体确保返回类型为<code>void</code>，并防止潜在的副作用。</p>
+
+<pre><code class="language-ts bad">// 坏：如果函数的返回值未被使用，请使用块体。
+myPromise.then(v =&gt; console.log(v));
+// 坏：这可以通过类型检查，但返回值仍然泄露。
+let f: () =&gt; void;
+f = () =&gt; 1;
+</code></pre>
+
+<pre><code class="language-ts good">// 好：返回值未被使用，使用块体。
+myPromise.then(v =&gt; {
+  console.log(v);
+});
+// 好：为了可读性，代码可以使用块体。
+const transformed = [1, 2, 3].map(v =&gt; {
+  const intermediate = someComplicatedExpr(v);
+  const more = acrossManyLines(intermediate);
+  return worthWrapping(more);
+});
+// 好：显式的`void`确保没有泄露的返回值
+myPromise.then(v =&gt; void console.log(v));
+</code></pre>
+
+<p>提示：<code>void</code>操作符可以用来确保带有表达式体的箭头函数在结果未被使用时返回<code>undefined</code>。</p>
+
+<h4 id="rebinding-this" class="numbered">重新绑定<code>this</code></h4>
+
+<p>函数表达式和函数声明<em>不得</em>使用<code>this</code>，除非它们专门用于重新绑定<code>this</code>指针。在大多数情况下，可以通过使用箭头函数或显式参数来避免重新绑定<code>this</code>。</p>
+
+<pre><code class="language-ts bad">function clickHandler() {
+  // 坏：在这个上下文中，`this`是什么？
+  this.textContent = 'Hello';
+}
+// 坏：`this`指针引用被隐式设置为document.body。
+document.body.onclick = clickHandler;
+</code></pre>
+
+<pre><code class="language-ts good">// 好：从箭头函数中显式引用对象。
+document.body.onclick = () =&gt; { document.body.textContent = 'hello'; };
+// 或者：使用显式参数
+const setTextFn = (e: HTMLElement) =&gt; { e.textContent = 'hello'; };
+document.body.onclick = setTextFn.bind(null, document.body);
+</code></pre>
+
+<p>优先使用箭头函数而不是其他绑定<code>this</code>的方法，如<code>f.bind(this)</code>、<code>goog.bind(f, this)</code>或<code>const self = this</code>。</p>
+
+<h4 id="functions-as-callbacks" class="numbered">优先将箭头函数作为回调传递</h4>
+
+<p>回调可能会以意外的参数被调用，这些参数可以通过类型检查但仍然导致逻辑错误。</p>
+<p>避免将命名回调函数传递给高阶函数，除非你确定两个函数的调用签名是稳定的。特别要注意那些不常用的可选参数。</p>
+
+<pre><code class="language-ts bad">// 错误：参数未明确传递，导致可选的 `radix` 参数在数组索引 0、1 和 2 时出现意外行为。
+const numbers = ['11', '5', '10'].map(parseInt);
+// &gt; [11, NaN, 2];
+</code></pre>
+
+<p>相反，建议传递一个箭头函数，该函数明确地将参数转发给命名回调函数。</p>
+
+<pre><code class="language-ts good">// 正确：参数明确传递给回调函数
+const numbers = ['11', '5', '3'].map((n) =&gt; parseInt(n));
+// &gt; [11, 5, 3]
+
+// 正确：函数在本地定义，设计为用作回调函数
+function dayFilter(element: string|null|undefined) {
+  return element != null &amp;&amp; element.endsWith('day');
+}
+
+const days = ['tuesday', undefined, 'juice', 'wednesday'].filter(dayFilter);
+</code></pre>
+
+<h4 id="arrow-functions-as-properties" class="numbered">箭头函数作为属性</h4>
+
+<p>类通常<strong>不应</strong>包含初始化为箭头函数的属性。箭头函数属性要求调用函数理解被调用者的 <code>this</code> 已经绑定，这增加了对 <code>this</code> 的混淆，并且使用此类处理程序的调用点和引用看起来像是损坏的（即需要非本地知识来确定它们是正确的）。代码<strong>应</strong>始终使用箭头函数来调用实例方法（<code>const handler = (x) =&gt; { this.listener(x); };</code>），并且<strong>不应</strong>获取或传递实例方法的引用（<del><code>const handler = this.listener; handler(x);</code></del>）。</p>
+
+<blockquote>
+<p>注意：在某些特定情况下，例如在模板中绑定函数时，箭头函数作为属性是有用的，并且能创建更易读的代码。请根据此规则进行判断。另请参阅下面的<a href="#event-handlers"><code>事件处理程序</code></a>部分。</p>
+</blockquote>
+
+<pre><code class="language-ts bad">class DelayHandler {
+  constructor() {
+    // 问题：在回调中未保留 `this`。回调中的 `this` 不会是 DelayHandler 的实例。
+    setTimeout(this.patienceTracker, 5000);
+  }
+  private patienceTracker() {
+    this.waitedPatiently = true;
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts bad">// 箭头函数通常不应作为属性。
+class DelayHandler {
+  constructor() {
+    // 错误：这段代码看起来像是忘记绑定 `this`。
+    setTimeout(this.patienceTracker, 5000);
+  }
+  private patienceTracker = () =&gt; {
+    this.waitedPatiently = true;
+  }
+}
+</code></pre>
+
+<pre><code class="language-ts good">// 在调用时显式管理 `this`。
+class DelayHandler {
+  constructor() {
+    // 如果可能，使用匿名函数。
+    setTimeout(() =&gt; {
+      this.patienceTracker();
+    }, 5000);
+  }
+  private patienceTracker() {
+    this.waitedPatiently = true;
+  }
+}
+</code></pre>
+
+<h4 id="event-handlers" class="numbered">事件处理程序</h4>
+
+<p>事件处理程序<strong>可以</strong>在不需要卸载处理程序时使用箭头函数（例如，如果事件是由类本身发出的）。如果处理程序需要卸载，则箭头函数属性是正确的做法，因为它们会自动捕获 <code>this</code> 并提供一个稳定的引用以便卸载。</p>
+
+<pre><code class="language-ts good">// 事件处理程序可以是匿名函数或箭头函数属性。
+class Component {
+  onAttached() {
+    // 事件由本类发出，无需卸载。
+    this.addEventListener('click', () =&gt; {
+      this.listener();
+    });
+    // this.listener 是一个稳定的引用，我们稍后可以卸载它。
+    window.addEventListener('onbeforeunload', this.listener);
+  }
+  onDetached() {
+    // 事件由 window 发出。如果我们不卸载，this.listener 将保持对 `this` 的引用，因为它是绑定的，导致内存泄漏。
+    window.removeEventListener('onbeforeunload', this.listener);
+  }
+  // 存储在属性中的箭头函数会自动绑定到 `this`。
+  private listener = () =&gt; {
+    confirm('你想退出页面吗？');
+  }
+}
+</code></pre>
+
+<p>在安装事件处理程序的表达式中不要使用 <code>bind</code>，因为它会创建一个无法卸载的临时引用。</p>
+
+<pre><code class="language-ts bad">// 绑定监听器会创建一个无法卸载的临时引用。
+class Component {
+  onAttached() {
+    // 这会创建一个我们无法卸载的临时引用
+    window.addEventListener('onbeforeunload', this.listener.bind(this));
+  }
+  onDetached() {
+    // 这个 bind 创建了一个不同的引用，所以这行代码不起作用。
+    window.removeEventListener('onbeforeunload', this.listener.bind(this));
+  }
+  private listener() {
+    confirm('你想退出页面吗？');
+  }
+}
+</code></pre>
+
+<p><a id="features-functions-default-parameters"></a></p>
+
+<h4 id="parameter-initializers" class="numbered">参数初始化器</h4>
+
+<p>可选函数参数<strong>可以</strong>在参数被省略时提供一个默认初始化器。初始化器<strong>不得</strong>有任何可观察的副作用。初始化器<strong>应</strong>尽可能简单。</p>
+
+<pre><code class="language-ts good">function process(name: string, extraContext: string[] = []) {}
+function activate(index = 0) {}
+</code></pre>
+
+<pre><code class="language-ts bad">// 错误：增加计数器的副作用
+let globalCounter = 0;
+function newId(index = globalCounter++) {}
+
+// 错误：暴露共享的可变状态，可能在函数调用之间引入意外的耦合
+class Foo {
+  private readonly defaultPaths: string[];
+```typescript
+function frobnicate(paths = defaultPaths) {}
+}
+</code></pre>
+
+<p>谨慎使用默认参数。 当有多个可选参数且没有自然顺序时，优先使用<a href="#features-objects-destructuring">解构</a>来创建可读的API。</p>
+
+ 
+
+<p><a id="features-functions-rest-parameters"></a>
+<a id="features-functions-spread-operator"></a></p>
+
+<h4 id="rest-and-spread" class="numbered">在适当的情况下优先使用rest和spread</h4>
+
+<p>使用<em>rest</em>参数而不是访问<code>arguments</code>。 永远不要将本地变量或参数命名为<code>arguments</code>，这会令人困惑地遮蔽内置名称。</p>
+
+<pre><code class="language-ts good">function variadic(array: string[], ...numbers: number[]) {}
+</code></pre>
+
+ 
+
+<p>使用函数spread语法而不是<code>Function.prototype.apply</code>。</p>
+
+<p><a id="features-functions-generators"></a></p>
+
+<h4 id="formatting-functions" class="numbered">格式化函数</h4>
+
+<p>函数体开始或结束处的空行是不允许的。</p>
+
+<p>函数体内可以谨慎使用单个空行来创建<em>逻辑分组</em>的语句。</p>
+
+<p>生成器应将<code>*</code>附加到<code>function</code>和<code>yield</code>关键字上，如<code>function* foo()</code>和<code>yield* iter</code>，而不是<del><code>function *foo()</code></del>或<del><code>yield *iter</code></del>。</p>
+
+<p>建议但不要求在单参数箭头函数的左侧使用括号。</p>
+
+<p>在rest或spread语法中不要在<code>...</code>后加空格。</p>
+
+<pre><code class="language-ts good">function myFunction(...elements: number[]) {}
+myFunction(...array, ...iterable, ...generator());
+</code></pre>
+
+<h3 id="features-this" class="numbered">this</h3>
+
+<p>仅在类构造函数和方法中、具有显式<code>this</code>类型声明的函数中（例如<code>function func(this: ThisType, ...)</code>），或在定义<code>this</code>可能使用的作用域中的箭头函数中使用<code>this</code>。</p>
+
+<p>永远不要使用<code>this</code>来引用全局对象、<code>eval</code>的上下文、事件的目标，或者不必要地<code>call()</code>或<code>apply()</code>的函数。</p>
+
+<pre><code class="language-ts bad">this.alert('Hello');
+</code></pre>
+
+<h3 id="interfaces" class="numbered">接口</h3>
+
+ 
+
+<h3 id="primitive-literals" class="numbered">原始字面量</h3>
+
+<p><a id="features-string-literals"></a></p>
+
+<h4 id="string-literals" class="numbered">字符串字面量</h4>
+
+<p><a id="features-strings-use-single-quotes"></a></p>
+
+<h5 id="use-single-quotes" class="numbered">使用单引号</h5>
+
+<p>普通字符串字面量使用单引号（<code>'</code>）而不是双引号（<code>"</code>）进行分隔。</p>
+
+<p>提示：如果字符串包含单引号字符，考虑使用模板字符串以避免转义引号。</p>
+
+<p><a id="syntax-no-line-continuations"></a>
+<a id="features-strings-no-line-continuations"></a></p>
+
+<h5 id="no-line-continuations" class="numbered">不使用行继续</h5>
+
+<p>在普通或模板字符串字面量中，不要使用行继续（即在字符串字面量内用反斜杠结束一行）。尽管ES5允许这样做，但如果斜杠后有任何尾随空白，这可能会导致棘手的错误，并且对读者来说不太明显。</p>
+
+<p>不允许的：</p>
+
+<pre><code class="language-ts bad">const LONG_STRING = '这是一个非常非常非常非常非常非常长的字符串。 \
+    由于继续行的缩进方式，它无意中包含了长段的空格。';
+</code></pre>
+
+<p>相反，编写如下：</p>
+
+<pre><code class="language-ts good">const LONG_STRING = '这是一个非常非常非常非常非常非常长的字符串。 ' +
+    '它不包含长段的空格，因为它使用了连接的字符串。';
+const SINGLE_STRING =
+    'http://it.is.also/acceptable_to_use_a_single_long_string_when_breaking_would_hinder_search_discoverability';
+</code></pre>
+
+<p><a id="features-strings-template-strings"></a></p>
+
+<h5 id="template-literals" class="numbered">模板字面量</h5>
+
+<p>在涉及多个字符串字面量的情况下，使用模板字面量（用 <code>`</code> 分隔）而不是复杂的字符串连接。模板字面量可以跨多行。</p>
+
+<p>如果模板字面量跨多行，它不需要遵循封闭块的缩进，尽管如果添加的空白不重要，它可以这样做。</p>
+
+<p>示例：</p>
+
+<pre><code class="language-ts good">function arithmetic(a: number, b: number) {
+  return `这是一个算术运算表：
+${a} + ${b} = ${a + b}
+${a} - ${b} = ${a - b}
+${a} * ${b} = ${a * b}
+${a} / ${b} = ${a / b}`;
+}
+</code></pre>
+
+<p><a id="features-number-literals"></a></p>
+
+<h4 id="number-literals" class="numbered">数字字面量</h4>
+
+<p>数字可以用十进制、十六进制、八进制或二进制表示。对于十六进制、八进制和二进制，分别使用 <code>0x</code>、<code>0o</code> 和 <code>0b</code> 前缀，字母必须为小写。除非紧跟 <code>x</code>、<code>o</code> 或 <code>b</code>，否则不要使用前导零。</p>
+
+<h4 id="type-coercion" class="numbered">类型强制转换</h4>
+
+<p>TypeScript 代码可以使用 <code>String()</code> 和 <code>Boolean()</code>（注意：没有 <code>new</code>！）函数、字符串模板字面量或 <code>!!</code> 来强制转换类型。</p>
+
+<pre><code class="language-ts good">const bool = Boolean(false);
+const str = String(aNumber);
+const bool2 = !!str;
+const str2 = `结果: ${bool2}`;
+</code></pre>
+
+<p>枚举类型的值（包括枚举类型和其他类型的联合）不得使用 <code>Boolean()</code> 或 <code>!!</code> 转换为布尔值，而必须使用比较运算符进行显式比较。</p>
+
+<pre><code class="language-ts bad">enum SupportLevel {
+  NONE,
+  BASIC,
+  ADVANCED,
+}
+
+const level: SupportLevel = ...;
+let enabled = Boolean(level);
+
+const maybeLevel: SupportLevel|undefined = ...;
+enabled = !!maybeLevel;
+</code></pre>
+
+<pre><code class="language-ts good">enum SupportLevel {
+  NONE,
+  BASIC,
+  ADVANCED,
+}
+
+const level: SupportLevel = ...;
+let enabled = level !== SupportLevel.NONE;
+
+const maybeLevel: SupportLevel|undefined = ...;
+enabled = level !== undefined &amp;&amp; level !== SupportLevel.NONE;
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>对于大多数目的，枚举名称在运行时映射到什么数字或字符串值并不重要，因为在源代码中枚举类型的值是按名称引用的。因此，工程师习惯于不考虑这一点，因此在某些情况下确实重要时会令人惊讶。枚举转换为布尔值就是这种情况；特别是，默认情况下，第一个声明的枚举值是假值（因为它是0），而其他值是真值，这可能是意料之外的。阅读使用枚举值的代码的读者可能甚至不知道它是否是第一个声明的值。</p>
+
+</section> 
+
+<p>不鼓励使用字符串连接来强制转换为字符串，因为我们检查加号运算符的操作数是否类型匹配。</p>
+
+<p>代码必须使用 <code>Number()</code> 来解析数值，并且必须显式检查其返回值是否为 <code>NaN</code>，除非从上下文中可以确定解析不会失败。</p>
+
+<p>注意：<code>Number('')</code>、<code>Number(' ')</code> 和 <code>Number('\t')</code> 将返回 <code>0</code> 而不是 <code>NaN</code>。<code>Number('Infinity')</code> 和 <code>Number('-Infinity')</code> 将分别返回 <code>Infinity</code> 和 <code>-Infinity</code>。此外，指数表示法如 <code>Number('1e+309')</code> 和 <code>Number('-1e+309')</code> 可能会溢出到 <code>Infinity</code>。这些情况可能需要特殊处理。</p>
+
+<pre><code class="language-ts good">const aNumber = Number('123');
+if (!isFinite(aNumber)) throw new Error(...);
+</code></pre>
+
+<p>代码不得使用一元加号（<code>+</code>）来强制转换字符串为数字。解析数字可能会失败，有令人惊讶的边缘情况，并且可能是代码异味（在错误的层面上解析）。一元加号在代码审查中太容易被忽略了，考虑到这一点。</p>
+
+<pre><code class="language-ts bad">const x = +y;
+</code></pre>
+
+<p>代码也不得使用 <code>parseInt</code> 或 <code>parseFloat</code> 来解析数字，除了非十进制字符串（见下文）。这两个函数都会忽略尾随
+字符串中的字符可能会掩盖错误情况（例如，将<code>12 dwarves</code>解析为<code>12</code>）。
+
+```ts bad
+const n = parseInt(someString, 10);  // 容易出错，
+const f = parseFloat(someString);    // 无论是否传递基数。
+```
+
+需要使用基数进行解析的代码在调用<code>parseInt</code>之前，必须检查其输入是否仅包含该基数的适当数字；
+
+```ts good
+if (!/^[a-fA-F0-9]+$/.test(someString)) throw new Error(...);
+// 需要解析十六进制。
+// tslint:disable-next-line:ban
+const n = parseInt(someString, 16);  // 仅允许基数 != 10
+```
+
+使用<code>Number()</code>后跟<code>Math.floor</code>或<code>Math.trunc</code>（如果可用）来解析整数：
+
+```ts good
+let f = Number(someString);
+if (isNaN(f)) handleError();
+f = Math.floor(f);
+```
+
+<a id="type-coercion-implicit"></a>
+
+##### 隐式强制转换
+
+在具有隐式布尔强制转换的条件子句中，不要使用显式的布尔强制转换。这些条件出现在<code>if</code>、<code>for</code>和<code>while</code>语句中。
+
+```ts bad
+const foo: MyInterface|null = ...;
+if (!!foo) {...}
+while (!!foo) {...}
+```
+
+```ts good
+const foo: MyInterface|null = ...;
+if (foo) {...}
+while (foo) {...}
+```
+
+<a href="#type-coercion">与显式转换一样</a>，枚举类型的值（包括枚举类型和其他类型的联合）不得隐式强制转换为布尔值，而必须使用比较运算符进行显式比较。
+
+```ts bad
+enum SupportLevel {
+  NONE,
+  BASIC,
+  ADVANCED,
+}
+
+const level: SupportLevel = ...;
+if (level) {...}
+
+const maybeLevel: SupportLevel|undefined = ...;
+if (level) {...}
+```
+
+```ts good
+enum SupportLevel {
+  NONE,
+  BASIC,
+  ADVANCED,
+}
+
+const level: SupportLevel = ...;
+if (level !== SupportLevel.NONE) {...}
+
+const maybeLevel: SupportLevel|undefined = ...;
+if (level !== undefined && level !== SupportLevel.NONE) {...}
+```
+
+其他类型的值可以隐式强制转换为布尔值，也可以使用比较运算符进行显式比较：
+
+```ts good
+// 显式比较 > 0 是可以的：
+if (arr.length > 0) {...}
+// 依赖布尔强制转换也是可以的：
+if (arr.length) {...}
+```
+
+<a id="features-control-structures"></a>
+<h3 id="control-structures" class="numbered">控制结构</h3>
+
+<p><a id="formatting-braces"></a>
+<a id="formatting-braces-all"></a></p>
+
+<h4 id="control-flow-statements-blocks" class="numbered">控制流语句和块</h4>
+
+<p>控制流语句（如<code>if</code>、<code>else</code>、<code>for</code>、<code>do</code>、<code>while</code>等）总是使用大括号块来包含代码，即使主体只包含一个语句。非空块的第一条语句必须在自己的行上开始。</p>
+
+<pre><code class="language-ts good">for (let i = 0; i &lt; x; i++) {
+  doSomethingWith(i);
+}
+
+if (x) {
+  doSomethingWithALongMethodNameThatForcesANewLine(x);
+}
+</code></pre>
+
+<pre><code class="language-ts bad">if (x)
+  doSomethingWithALongMethodNameThatForcesANewLine(x);
+
+for (let i = 0; i &lt; x; i++) doSomethingWith(i);
+</code></pre>
+
+<p><strong>例外：</strong> 单行<code>if</code>语句可以省略块。</p>
+
+<pre><code class="language-ts good">if (x) x.doFoo();
+</code></pre>
+
+<h5 id="assignment-in-control-statements" class="numbered">控制语句中的赋值</h5>
+
+<p>尽量避免在控制语句中赋值变量。赋值在控制语句中容易被误认为是等式检查。</p>
+
+<pre><code class="language-ts bad">if (x = someFunction()) {
+  // 赋值容易被误认为是等式检查
+  // ...
+}
+</code></pre>
+
+<pre><code class="language-ts good">x = someFunction();
+if (x) {
+  // ...
+}
+</code></pre>
+
+<p>在偏好在控制语句中赋值的情况下，使用额外的括号来表明这是有意的赋值操作。</p>
+
+<pre><code class="language-ts">while ((x = someFunction())) {
+  // 双括号表明赋值是有意的
+  // ...
+}
+
+</code></pre>
+
+<p><a id="features-for-loops"></a></p>
+
+<h5 id="iterating-containers" class="numbered">迭代容器</h5>
+
+<p>优先使用<code>for (... of someArr)</code>来迭代数组。也允许使用<code>Array.prototype.forEach</code>和普通的<code>for</code>循环：</p>
+
+<pre><code class="language-ts good">for (const x of someArr) {
+  // x是someArr的一个值。
+}
+
+for (let i = 0; i &lt; someArr.length; i++) {
+  // 如果需要索引，则显式计数，否则使用for/of形式。
+  const x = someArr[i];
+  // ...
+}
+for (const [i, x] of someArr.entries()) {
+  // 上述的替代版本。
+}
+</code></pre>
+
+<p><code>for</code>-<code>in</code>循环只能用于字典风格的对象（更多信息请参见<a href="#optimization-compatibility-for-property-access">下文</a>）。不要使用<code>for (... in ...)</code>来迭代数组，因为它会违反直觉地返回数组的索引（作为字符串！），而不是值：</p>
+
+<pre><code class="language-ts bad">for (const x in someArray) {
+  // x是索引！
+}
+</code></pre>
+
+<p>在<code>for</code>-<code>in</code>循环中应使用<code>Object.prototype.hasOwnProperty</code>来排除不需要的原型属性。可能的话，优先使用<code>for</code>-<code>of</code>与<code>Object.keys</code>、<code>Object.values</code>或<code>Object.entries</code>而不是<code>for</code>-<code>in</code>。</p>
+
+<pre><code class="language-ts good">for (const key in obj) {
+  if (!obj.hasOwnProperty(key)) continue;
+  doWork(key, obj[key]);
+}
+for (const key of Object.keys(obj)) {
+  doWork(key, obj[key]);
+}
+for (const value of Object.values(obj)) {
+  doWorkValOnly(value);
+}
+for (const [key, value] of Object.entries(obj)) {
+  doWork(key, value);
+}
+</code></pre>
+
+<p><a id="formatting-grouping-parentheses"></a></p>
+
+<h4 id="grouping-parentheses" class="numbered">分组括号</h4>
+
+<p>只有当作者和审阅者一致认为没有使用分组括号的情况下代码不会被误解，并且它们不会使代码更易读时，才可以省略可选的分组括号。假设每个读者都记住了整个操作符优先级表是不合理的。</p>
+
+<p>不要在<code>delete</code>、<code>typeof</code>、<code>void</code>、<code>return</code>、<code>throw</code>、<code>case</code>、<code>in</code>、<code>of</code>或<code>yield</code>后面的整个表达式上使用不必要的括号。</p>
+
+ 
+
+<p><a id="exceptions"></a>
+<a id="features-exceptions"></a></p>
+
+<h4 id="exception-handling" class="numbered">异常处理</h4>
+
+<p>异常是语言的重要组成部分，应该在发生异常情况时使用。</p>
+
+<p>自定义异常提供了一种从函数中传达额外错误信息的好方法。只要原生<code>Error</code>类型不足以用，就应该定义和使用它们。</p>
+
+<p>优先抛出异常而不是使用临时错误处理方法（如传递错误容器引用类型，或返回带有错误属性的对象）。</p>
+
+<h5 id="instantiate-errors-using-new" class="numbered">使用<code>new</code>实例化错误</h5>
+
+<p>实例化异常时，总是使用<code>new Error()</code>，而不是仅调用<code>Error()</code>。两种形式都会创建一个新的<code>Error</code>实例，但使用<code>new</code>与其他对象的实例化方式更一致。</p>
+
+<pre><code class="language-ts good">throw new Error('Foo is not a valid bar.');
+</code></pre>
+
+<pre><code class="language-ts bad">throw Error('Foo is not a valid bar.');
+</code></pre>
+
+<h5 id="only-throw-errors" class="numbered">只抛出错误</h5>
+
+<p>JavaScript（因此TypeScript）允许抛出或拒绝Promise时使用任意值。然而，如果抛出或拒绝的值不是<code>Error</code>，它不会填充堆栈跟踪信息，使调试变得困难。这种处理方式扩展到<code>Promise</code>拒绝值，因为<code>Promise.reject(obj)</code>在异步函数中等同于<code>throw obj;</code>。</p>
+
+<pre><code class="language-ts bad">// 不好：不会获得堆栈跟踪。
+throw 'oh noes!';
+// 对于Promise
+new Promise((resolve, reject) =&gt; void reject('oh noes!'));
+Promise.reject();
+Promise.reject('哦不！');
+</code></pre>
+
+<p>相反，只应抛出（<code>Error</code> 的子类）：</p>
+
+<pre><code class="language-ts good">// 只抛出错误
+throw new Error('哦不！');
+// ... 或 Error 的子类型。
+class MyError extends Error {}
+throw new MyError('我的哦不！');
+// 对于 Promise
+new Promise((resolve) =&gt; resolve()); // 不拒绝是可以的。
+new Promise((resolve, reject) =&gt; void reject(new Error('哦不！')));
+Promise.reject(new Error('哦不！'));
+</code></pre>
+
+<h5 id="catching-and-rethrowing" class="numbered">捕获和重新抛出</h5>
+
+<p>在捕获错误时，代码<em>应</em>假设所有抛出的错误都是 <code>Error</code> 的实例。</p>
+
+<section>
+
+<pre><code class="language-ts good">function assertIsError(e: unknown): asserts e is Error {
+  if (!(e instanceof Error)) throw new Error("e 不是 Error");
+}
+
+try {
+  doSomething();
+} catch (e: unknown) {
+  // 所有抛出的错误必须是 Error 的子类型。除非你知道它们被抛出，否则不要处理
+  // 其他可能的值。
+  assertIsError(e);
+  displayError(e.message);
+  // 或重新抛出：
+  throw e;
+}
+</code></pre>
+
+</section>
+
+<p>异常处理程序<em>不得</em>防御性地处理非 <code>Error</code> 类型，除非已明确知道所调用的 API 违反上述规则抛出非 <code>Error</code>。在这种情况下，应包含注释以具体指出非 <code>Error</code> 的来源。</p>
+
+<pre><code class="language-ts good">try {
+  badApiThrowingStrings();
+} catch (e: unknown) {
+  // 注意：坏 API 抛出字符串而不是错误。
+  if (typeof e === 'string') { ... }
+}
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>避免
+<a href="https://en.wikipedia.org/wiki/Defensive_programming#Offensive_programming">过度防御性编程</a>。
+重复对大多数代码中不存在的问题进行相同的防御会导致无用的样板代码。</p>
+
+</section>
+
+<p><a id="features-empty-catch-blocks"></a></p>
+
+<h5 id="empty-catch-blocks" class="numbered">空的 catch 块</h5>
+
+<p>在响应捕获的异常时，很少正确地什么也不做。当在 catch 块中真正适当不采取任何行动时，应在注释中解释这样做的理由是合理的。</p>
+
+<pre><code class="language-ts good">  try {
+    return handleNumericResponse(response);
+  } catch (e: unknown) {
+    // 响应不是数字。继续作为文本处理。
+  }
+  return handleTextResponse(response);
+</code></pre>
+
+<p>不允许的：</p>
+
+<pre><code class="language-ts bad">  try {
+    shouldFail();
+    fail('预期错误');
+  } catch (expected: unknown) {
+  }
+</code></pre>
+
+<p>提示：与某些其他语言不同，像上面的模式根本不起作用，因为这将捕获 <code>fail</code> 抛出的错误。请改用 <code>assertThrows()</code>。</p>
+
+<p><a id="features-switch-statements"></a>
+<a id="features-switch-default-case"></a></p>
+
+<h4 id="switch-statements" class="numbered">Switch 语句</h4>
+
+<p>所有 <code>switch</code> 语句<em>必须</em>包含一个 <code>default</code> 语句组，即使它不包含任何代码。<code>default</code> 语句组必须放在最后。</p>
+
+<pre><code class="language-ts good">switch (x) {
+  case Y:
+    doSomethingElse();
+    break;
+  default:
+    // 无需处理。
+}
+</code></pre>
+
+<p>在 switch 块中，每个语句组要么以 <code>break</code>、<code>return</code> 语句或抛出异常的方式突然终止。非空语句组（<code>case ...</code>）<em>不得</em>直接落入下一个语句组（编译器强制执行）：</p>
+
+<pre><code class="language-ts bad">switch (x) {
+  case X:
+    doSomething();
+    // 直接落入 - 不允许！
+  case Y:
+    // ...
+}
+</code></pre>
+
+<p>允许空语句组直接落入：</p>
+
+<pre><code class="language-ts good">switch (x) {
+  case X:
+  case Y:
+    doSomething();
+    break;
+  default: // 无需处理。
+}
+</code></pre>
+
+<p><a id="features-equality-checks"></a>
+<a id="features-equality-checks-exceptions"></a></p>
+
+<h4 id="equality-checks" class="numbered">等式检查</h4>
+
+<p>始终使用三重等于（<code>===</code>）和不等于（<code>!==</code>）。双重等式运算符会导致容易出错的类型强制转换，这些转换难以理解且对 JavaScript 虚拟机的实现速度较慢。另见
+<a href="https://dorey.github.io/JavaScript-Equality-Table/">JavaScript 等式表</a>。</p>
+
+<pre><code class="language-ts bad">if (foo == 'bar' || baz != bam) {
+  // 由于类型强制转换，行为难以理解。
+}
+</code></pre>
+
+<pre><code class="language-ts good">if (foo === 'bar' || baz !== bam) {
+  // 这里一切正常。
+}
+</code></pre>
+
+<p><strong>例外：</strong>与字面值 <code>null</code> 的比较<em>可以</em>使用 <code>==</code> 和 <code>!=</code> 运算符，以覆盖 <code>null</code> 和 <code>undefined</code> 值。</p>
+
+<pre><code class="language-ts good">if (foo == null) {
+  // 当 foo 为 null 或 undefined 时触发。
+}
+</code></pre>
+
+<h4 id="type-and-non-nullability-assertions" class="numbered">类型和非空断言</h4>
+
+<p>类型断言（<code>x as SomeType</code>）和非空断言（<code>y!</code>）是不安全的。这两者只会使 TypeScript 编译器静音，但不会插入任何运行时检查来匹配这些断言，因此它们可能会导致程序在运行时崩溃。</p>
+
+<p>因此，除非有明显或明确的理由，否则<em>不应</em>使用类型和非空断言。</p>
+
+<p>而不是以下内容：</p>
+
+<pre><code class="language-ts bad">(x as Foo).foo();
+
+y!.bar();
+</code></pre>
+
+<p>当你想断言类型或非空性时，最好的答案是明确编写一个运行时检查来执行该检查。</p>
+
+<pre><code class="language-ts good">// 假设 Foo 是一个类。
+if (x instanceof Foo) {
+  x.foo();
+}
+
+if (y) {
+  y.bar();
+}
+</code></pre>
+
+<p>有时由于代码的某些本地属性，你可以确定该
+assertion 形式是安全的。在这些情况下，你<em>应该</em>添加说明来解释为什么你接受这种不安全的行为：</p>
+
+<pre><code class="language-ts good">// x 是 Foo，因为 ...
+(x as Foo).foo();
+
+// y 不可能为 null，因为 ...
+y!.bar();
+</code></pre>
+
+<p>如果类型或非空断言背后的原因显而易见，注释<em>可能</em>不是必需的。例如，生成的 proto 代码总是可空的，但在代码的上下文中，可能众所周知某些字段总是由后端提供。请根据实际情况判断。</p>
+
+<h5 id="type-assertions-syntax" class="numbered">类型断言语法</h5>
+
+<p>类型断言<em>必须</em>使用 <code>as</code> 语法（而不是尖括号语法）。这强制在访问成员时在断言周围加上括号。</p>
+
+<pre><code class="language-ts bad">const x = (&lt;Foo&gt;z).length;
+const y = &lt;Foo&gt;z.length;
+</code></pre>
+
+<pre><code class="language-ts good">// z 必须是 Foo，因为 ...
+const x = (z as Foo).length;
+</code></pre>
+
+<h5 id="double-assertions" class="numbered">双重断言</h5>
+
+<p>根据
+<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions">TypeScript 手册</a>，
+TypeScript 只允许转换为类型更具体或更不具体的类型断言。添加不符合此标准的类型断言（<code>x as Foo</code>）将导致错误：<q>将类型 'X' 转换为类型 'Y' 可能是一个错误，因为这两种类型没有足够的重叠。</q></p>
+
+<p>如果你确定一个断言是安全的，你可以执行<em>双重断言</em>。这涉及通过 <code>unknown</code> 进行转换，因为它比所有类型都更不具体。</p>
+
+<pre><code class="language-ts good">// x 在这里是 Foo，因为...
+(x as unknown as Foo).fooMethod();
+</code></pre>
+
+<p>使用 <code>unknown</code>（而不是 <code>any</code> 或 <code>{}</code>）作为中间类型。</p>
+
+<h5 id="type-assertions-and-object-literals" class="numbered">类型断言和对象字面量</h5>
+
+<p>使用类型注解（<code>: Foo</code>）而不是类型断言（<code>as Foo</code>）来指定对象字面量的类型。这有助于在接口字段随时间变化时检测重构错误。</p>
+
+<pre><code class="language-ts bad">interface Foo {
+  bar: number;
+  baz?: string;  // 原本是 "bam"，但后来重命名为 "baz"。
+}
+
+const foo = {
+  bar: 123,
+  bam: 'abc',  // 没有错误！
+} as Foo;
+
+function func() {
+  return {
+    bar: 123,
+    bam: 'abc',  // 没有错误！
+  } as Foo;
+}
+</code></pre>
+
+<pre><code class="language-ts good">interface Foo {
+  bar: number;
+  baz?: string;
+}
+
+const foo: Foo = {
+  bar: 123,
+  bam: 'abc',  // 抱怨 "bam" 在 Foo 上未定义。
+};
+
+function func(): Foo {
+  return {
+    bar: 123,
+    bam: 'abc',   // 抱怨 "bam" 在 Foo 上未定义。
+  };
+}
+</code></pre>
+
+<h4 id="keep-try-blocks-focused" class="numbered">保持 try 块的聚焦</h4>
+
+<p>如果不影响可读性，尽量减少 try 块内的代码量。</p>
+
+<pre><code class="language-ts bad">try {
+  const result = methodThatMayThrow();
+  use(result);
+} catch (error: unknown) {
+  // ...
+}
+</code></pre>
+
+<pre><code class="language-ts good">let result;
+try {
+  result = methodThatMayThrow();
+} catch (error: unknown) {
+  // ...
+}
+use(result);
+</code></pre>
+
+<p>将不抛出异常的行移出 try/catch 块有助于读者了解哪个方法会抛出异常。一些不抛出异常的内联调用可以留在里面，因为它们可能不值得增加临时变量的复杂性。</p>
+
+<p><strong>例外情况：</strong> 如果 try 块位于循环内，可能会有性能问题。扩展 try 块以覆盖整个循环是可以接受的。</p>
+
+<h3 id="decorators" class="numbered">装饰器</h3>
+
+<p>装饰器是带有 <code>@</code> 前缀的语法，例如 <code>@MyDecorator</code>。</p>
+
+<p>不要定义新的装饰器。只使用框架定义的装饰器：</p>
+
+<ul>
+<li>Angular（例如 <code>@Component</code>、<code>@NgModule</code> 等）</li>
+<li>Polymer（例如 <code>@property</code>）</li>
+</ul>
+
+ 
+
+<section>
+
+<p>为什么？</p>
+
+<p>我们通常希望避免使用装饰器，因为它们最初是一个实验性功能，后来与 TC39 提案背离，并且存在已知的不会被修复的错误。</p>
+
+</section> 
+
+<p>在使用装饰器时，装饰器<em>必须</em>紧接在它所装饰的符号之前，中间没有空行：</p>
+
+<pre><code class="language-ts">/** JSDoc 注释在装饰器之前 */
+@Component({...})  // 注意：装饰器之后没有空行。
+class MyComp {
+  @Input() myField: string;  // 字段上的装饰器可以放在同一行...
+
+  @Input()
+  myOtherField: string;  // ... 或者换行。
+}
+</code></pre>
+<h3 id="disallowed-features" class="numbered">禁止使用的功能</h3>
+
+<p><a id="disallowed-features-wrapper-objects"></a></p>
+
+<h4 id="primitive-types-wrapper-classes" class="numbered">基本类型包装类</h4>
+
+<p>TypeScript 代码<em>不得</em>实例化基本类型的包装类，如<code>String</code>、<code>Boolean</code>和<code>Number</code>。包装类具有令人惊讶的行为，例如<code>new Boolean(false)</code>会评估为<code>true</code>。</p>
+
+<pre><code class="language-ts bad">const s = new String('hello');
+const b = new Boolean(false);
+const n = new Number(5);
+</code></pre>
+
+<p>可以将包装类作为函数调用以进行强制转换（这比使用<code>+</code>或连接空字符串更可取），或创建符号。有关更多信息，请参见<a href="#type-coercion">类型强制转换</a>。</p>
+
+<p><a id="formatting-semicolons-are-required"></a>
+<a id="disallowed-features-automatic-semicolon-insertion"></a></p>
+
+<h4 id="automatic-semicolon-insertion" class="numbered">自动分号插入</h4>
+
+<p>不要依赖自动分号插入（ASI）。使用分号明确结束所有语句。这可以防止由于错误的分号插入导致的错误，并确保与对ASI支持有限的工具（例如clang-format）兼容。</p>
+
+<h4 id="enums" class="numbered">常量枚举</h4>
+
+<p>代码<em>不得</em>使用<code>const enum</code>；应改用普通的<code>enum</code>。</p>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>TypeScript 枚举本身就不能被修改；<code>const enum</code>是一个与优化相关的独立语言特性，它使得枚举对模块的 JavaScript 用户不可见。</p>
+
+</section> 
+
+<h4 id="debugger-statements" class="numbered">调试器语句</h4>
+
+<p>生产代码中<em>不得</em>包含调试器语句。</p>
+
+<pre><code class="language-ts bad">function debugMe() {
+  debugger;
+}
+</code></pre>
+
+<p><a id="disallowed-features-with"></a></p>
+
+<h4 id="diallowed-features-with" class="numbered"><code>with</code></h4>
+
+<p>不要使用<code>with</code>关键字。它会使你的代码更难理解，并且自 ES5 以来在严格模式下已被禁止，详见<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with">MDN</a>。</p>
+
+<p><a id="disallowed-features-dynamic-code-evaluation"></a></p>
+
+<h4 id="dynamic-code-evaluation" class="numbered">动态代码评估</h4>
+
+<p>不要使用<code>eval</code>或<code>Function(...string)</code>构造函数（代码加载器除外）。这些功能可能存在危险，并且在使用严格<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">内容安全策略</a>的环境中无法工作。</p>
+
+<p><a id="disallowed-features-non-standard-features"></a></p>
+
+<h4 id="non-standard-features" class="numbered">非标准功能</h4>
+
+<p>不要使用非标准的 ECMAScript 或 Web 平台功能。</p>
+
+<p>这包括：</p>
+
+<ul>
+<li>已被标记为已废弃或已从 ECMAScript / Web 平台中完全移除的旧功能（参见<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features">MDN</a>）</li>
+<li>尚未标准化的新 ECMAScript 功能
+<ul>
+<li>避免使用当前 TC39 工作草案中或当前处于<a href="https://tc39.es/process-document/">提案过程</a>中的功能</li>
+<li>仅使用当前 ECMA-262 规范中定义的 ECMAScript 功能</li>
+</ul></li>
+<li>提议但尚未完成的 Web 标准：
+<ul>
+<li>尚未完成<a href="https://whatwg.org/faq#adding-new-features">提案过程</a>的 WHATWG 提案。</li>
+</ul></li>
+<li>非标准语言“扩展”（例如某些外部转译器提供的扩展）</li>
+</ul>
+
+<p>针对特定 JavaScript 运行时的项目，如仅最新 Chrome、Chrome 扩展、Node.JS、Electron，可以显然使用这些 API。在考虑使用某些浏览器中仅实现的专有 API 表面时要谨慎；考虑是否有通用库可以为您抽象掉这个 API 表面。</p>
+
+<p><a id="disallowed-features-modifying-builtin-objects"></a></p>
+
+<h4 id="modifying-builtin-objects" class="numbered">修改内置对象</h4>
+
+<p>永远不要修改内置类型，无论是通过向它们的构造函数还是原型添加方法。避免依赖执行此操作的库。</p>
+
+<p>除非绝对必要（例如第三方 API 要求），否则不要向全局对象添加符号。</p>
+
+<p><a id="syntax"></a>
+<a id="naming-rules-common-to-all-identifiers"></a></p>
+
+<h2 id="naming" class="numbered">命名</h2>
+<h3 id="identifiers" class="numbered">标识符</h3>
+
+<p>标识符<em>必须</em>仅使用ASCII字母、数字、下划线（用于常量和结构化测试方法名称）以及（很少见的）'$'符号。</p>
+
+<h4 id="naming-style" class="numbered">命名风格</h4>
+
+<p>TypeScript在类型中表达信息，因此名称<em>不应</em>包含类型中已包含的信息。（另见
+<a href="https://testing.googleblog.com/2017/10/code-health-identifiernamingpostforworl.html">测试博客</a>
+了解更多关于不应包含的内容。）</p>
+
+<p>此规则的一些具体示例：</p>
+
+<ul>
+<li>不要为私有属性或方法使用前导或尾随下划线。</li>
+<li>不要为可选参数使用<code>opt_</code>前缀。
+<ul>
+<li>对于访问器，请参见下面的<a href="#getters-and-setters-accessors">访问器规则</a>。</li>
+</ul></li>
+<li>除非在其环境中是惯用的，否则不要特别标记接口（<del><code>IMyInterface</code></del>或
+<del><code>MyFooInterface</code></del>）。当为类引入接口时，给它一个名称来表达接口存在的理由（例如<code>class TodoItem</code>和<code>interface
+TodoItemStorage</code>，如果接口表达了用于JSON存储/序列化的格式）。</li>
+<li>用<code>$</code>后缀<code>Observable</code>是常见的外部约定，可以帮助解决关于可观察值与具体值的混淆。是否这是有用的约定由各个团队自行判断，但在项目内<em>应</em>保持一致。</li>
+</ul>
+
+<p><a id="identifiers-abbreviations"></a></p>
+
+<h4 id="descriptive-names" class="numbered">描述性名称</h4>
+
+<p>名称<em>必须</em>对新读者来说具有描述性和清晰性。不要使用项目外读者不熟悉或模糊的缩写，也不要通过删除单词内的字母来缩写。</p>
+
+<ul>
+<li><strong>例外：</strong>作用域在10行或更少的变量，包括<em>不是</em>导出API一部分的参数，<em>可以</em>使用短（例如单字母）的变量名。</li>
+</ul>
+
+<pre><code class="language-ts good">// 良好的标识符：
+errorCount          // 没有缩写。
+dnsConnectionIndex  // 大多数人知道“DNS”代表什么。
+referrerUrl         // 同样适用于“URL”。
+customerId          // “Id”既普遍又不太可能被误解。
+</code></pre>
+
+<pre><code class="language-ts bad">// 不允许的标识符：
+n                   // 无意义。
+nErr                // 模糊的缩写。
+nCompConns          // 模糊的缩写。
+wgcConnections      // 只有你们小组知道这是什么意思。
+pcReader            // 很多东西都可以缩写为“pc”。
+cstmrId             // 删除了内部字母。
+kSecondsPerDay      // 不要使用匈牙利命名法。
+customerID          // “ID”的驼峰命名不正确。
+</code></pre>
+
+<p><a id="naming-camel-case-defined"></a></p>
+
+<h4 id="camel-case" class="numbered">驼峰命名法</h4>
+
+<p>
+将名称中的缩写和首字母缩写词视为整个单词，即使用
+<code>loadHttpUrl</code>，而不是<del><code>loadHTTPURL</code></del>，除非平台名称要求（例如
+<code>XMLHttpRequest</code>）。</p>
+
+<h4 id="identifiers-dollar-sign" class="numbered">美元符号</h4>
+
+<p>标识符<em>不应</em>通常使用<code>$</code>，除非第三方框架的命名约定要求。有关使用<code>$</code>与<code>Observable</code>值的更多信息，请参见<a href="#naming-style">上文</a>。</p>
+
+<p><a id="naming-class-names"></a>
+<a id="naming-method-names"></a>
+<a id="naming-enum-names"></a>
+<a id="naming-constant-names"></a>
+<a id="naming-local-variable-names"></a>
+<a id="naming-non-constant-field-names"></a>
+<a id="naming-parameter-names"></a></p>
+<h3 id="naming-rules-by-identifier-type" class="numbered">按标识符类型划分的命名规则</h3>
+
+<p>大多数标识符名称应根据标识符的类型遵循下表中的大小写规则。</p>
+
+<table>
+<thead>
+<tr>
+<th>样式</th>
+<th>类别</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>UpperCamelCase</code>
+
+</td>
+<td>类 / 接口 / 类型 / 枚举 / 装饰器 / 类型参数 / TSX中的组件函数 / JSXElement类型参数</td>
+</tr>
+<tr>
+<td><code>lowerCamelCase</code>
+</td>
+<td>变量 / 参数 / 函数 / 方法 / 属性 / 模块别名</td>
+</tr>
+<tr>
+<td><code>CONSTANT_CASE</code>
+</td>
+<td>全局常量值，包括枚举值。参见下面的<a href="#identifiers-constants">常量</a>。</td>
+</tr>
+<tr>
+<td><code>#ident</code></td>
+<td>私有标识符从不使用。</td>
+</tr>
+</tbody>
+</table>
+
+<p><a id="naming-template-parameter-names"></a></p>
+
+<h4 id="identifiers-type-parameters" class="numbered">类型参数</h4>
+
+<p>类型参数，如<code>Array&lt;T&gt;</code>中的，<em>可以</em>使用单个大写字符（<code>T</code>）或<code>UpperCamelCase</code>。</p>
+
+ 
+
+<h4 id="identifiers-test-names" class="numbered">测试名称</h4>
+
+<p>xUnit风格的测试框架中的测试方法名称<em>可以</em>使用<code>_</code>分隔符进行结构化，例如<code>testX_whenY_doesZ()</code>。</p>
+
+<h4 id="identifiers-underscore-prefix-suffix" class="numbered"><code>_</code>前缀/后缀</h4>
+
+<p>标识符不得使用<code>_</code>作为前缀或后缀。</p>
+
+<p>这也意味着<code>_</code><em>不得</em>单独用作标识符（例如，表示参数未使用）。</p>
+
+<blockquote>
+<p>提示：如果您只需要数组（或TypeScript元组）中的某些元素，您可以在解构语句中插入额外的逗号以忽略中间元素：</p>
+
+<pre><code class="language-ts">const [a, , b] = [1, 5, 10];  // a &lt;- 1, b &lt;- 10
+</code></pre>
+</blockquote>
+
+ 
+
+<h4 id="identifiers-imports" class="numbered">导入</h4>
+
+<p>模块命名空间导入为<code>lowerCamelCase</code>，而文件为<code>snake_case</code>，这意味着导入在大小写样式上不会匹配，例如</p>
+
+<pre><code class="language-ts good">import * as fooBar from './foo_bar';
+</code></pre>
+
+<p>某些库可能常用违反此命名方案的命名空间导入前缀，但由于开源使用非常普遍，使得违反的样式更易读。目前符合此例外情况的唯一库是：</p>
+
+<ul>
+<li><a href="https://jquery.com/">jquery</a>，使用<code>$</code>前缀</li>
+<li><a href="https://threejs.org/">threejs</a>，使用<code>THREE</code>前缀</li>
+</ul>
+
+<h4 id="identifiers-constants" class="numbered">常量</h4>
+
+<p><strong>不可变</strong>：<code>CONSTANT_CASE</code>表示一个值<em>意图</em>不被更改，并且<em>可以</em>用于技术上可以修改的值（即未深度冻结的值），以向用户指示它们不得被修改。</p>
+
+<pre><code class="language-ts good">const UNIT_SUFFIXES = {
+  'milliseconds': 'ms',
+  'seconds': 's',
+};
+// 尽管根据JavaScript的规则UNIT_SUFFIXES是可变的，
+// 大写字母显示用户不应修改它。
+</code></pre>
+
+<p>常量也可以是类的<code>static readonly</code>属性。</p>
+
+<pre><code class="language-ts good">class Foo {
+  private static readonly MY_SPECIAL_NUMBER = 5;
+
+  bar() {
+    return 2 * Foo.MY_SPECIAL_NUMBER;
+  }
+}
+</code></pre>
+
+<p><strong>全局</strong>：只有在模块级别声明的符号、模块级别类的静态字段和模块级别枚举的值，<em>可以</em>使用<code>CONST_CASE</code>。如果一个值在程序的生命周期内可以被多次实例化（例如，在函数内声明的局部变量，或嵌套在函数中的类的静态字段），那么它<em>必须</em>使用<code>lowerCamelCase</code>。</p>
+
+<p>如果一个值是实现接口的箭头函数，那么它<em>可以</em>声明为<code>lowerCamelCase</code>。</p>
+
+ 
+
+ 
+
+<p><a id="naming-local-aliases"></a></p>
+
+<h4 id="aliases" class="numbered">别名</h4>
+
+<p>在创建现有符号的局部范围别名时，使用现有标识符的格式。局部别名<em>必须</em>与源的现有命名和格式匹配。对于变量使用<code>const</code>作为您的局部别名，对于类字段使用<code>readonly</code>属性。</p>
+
+<blockquote>
+<p>注意：如果您只是为了在您选择的框架的模板中暴露别名，请记住也要应用适当的<a href="#properties-used-outside-of-class-lexical-scope">访问修饰符</a>。</p>
+</blockquote>
+
+<pre><code class="language-ts good">const {BrewStateEnum} = SomeType;
+const CAPACITY = 5;
+
+class Teapot {
+  readonly BrewStateEnum = BrewStateEnum;
+  readonly CAPACITY = CAPACITY;
+}
+</code></pre>
+
+<h2 id="type-system" class="numbered">类型系统</h2>
+<h3 id="type-inference" class="numbered">类型推断</h3>
+
+<p>代码<em>可以</em>依赖TypeScript编译器实现的类型推断来处理所有类型表达式（变量、字段、返回类型等）。</p>
+
+<pre><code class="language-ts good">const x = 15;  // 类型被推断。
+</code></pre>
+
+<p>对于可以轻易推断的类型（如初始化为<code>string</code>、<code>number</code>、<code>boolean</code>、<code>RegExp</code>字面量或<code>new</code>表达式的变量或参数），省略类型注解：</p>
+
+<pre><code class="language-ts bad">const x: boolean = true;  // 不好：这里的'boolean'不利于可读性
+</code></pre>
+
+<pre><code class="language-ts bad">// 不好：'Set'可以从初始化中轻易推断
+const x: Set&lt;string&gt; = new Set();
+</code></pre>
+
+<p>在某些情况下，需要明确指定类型以防止泛型类型参数被推断为<code>unknown</code>。例如，使用无值初始化泛型类型（如空数组、对象、<code>Map</code>或<code>Set</code>）。</p>
+
+<pre><code class="language-ts good">const x = new Set&lt;string&gt;();
+</code></pre>
+
+<p>对于更复杂的表达式，类型注解可以帮助提高程序的可读性：</p>
+
+<pre><code class="language-ts bad">// 没有注解的情况下，很难推理'value'的类型。
+const value = await rpc.getSomeValue().transform();
+</code></pre>
+
+<pre><code class="language-ts good">// 可以一眼看出'value'的类型。
+const value: string[] = await rpc.getSomeValue().transform();
+</code></pre>
+
+<p>是否需要注解由代码审查者决定。</p>
+
+ 
+
+<h4 id="return-types" class="numbered">返回类型</h4>
+
+<p>是否为函数和方法包含返回类型注解取决于代码作者。审查者<em>可以</em>要求注解以澄清难以理解的复杂返回类型。项目<em>可以</em>有本地政策始终要求返回类型，但这不是TypeScript风格的一般要求。</p>
+
+<p>明确标注函数和方法的隐式返回值有两个好处：</p>
+
+<ul>
+<li>为代码的读者提供更精确的文档。</li>
+<li>如果代码更改导致函数的返回类型发生变化，可以更快地发现潜在的类型错误。</li>
+</ul>
+
+<p><a id="null-vs-undefined"></a></p>
+
+<h3 id="undefined-and-null" class="numbered">Undefined和null</h3>
+
+<p>TypeScript支持<code>undefined</code>和<code>null</code>类型。可空类型可以构建为联合类型（<code>string|null</code>）；同样适用于<code>undefined</code>。没有专门的语法用于<code>undefined</code>和<code>null</code>的联合。</p>
+
+ 
+
+<p>TypeScript代码可以使用<code>undefined</code>或<code>null</code>来表示值的缺失，没有一般指导建议偏好其中之一。许多JavaScript API使用<code>undefined</code>（例如<code>Map.get</code>），而许多DOM和Google API使用<code>null</code>（例如<code>Element.getAttribute</code>），因此适当的缺失值取决于上下文。</p>
+
+<h4 id="nullableundefined-type-aliases" class="numbered">可空/undefined类型别名</h4>
+
+<p>类型别名<em>不得</em>在联合类型中包含<code>|null</code>或<code>|undefined</code>。可空别名通常表明null值通过应用程序的太多层传递，这模糊了导致<code>null</code>的原始问题的来源。它们还使类或接口上特定值可能缺失的情况变得不清楚。</p>
+
+<p>相反，代码<em>必须</em>仅在实际使用别名时添加<code>|null</code>或<code>|undefined</code>。代码<em>应该</em>在null值出现的地方附近处理它们，使用上述技术。</p>
+
+<pre><code class="language-ts bad">// 不好
+type CoffeeResponse = Latte|Americano|undefined;
+
+class CoffeeService {
+  getLatte(): CoffeeResponse { ... };
+}
+</code></pre>
+
+<pre><code class="language-ts good">// 更好
+type CoffeeResponse = Latte|Americano;
+
+class CoffeeService {
+  getLatte(): CoffeeResponse|undefined { ... };
+}
+</code></pre>
+
+<p><a id="optionals-vs-undefined-type"></a></p>
+
+<h4 id="prefer-optional-over-undefined" class="numbered">优先使用可选而不是<code>|undefined</code></h4>
+
+<p>此外，TypeScript支持使用<code>?</code>的特殊构造来表示可选参数和字段：</p>
+
+<pre><code class="language-ts good">interface CoffeeOrder {
+  sugarCubes: number;
+  milk?: Whole|LowFat|HalfHalf;
+}
+
+function pourCoffee(volume?: Milliliter) { ... }
+</code></pre>
+
+<p>可选参数隐式地在其类型中包含<code>|undefined</code>。然而，它们的不同之处在于，在构造值或调用方法时可以省略它们。例如，<code>{sugarCubes: 1}</code>是一个有效的<code>CoffeeOrder</code>，因为<code>milk</code>是可选的。</p>
+
+<p>使用接口或类上的可选字段和参数，而不是<code>|undefined</code>类型。</p>
+
+<p>对于类，最好完全避免这种模式，并尽可能初始化尽可能多的字段。</p>
+
+<pre><code class="language-ts good">class MyClass {
+  field = '';
+}
+</code></pre>
+
+<p><a id="structural-types-vs-nominal-types"></a></p>
+<h3 id="use-structural-types" class="numbered">使用结构类型</h3>
+
+<p>TypeScript的类型系统是结构化的，而不是名义上的。也就是说，如果一个值至少具有类型所要求的所有属性，并且属性的类型匹配（递归地），那么它就符合该类型。</p>
+
+<p>在提供基于结构的实现时，在符号声明处明确包含类型（这允许更精确的类型检查和错误报告）。</p>
+
+<pre><code class="language-ts good">const foo: Foo = {
+  a: 123,
+  b: 'abc',
+}
+</code></pre>
+
+<pre><code class="language-ts bad">const badFoo = {
+  a: 123,
+  b: 'abc',
+}
+</code></pre>
+
+<p>使用接口来定义结构类型，而不是类</p>
+
+<pre><code class="language-ts good">interface Foo {
+  a: number;
+  b: string;
+}
+
+const foo: Foo = {
+  a: 123,
+  b: 'abc',
+}
+</code></pre>
+
+<pre><code class="language-ts bad">class Foo {
+  readonly a: number;
+  readonly b: number;
+}
+
+const foo: Foo = {
+  a: 123,
+  b: 'abc',
+}
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>上面的“badFoo”对象依赖于类型推断。可以向“badFoo”添加额外的字段，并且类型是基于对象本身推断的。</p>
+
+<p>当将“badFoo”传递给接受“Foo”的函数时，错误将出现在函数调用处，而不是对象声明处。这在跨广泛代码库更改接口表面时也很有用。</p>
+
+<pre><code class="language-ts">interface Animal {
+  sound: string;
+  name: string;
+}
+
+function makeSound(animal: Animal) {}
+
+/**
+ * 'cat'的推断类型为'{sound: string}'
+ */
+const cat = {
+  sound: 'meow',
+};
+
+/**
+ * 'cat'不符合函数所需的类型契约，因此TypeScript编译器在这里报错，这可能与'cat'定义的地方相距甚远。
+ */
+makeSound(cat);
+
+/**
+ * Horse具有结构类型，类型错误在这里显示，而不是在函数调用处。'horse'不符合'Animal'的类型契约。
+ */
+const horse: Animal = {
+  sound: 'niegh',
+};
+
+const dog: Animal = {
+  sound: 'bark',
+  name: 'MrPickles',
+};
+
+makeSound(dog);
+makeSound(horse);
+</code></pre>
+
+</section> 
+
+<p><a id="interfaces-vs-type-aliases"></a></p>
+
+<h3 id="prefer-interfaces" class="numbered">优先使用接口而不是类型字面量别名</h3>
+
+<p>TypeScript支持
+<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases">类型别名</a>
+来命名类型表达式。这可以用来命名基本类型、联合类型、元组以及其他任何类型。</p>
+
+<p>然而，在声明对象类型时，应该使用接口而不是对象字面量表达式的类型别名。</p>
+
+<pre><code class="language-ts good">interface User {
+  firstName: string;
+  lastName: string;
+}
+</code></pre>
+
+<pre><code class="language-ts bad">type User = {
+  firstName: string,
+  lastName: string,
+}
+</code></pre>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>这些形式几乎是等价的，所以根据只选择一种形式来防止变体的原则，我们应该选择一种。此外，还有
+<a href="https://ncjamieson.com/prefer-interfaces/">有趣的技术原因偏好接口</a>。
+那篇文章引用了TypeScript团队负责人的话：“老实说，我的看法是，对于它们可以建模的任何东西，真的应该只使用接口。当有这么多关于显示/性能的问题时，类型别名没有任何好处。”</p>
+
+</section> 
+
+<h3 id="arrayt-type" class="numbered"><code>Array&lt;T&gt;</code> 类型</h3>
+
+<p>对于仅包含字母数字字符和点的简单类型，使用数组的语法糖形式，<code>T[]</code> 或 <code>readonly T[]</code>，而不是较长的形式 <code>Array&lt;T&gt;</code> 或 <code>ReadonlyArray&lt;T&gt;</code>。</p>
+
+<p>对于简单类型的多维非<code>readonly</code>数组，使用语法糖形式（<code>T[][]</code>、<code>T[][][]</code>等）而不是较长的形式。</p>
+
+<p>对于更复杂的任何东西，使用较长的形式 <code>Array&lt;T&gt;</code>。</p>
+
+<p>这些规则适用于每个嵌套级别，即在更复杂类型中嵌套的简单 <code>T[]</code> 仍然应写为 <code>T[]</code>，使用语法糖。</p>
+
+<pre><code class="language-ts good">let a: string[];
+let b: readonly string[];
+let c: ns.MyObj[];
+let d: string[][];
+let e: Array&lt;{n: number, s: string}&gt;;
+let f: Array&lt;string|number&gt;;
+let g: ReadonlyArray&lt;string|number&gt;;
+let h: InjectionToken&lt;string[]&gt;;  // 对嵌套类型使用语法糖。
+let i: ReadonlyArray&lt;string[]&gt;;
+let j: Array&lt;readonly string[]&gt;;
+</code></pre>
+
+<pre><code class="language-ts bad">let a: Array&lt;string&gt;;  // 语法糖更短。
+let b: ReadonlyArray&lt;string&gt;;
+let c: Array&lt;ns.MyObj&gt;;
+let d: Array&lt;string[]&gt;;
+let e: {n: number, s: string}[];  // 大括号使其更难阅读。
+let f: (string|number)[];         // 同样，括号也是如此。
+let g: readonly (string | number)[];
+let h: InjectionToken&lt;Array&lt;string&gt;&gt;;
+let i: readonly string[][];
+let j: (readonly string[])[];
+</code></pre>
+<h3 id="indexable-key-string-type" class="numbered">可索引类型 / 索引签名 (<code>{[key: string]: T}</code>)</h3>
+
+<p>在 JavaScript 中，常用对象作为关联数组（也称为“映射”、“哈希”或“字典”）。这种对象可以在 TypeScript 中使用<a href="https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures">索引签名</a>（<code>[k: string]: T</code>）进行类型化：</p>
+
+<pre><code class="language-ts">const fileSizes: {[fileName: string]: number} = {};
+fileSizes['readme.txt'] = 541;
+</code></pre>
+
+<p>在 TypeScript 中，为键提供一个有意义的标签。（该标签仅用于文档；否则不使用。）</p>
+
+<pre><code class="language-ts bad">const users: {[key: string]: number} = ...;
+</code></pre>
+
+<pre><code class="language-ts good">const users: {[userName: string]: number} = ...;
+</code></pre>
+
+<blockquote>
+<p>与其使用这些，不如考虑使用 ES6 的 <code>Map</code> 和 <code>Set</code> 类型。JavaScript 对象有<a href="http://2ality.com/2012/01/objects-as-maps.html">令人惊讶的不良行为</a>，而 ES6 类型更明确地传达了你的意图。此外，<code>Map</code> 可以使用除 <code>string</code> 之外的类型作为键，<code>Set</code> 也可以包含除 <code>string</code> 之外的类型。</p>
+</blockquote>
+
+<p>TypeScript 内置的 <code>Record&lt;Keys, ValueType&gt;</code> 类型允许构建具有定义键集的类型。这与关联数组不同，因为键是静态已知的。请参阅<a href="#mapped-conditional-types">下文</a>的相关建议。</p>
+
+<h3 id="mapped-conditional-types" class="numbered">映射类型和条件类型</h3>
+
+<p>TypeScript 的<a href="https://www.typescriptlang.org/docs/handbook/2/mapped-types.html">映射类型</a>和<a href="https://www.typescriptlang.org/docs/handbook/2/conditional-types.html">条件类型</a>允许基于其他类型指定新类型。TypeScript 的标准库包括基于这些的几个类型操作符（<code>Record</code>、<code>Partial</code>、<code>Readonly</code> 等）。</p>
+
+<p>这些类型系统功能允许简洁地指定类型并构建强大且类型安全的抽象。然而，它们也带来了一些缺点：</p>
+
+<ul>
+<li>与明确指定属性和类型关系（例如使用接口和扩展，见下文示例）相比，类型操作符需要读者在脑海中评估类型表达式。这可能使程序变得难以阅读，特别是结合类型推断和跨文件边界的表达式时。</li>
+<li>映射类型和条件类型的评估模型，特别是与类型推断结合时，定义不足，不总是被充分理解，并且在 TypeScript 编译器版本中经常发生变化。代码可能会“意外地”编译或似乎给出正确的结果。这增加了使用类型操作符的代码的未来支持成本。</li>
+<li>映射类型和条件类型在从复杂和/或推断类型派生类型时最强大。另一方面，这也是它们最容易创建难以理解和维护的程序的时候。</li>
+<li>一些语言工具与这些类型系统功能的兼容性不佳。例如，你的 IDE 的查找引用功能（因此重命名属性重构）不会在 <code>Pick&lt;T, Keys&gt;</code> 类型中找到属性，代码搜索也不会为它们创建超链接。</li>
+<li>
+</ul>
+
+<p>风格建议是：</p>
+
+<ul>
+<li>始终使用可能表达你的代码的最简单类型构造。</li>
+<li>少量的重复或冗长通常比复杂类型表达式的长期成本便宜得多。</li>
+<li>可以使用映射类型和条件类型，但需考虑上述因素。</li>
+</ul>
+
+<p>例如，TypeScript 内置的 <code>Pick&lt;T, Keys&gt;</code> 类型允许通过子集化另一个类型 <code>T</code> 来创建新类型，但简单的接口扩展通常更容易理解。</p>
+
+<pre><code class="language-ts">interface User {
+  shoeSize: number;
+  favoriteIcecream: string;
+  favoriteChocolate: string;
+}
+
+// FoodPreferences 具有 favoriteIcecream 和 favoriteChocolate，但没有 shoeSize。
+type FoodPreferences = Pick&lt;User, 'favoriteIcecream'|'favoriteChocolate'&gt;;
+</code></pre>
+
+<p>这相当于在 <code>FoodPreferences</code> 上明确列出属性：</p>
+
+<pre><code class="language-ts">interface FoodPreferences {
+  favoriteIcecream: string;
+  favoriteChocolate: string;
+}
+</code></pre>
+
+<p>为了减少重复，<code>User</code> 可以扩展 <code>FoodPreferences</code>，或者（可能更好）嵌套一个食品偏好字段：</p>
+
+<pre><code class="language-ts good">interface FoodPreferences { /* 如上 */ }
+interface User extends FoodPreferences {
+  shoeSize: number;
+  // 也包括偏好。
+}
+</code></pre>
+
+<p>在这里使用接口使属性的分组明确，改善了 IDE 支持，允许更好的优化，并且可以说使代码更易于理解。</p>
+<h3 id="any" class="numbered"><code>any</code> 类型</h3>
+
+<p>TypeScript 的 <code>any</code> 类型是所有其他类型的超类型和子类型，并允许解引用所有属性。因此，<code>any</code> 是危险的 - 它可以掩盖严重的编程错误，并且其使用会削弱静态类型存在的价值。</p>
+
+ 
+
+<section>
+
+<p><strong>考虑<em>不</em>使用 <code>any</code>。</strong> 在您想使用 <code>any</code> 的情况下，请考虑以下之一：</p>
+
+</section> 
+
+<ul>
+<li><a href="#any-specific">提供更具体的类型</a></li>
+<li><a href="#any-unknown">使用 <code>unknown</code></a></li>
+<li><a href="#any-suppress">抑制 lint 警告并记录原因</a></li>
+</ul>
+
+<h4 id="any-specific" class="numbered">提供更具体的类型</h4>
+
+<p>使用接口、内联对象类型或类型别名：</p>
+
+<pre><code class="language-ts good">// 使用声明的接口来表示服务器端的 JSON。
+declare interface MyUserJson {
+  name: string;
+  email: string;
+}
+
+// 使用类型别名来表示重复编写的类型。
+type MyType = number|string;
+
+// 或者对复杂的返回值使用内联对象类型。
+function getTwoThings(): {something: number, other: string} {
+  // ...
+  return {something, other};
+}
+
+// 使用泛型类型，在其他情况下库会使用 `any` 来表示它们不关心用户操作的类型（但请注意下面的“仅返回类型泛型”）。
+function nicestElement&lt;T&gt;(items: T[]): T {
+  // 在 items 中找到最合适的元素。
+  // 代码还可以对 T 施加约束，例如 &lt;T extends HTMLElement&gt;。
+}
+</code></pre>
+
+<h4 id="any-unknown" class="numbered">使用 <code>unknown</code> 替代 <code>any</code></h4>
+
+<p><code>any</code> 类型允许赋值到任何其他类型并解引用其任何属性。通常这种行为是不必要或不希望的，代码只需要表达一个类型是未知的。在这种情况下，使用内置类型 <code>unknown</code> — 它表达了这个概念，并且更安全，因为它不允许解引用任意属性。</p>
+
+<pre><code class="language-ts good">// 可以将任何值（包括 null 或 undefined）赋值给它，但不能在不缩小类型或进行类型转换的情况下使用它。
+const val: unknown = value;
+</code></pre>
+
+<pre><code class="language-ts bad">const danger: any = value /* 任意表达式的结果 */;
+danger.whoops();  // 这种访问完全未经检查！
+</code></pre>
+
+<section>
+
+<p>为了安全地使用 <code>unknown</code> 值，请使用
+<a href="https://www.typescriptlang.org/docs/handbook/advanced-types.html#type-guards-and-differentiating-types">类型守卫</a> 来缩小类型</p>
+
+</section> 
+
+ 
+
+<h4 id="any-suppress" class="numbered">抑制 <code>any</code> lint 警告</h4>
+
+<p>有时使用 <code>any</code> 是合法的，例如在测试中构建一个模拟对象。在这种情况下，添加一个注释来抑制 lint 警告，并记录为什么它是合法的。</p>
+
+<pre><code class="language-ts good">// 这个测试只需要 BookService 的部分实现，如果我们遗漏了什么，测试将以明显的方式失败。
+// 这是一个故意不安全的部分模拟
+// tslint:disable-next-line:no-any
+const mockBookService = ({get() { return mockBook; }} as any) as BookService;
+// 购物车在此测试中未使用
+// tslint:disable-next-line:no-any
+const component = new MyComponent(mockBookService, /* 未使用的购物车 */ null as any);
+</code></pre>
+
+ 
+
+<h3 id="empty-interface-type" class="numbered"><code>{}</code> 类型</h3>
+
+<p><code>{}</code> 类型，也称为<em>空接口</em>类型，表示一个没有属性的接口。空接口类型没有指定的属性，因此任何非 nullish 值都可以赋值给它。</p>
+
+<pre><code class="language-ts bad">let player: {};
+
+player = {
+  health: 50,
+}; // 允许。
+
+console.log(player.health) // 类型 '{}' 上不存在属性 'health'。
+</code></pre>
+
+<pre><code class="language-ts bad">function takeAnything(obj:{}) {
+
+}
+
+takeAnything({});
+takeAnything({ a: 1, b: 2 });
+</code></pre>
+
+<p>Google3 代码<strong>不应</strong>在大多数情况下使用 <code>{}</code>。<code>{}</code> 表示任何非 nullish 的原始类型或对象类型，这很少是合适的。更喜欢使用以下更具描述性的类型之一：</p>
+
+<ul>
+<li><code>unknown</code> 可以容纳任何值，包括 <code>null</code> 或 <code>undefined</code>，并且通常对于不透明的值更合适。</li>
+<li><code>Record&lt;string, T&gt;</code> 更适合字典类型的对象，并通过明确指定所包含值的类型 <code>T</code> 提供更好的类型安全性（该类型本身可以是 <code>unknown</code>）。</li>
+<li><code>object</code> 排除了原始类型，只留下非 nullish 的函数和对象，但没有对可能可用的属性做出任何其他假设。</li>
+</ul>
+
+<h3 id="tuple-types" class="numbered">元组类型</h3>
+
+<p>如果您想创建一个 Pair 类型，请改用元组类型：</p>
+
+<pre><code class="language-ts bad">interface Pair {
+  first: string;
+  second: string;
+}
+function splitInHalf(input: string): Pair {
+  ...
+  return {first: x, second: y};
+}
+</code></pre>
+
+<pre><code class="language-ts good">function splitInHalf(input: string): [string, string] {
+  ...
+  return [x, y];
+}
+
+// 使用方式如下：
+const [leftHalf, rightHalf] = splitInHalf('my string');
+</code></pre>
+
+<p>然而，通常为属性提供有意义的名称会更清晰。</p>
+
+<p>如果声明一个 <code>interface</code> 过于繁重，您可以使用内联对象字面量类型：</p>
+
+<pre><code class="language-ts good">function splitHostPort(address: string): {host: string, port: number} {
+  ...
+}
+
+// 使用方式如下：
+const address = splitHostPort(userAddress);
+use(address.port);
+
+// 您还可以使用解构来获得类似元组的行为：
+const {host, port} = splitHostPort(userAddress);
+</code></pre>
+<h3 id="wrapper-types" class="numbered">包装类型</h3>
+
+<p>有一些与 JavaScript 原始类型相关的类型，<em>不应</em>使用：</p>
+
+<ul>
+<li><code>String</code>、<code>Boolean</code> 和 <code>Number</code> 与相应的原始类型 <code>string</code>、<code>boolean</code> 和 <code>number</code> 略有不同。始终使用小写版本。</li>
+<li><code>Object</code> 与 <code>{}</code> 和 <code>object</code> 相似，但略宽松。使用 <code>{}</code> 表示包含除 <code>null</code> 和 <code>undefined</code> 之外的所有类型的类型，或者使用小写的 <code>object</code> 进一步排除其他原始类型（上述三种类型，加上 <code>symbol</code> 和 <code>bigint</code>）。</li>
+</ul>
+
+<p>此外，切勿将包装类型作为构造函数调用（使用 <code>new</code>）。</p>
+
+<h3 id="return-type-only-generics" class="numbered">仅返回类型泛型</h3>
+
+<p>避免创建仅有返回类型泛型的 API。在使用具有仅返回类型泛型的现有 API 时，始终明确指定泛型。</p>
+
+ 
+
+<p><a id="appendices-style-related-tools"></a></p>
+
+<h2 id="toolchain-requirements" class="numbered">工具链要求</h2>
+
+<p>Google 风格要求以特定方式使用多个工具，这里进行了概述。</p>
+
+<p><a id="clang-format"></a>
+<a id="google-format"></a>
+<a id="use-the-google3-formatter"></a>
+<a id="source-code-formatting"></a>
+<a id="appendices-clang-format"></a>
+<a id="formatting"></a>
+<a id="formatting-array-literals"></a>
+<a id="formatting-block-indentation"></a>
+<a id="formatting-column-limit"></a>
+<a id="formatting-empty-blocks"></a>
+<a id="formatting-function-expressions"></a>
+<a id="formatting-nonempty-blocks"></a>
+<a id="formatting-object-literals"></a>
+<a id="formatting-one-statement-perline"></a>
+<a id="formatting-statements"></a>
+<a id="formatting-switch-statements"></a>
+<a id="formatting-vertical-whitespace"></a>
+<a id="formatting-whitespace"></a></p>
+
+ 
+
+<h3 id="typescript-compiler" class="numbered">TypeScript 编译器</h3>
+
+<p>所有 TypeScript 文件必须通过使用标准工具链进行类型检查。</p>
+
+<h4 id="ts-ignore" class="numbered">@ts-ignore</h4>
+
+<p>不要使用 <code>@ts-ignore</code> 及其变体 <code>@ts-expect-error</code> 或 <code>@ts-nocheck</code>。</p>
+
+<section class="zippy">
+
+<p>为什么？</p>
+
+<p>它们看似是解决编译器错误的简单方法，但在实践中，特定的编译器错误往往是由更大的问题引起的，可以更直接地解决。</p>
+
+<p>例如，如果您使用 <code>@ts-ignore</code> 来抑制类型错误，那么很难预测周围代码将看到什么类型。对于许多类型错误，<a href="#any">如何最佳使用 <code>any</code></a> 中的建议很有用。</p>
+
+</section> 
+
+ 
+
+<p>您可以在单元测试中使用 <code>@ts-expect-error</code>，但通常 <em>不应</em>这样做。<code>@ts-expect-error</code> 会抑制所有错误。很容易意外地过度匹配并抑制更严重的错误。考虑以下一种方法：</p>
+
+<ul>
+<li>在测试需要在运行时处理未检查值的 API 时，将其转换为预期类型或 <code>any</code>，并添加解释性注释。这将错误抑制限制在一个表达式上。</li>
+<li>抑制 lint 警告并记录原因，类似于 <a href="#any-suppress">抑制 <code>any</code> lint 警告</a>。</li>
+</ul>
+
+ 
+
+ 
+
+<h3 id="conformance" class="numbered">符合性</h3>
+
+<p>Google TypeScript 包括几个 <em>符合性框架</em>，
+
+<a href="https://tsetse.info">tsetse</a> 和
+<a href="https://github.com/google/tsec">tsec</a>。</p>
+
+ 
+
+<p>这些规则通常用于强制执行关键限制（例如定义全局变量，这可能会破坏代码库）和安全模式（例如使用 <code>eval</code> 或分配给 <code>innerHTML</code>），或更宽松地提高代码质量。</p>
+
+<p>Google 风格的 TypeScript 必须遵守任何适用的全局或框架本地符合性规则。</p>
+
+ 
+
+ 
+
+<p><a id="jsdoc"></a>
+<a id="formatting-comments"></a></p>
+
+<h2 id="comments-documentation" class="numbered">注释和文档</h2>
+
+ 
+
+<h4 id="jsdoc-vs-comments" class="numbered">JSDoc 与注释</h4>
+
+<p>有两种类型的注释，JSDoc（<code>/** ... */</code>）和非 JSDoc 普通注释（<code>// ...</code> 或 <code>/* ... */</code>）。</p>
+
+<ul>
+<li>使用 <code>/** JSDoc */</code> 注释进行文档化，即代码用户应阅读的注释。</li>
+<li>使用 <code>// 行注释</code> 进行实现注释，即仅与代码本身的实现有关的注释。</li>
+</ul>
+
+<p>JSDoc 注释可被工具（如编辑器和文档生成器）理解，而普通注释仅供其他人类阅读。</p>
+
+<p><a id="formatting-block-comment-style"></a></p>
+
+<h4 id="multi-line-comments" class="numbered">多行注释</h4>
+
+<p>多行注释应与周围代码保持相同的缩进。它们 <em>必须</em>使用多个单行注释（<code>//</code> 风格），而不是块注释风格（<code>/* */</code>）。</p>
+
+<pre><code class="language-ts good">// 这样是
+// 正确的
+</code></pre>
+
+<pre><code class="language-ts bad">/*
+ * 这应该
+ * 使用多个
+ * 单行注释
+ */
+
+/* 这应该使用 // */
+</code></pre>
+
+<p>注释不应用星号或其他字符绘制的框包围。</p>
+
+ 
+
+<h3 id="jsdoc-general-form" class="numbered">JSDoc 通用格式</h3>
+
+<p>JSDoc 注释的基本格式如以下示例所示：</p>
+
+<pre><code class="language-ts good">/**
+ * 多行 JSDoc 文本写在这里，
+ * 正常换行。
+ * @param arg 要处理的数字。
+ */
+function doSomething(arg: number) { … }
+</code></pre>
+
+<p>或者在单行示例中：</p>
+
+<pre><code class="language-ts good">/** 这个简短的 jsdoc 描述了函数。 */
+function doSomething(arg: number) { … }
+</code></pre>
+
+<p>如果单行注释溢出到多行，它 <em>必须</em>使用多行样式，<code>/**</code> 和 <code>*/</code> 各占一行。</p>
+
+<p>许多工具从 JSDoc 注释中提取元数据以执行代码验证和优化。因此，这些注释 <em>必须</em>格式正确。</p>
+<h3 id="jsdoc-markdown" class="numbered">Markdown</h3>
+
+<p>JSDoc 使用 Markdown 编写，尽管在必要时<em>可能</em>包含 HTML。</p>
+
+<p>这意味着解析 JSDoc 的工具将忽略纯文本格式，因此如果您这样做：</p>
+
+<pre><code class="language-ts bad">/**
+ * 基于三个因素计算重量：
+ *   发送的项目
+ *   接收的项目
+ *   最后的时间戳
+ */
+</code></pre>
+
+<p>它将被渲染成这样：</p>
+
+<pre><code>基于三个因素计算重量：发送的项目接收的项目最后的时间戳
+</code></pre>
+
+<p>相反，请编写 Markdown 列表：</p>
+
+<pre><code class="language-ts good">/**
+ * 基于三个因素计算重量：
+ *
+ * - 发送的项目
+ * - 接收的项目
+ * - 最后的时间戳
+ */
+</code></pre>
+
+<h3 id="jsdoc-tags" class="numbered">JSDoc 标签</h3>
+
+<p>Google 风格允许使用 JSDoc 标签的一个子集。大多数标签必须占用自己的行，并且标签必须位于行的开头。</p>
+
+<pre><code class="language-ts good">/**
+ * "param" 标签必须占用自己的行，不能合并。
+ * @param left 左参数的描述。
+ * @param right 右参数的描述。
+ */
+function add(left: number, right: number) { ... }
+</code></pre>
+
+<pre><code class="language-ts bad">/**
+ * "param" 标签必须占用自己的行，不能合并。
+ * @param left @param right
+ */
+function add(left: number, right: number) { ... }
+</code></pre>
+
+<h3 id="jsdoc-line-wrapping" class="numbered">行包装</h3>
+
+<p>行包装的块标签缩进四个空格。包装的描述文本<em>可能</em>与前几行的描述对齐，但这种水平对齐是不鼓励的。</p>
+
+<pre><code class="language-ts good">/**
+ * 说明长参数/返回值描述的行包装。
+ * @param foo 这是一个具有特别长的描述的参数，无法在一行中容纳。
+ *     这是一个具有特别长的描述的参数，无法在一行中容纳。
+ * @return 这返回一些具有长度描述的内容，无法在一行中容纳。
+ *     这返回一些具有长度描述的内容，无法在一行中容纳。
+ */
+exports.method = function(foo) {
+  return 5;
+};
+</code></pre>
+
+<p>在包装 <code>@desc</code> 或 <code>@fileoverview</code> 描述时不要缩进。</p>
+
+<h3 id="document-all-top-level-exports-of-modules" class="numbered">记录模块的所有顶级导出</h3>
+
+<p>使用 <code>/** JSDoc */</code> 注释向您的代码用户传达信息。避免仅仅重复属性或参数名称。您<em>应该</em>还记录所有其用途不是从名称上立即明显的属性和方法（导出/公共或非导出/公共），由您的审阅者判断。</p>
+
+<p><strong>例外：</strong>仅为工具消费而导出的符号，如 @NgModule 类，不需要注释。</p>
+
+<h3 id="jsdoc-class-comments" class="numbered">类注释</h3>
+
+<p>类的 JSDoc 注释应为读者提供足够的信息，了解如何以及何时使用该类，以及正确使用该类所需的任何其他考虑。构造函数上的文本描述可以省略。</p>
+
+<h3 id="method-and-function-comments" class="numbered">方法和函数注释</h3>
+
+<p>如果方法的 JSDoc 或方法名称和类型签名中已经很明显，可以省略方法、参数和返回值的描述。</p>
+
+<p>方法描述以描述方法做什么的动词短语开始。这不是一个祈使句，而是以第三人称书写，好像在它之前有一个隐含的<q>此方法...</q>。</p>
+
+<h3 id="parameter-property-comments" class="numbered">参数属性注释</h3>
+
+<p>一个
+<a href="https://www.typescriptlang.org/docs/handbook/2/classes.html#parameter-properties">参数属性</a>
+是一个由 <code>private</code>、<code>protected</code>、<code>public</code> 或 <code>readonly</code> 之一的前缀修饰的构造函数参数。参数属性同时声明了一个参数和一个实例属性，并隐式地将其赋值。例如，<code>constructor(private readonly foo: Foo)</code>，声明构造函数接受一个参数 <code>foo</code>，但也声明了一个私有只读属性 <code>foo</code>，并在执行构造函数的其余部分之前将参数赋值给该属性。</p>
+
+<p>要记录这些字段，请使用 JSDoc 的 <code>@param</code> 注释。编辑器会在构造函数调用和属性访问时显示描述。</p>
+
+<pre><code class="language-ts good">/** 此类演示如何记录参数属性。 */
+class ParamProps {
+  /**
+   * @param percolator 用于冲泡的咖啡壶。
+   * @param beans 要冲泡的咖啡豆。
+   */
+  constructor(
+    private readonly percolator: Percolator,
+    private readonly beans: CoffeeBean[]) {}
+}
+</code></pre>
+
+<pre><code class="language-ts good">/** 此类演示如何记录普通字段。 */
+class OrdinaryClass {
+  /** 将在下一次调用 brew() 时使用的咖啡豆。 */
+  nextBean: CoffeeBean;
+
+  constructor(initialBean: CoffeeBean) {
+    this.nextBean = initialBean;
+  }
+}
+</code></pre>
+
+<p><a id="omit-comments-that-are-redundant-with-typescript"></a>
+<a id="do-not-use-override"></a></p>
+
+<h3 id="jsdoc-type-annotations" class="numbered">JSDoc 类型注释</h3>
+
+<p>JSDoc 类型注释在 TypeScript 源代码中是多余的。不要在 <code>@param</code> 或 <code>@return</code> 块中声明类型，不要在使用 <code>implements</code>、<code>enum</code>、<code>private</code>、<code>override</code> 等关键字的代码上编写 <code>@implements</code>、<code>@enum</code>、<code>@private</code>、<code>@override</code> 等。</p>
+<h3 id="redundant-comments" class="numbered">添加有实际信息价值的注释</h3>
+
+<p>对于非导出的符号，有时函数或参数的名称和类型就足够了。不过，代码通常会从比变量名更多的文档中受益！</p>
+
+<ul>
+<li><p>避免仅仅重述参数名称和类型的注释，例如</p>
+
+<pre><code class="language-ts bad">/** @param fooBarService Foo应用程序的Bar服务。 */
+</code></pre></li>
+<li><p>由于这条规则，只有当它们增加信息时才需要<code>@param</code>和<code>@return</code>行，否则可以省略。</p>
+
+<pre><code class="language-ts good">/**
+ * 向服务器POST请求开始冲泡咖啡。
+ * @param amountLitres 要冲泡的量。必须适合壶的大小！
+ */
+brew(amountLitres: number, logger: Logger) {
+  // ...
+}
+</code></pre></li>
+</ul>
+
+<p><a id="formatting-param-name-comments"></a></p>
+
+<h4 id="comments-when-calling-a-function" class="numbered">调用函数时的注释</h4>
+
+<p>当方法名称和参数值不足以传达参数的含义时，应使用“参数名称”注释。</p>
+
+<p>在添加这些注释之前，请考虑重构方法以接受一个接口并解构它，以大大提高调用点的可读性。</p>
+
+<p>“参数名称”注释应放在参数值之前，并包括参数名称和<code>=</code>后缀：</p>
+
+<pre><code class="language-ts good">someFunction(obviousParam, /* shouldRender= */ true, /* name= */ 'hello');
+</code></pre>
+
+<p>现有代码可能使用旧版参数名称注释样式，这种样式将这些注释放在参数值之后，并省略<code>=</code>。在文件内为了保持一致性，继续使用这种样式是可以接受的。</p>
+
+<pre><code class="language-ts">someFunction(obviousParam, true /* shouldRender */, 'hello' /* name */);
+</code></pre>
+
+<h3 id="place-documentation-prior-to-decorators" class="numbered">将文档放在装饰器之前</h3>
+
+<p>当类、方法或属性同时具有像<code>@Component</code>这样的装饰器和JsDoc时，请确保在装饰器之前编写JsDoc。</p>
+
+<ul>
+<li><p>不要在装饰器和被装饰的语句之间编写JsDoc。</p>
+
+<pre><code class="language-ts bad">@Component({
+  selector: 'foo',
+  template: 'bar',
+})
+/** 打印“bar”的组件。 */
+export class FooComponent {}
+</code></pre></li>
+<li><p>在装饰器之前编写JsDoc块。</p>
+
+<pre><code class="language-ts good">/** 打印“bar”的组件。 */
+@Component({
+  selector: 'foo',
+  template: 'bar',
+})
+export class FooComponent {}
+</code></pre></li>
+</ul>
+
+ 
+
+<h2 id="policies" class="numbered">政策</h2>
+
+<p><a id="policies-be-consistent"></a>
+<a id="policies-newly-added-code-use-google-style"></a></p>
+
+<h3 id="consistency" class="numbered">一致性</h3>
+
+<p>对于本规范未明确解决的任何样式问题，请按照同一文件中其他代码已在做的方式进行操作（“保持一致”）。如果这不能解决问题，请考虑模仿同一目录中的其他文件。</p>
+
+<p>全新的文件必须使用Google风格，无论同一包中其他文件的样式选择如何。当向非Google风格的文件添加新代码时，建议首先重新格式化现有代码，遵循下面的建议。如果未进行此重新格式化，则新代码应尽可能与同一文件中的现有代码保持一致，但不得违反样式指南。</p>
+
+<p><a id="policies-code-not-in-google-style"></a>
+<a id="policies-reformatting-existing-code"></a></p>
+
+<h4 id="reformatting-existing-code" class="numbered">重新格式化现有代码</h4>
+
+<p>您偶尔会在代码库中遇到不符合Google风格的文件。这些文件可能来自收购，或者可能是在Google风格对某些问题采取立场之前编写的，或者由于任何其他原因而不是Google风格。</p>
+
+<p>在更新现有代码的样式时，请遵循以下指导原则。</p>
+
+<ol>
+<li>不需要更改所有现有代码以符合当前样式指南。重新格式化现有代码是在代码变动和一致性之间进行权衡。样式规则随时间演变，维持合规性的这类调整会造成不必要的变动。然而，如果对文件进行了重大更改，预期该文件将采用Google风格。</li>
+<li>小心不要让机会主义的样式修复模糊了CL的焦点。如果您发现自己在做很多与CL的核心焦点无关的样式更改，请将这些更改提升到一个单独的CL中。</li>
+</ol>
+
+ 
+
+ 
+
+<p><a id="policies-deprecation"></a></p>
+
+<h3 id="deprecation" class="numbered">废弃</h3>
+
+<p>使用<code>@deprecated</code> JsDoc注释标记废弃的方法、类或接口。废弃注释必须包括简单、清晰的指示，以便人们修复他们的调用点。</p>
+
+ 
+
+<p><a id="policies-generated-code-mostly-exempt"></a></p>
+<h3 id="generated-code" class="numbered">生成的代码：大部分豁免</h3>
+
+<p>构建过程中生成的源代码不需要遵循Google风格。然而，任何将从手写源代码中引用的生成标识符必须遵循命名要求。作为一种特殊例外，这些标识符允许包含下划线，这有助于避免与手写标识符的冲突。</p>
+
+ 
+
+<p><a id="goals"></a></p>
+
+<h4 id="style-guide-goals" class="numbered">风格指南目标</h4>
+
+<p>一般来说，工程师通常最了解他们代码中需要什么，所以如果有多个选项且选择取决于具体情况，我们应该让决定在本地做出。因此，默认答案应该是“略去它”。</p>
+
+<p>以下几点是例外情况，这些是我们有一些全局规则的原因。请根据以下内容评估您的风格指南提案：</p>
+
+<ol>
+<li><p><strong>代码应避免已知会引起问题的模式，特别是对于新手用户。</strong></p>
+
+</li>
+<li><p><strong>跨项目的代码应在无关的变化中保持一致。</strong></p>
+
+<p>当有两种在表面上等价的选项时，我们应该考虑选择其中一个，这样我们就不会无故分化发展，并避免在代码审查中进行无意义的辩论。</p>
+
+<p>示例：</p>
+
+<ul>
+<li>名称的大写风格。</li>
+<li><code>x as T</code> 语法与等价的 <code>&lt;T&gt;x</code> 语法（不允许）。</li>
+<li><code>Array&lt;[number, number]&gt;</code> 与 <code>[number, number][]</code>。</li>
+</ul></li>
+<li><p><strong>代码应长期可维护。</strong></p>
+
+<p>代码通常比其原始作者的工作时间更长，TypeScript团队必须确保Google未来的工作顺利进行。</p>
+
+<p>示例：</p>
+
+<ul>
+<li>我们使用软件自动更改代码，因此代码是自动格式化的，以便软件轻松满足空白规则。</li>
+<li>我们要求使用一组编译器标志，因此可以假设特定的一组标志来编写给定的TS库，用户始终可以安全地使用共享库。</li>
+<li>代码必须导入它使用的库（“严格依赖”），以便依赖项中的重构不会更改其用户的依赖项。</li>
+<li>我们要求用户编写测试。如果没有测试，我们无法确信对语言所做的更改不会破坏用户。</li>
+</ul></li>
+<li><p><strong>代码审查者应专注于提高代码质量，而不是强制执行任意规则。</strong></p>
+
+<p>如果可以将您的规则实现为自动检查，这通常是一个好兆头。这也支持原则3。</p>
+
+<p>如果它真的无关紧要——如果它是语言的一个晦涩角落，或者如果它避免了一个不太可能发生的错误——可能值得略去它。</p></li>
+</ol>
+
+ 
+
+<p><a id="appendices-legacy-exceptions"></a>
+<a id="appendices-legacy-exceptions-declareLegacyNamespace"></a>
+<a id="appendices-legacy-exceptions-forward-declare"></a>
+<a id="appendices-legacy-exceptions-function"></a>
+<a id="appendices-legacy-exceptions-goog-provide"></a>
+<a id="appendices-legacy-exceptions-goog-provide-summary"></a>
+<a id="appendices-legacy-exceptions-goog-scope"></a>
+<a id="appendices-legacy-exceptions-module-get"></a>
+<a id="appendices-legacy-exceptions-overview"></a>
+<a id="appendices-legacy-exceptions-var"></a>
+<a id="appendices-legacy-exceptions-var-const"></a>
+<a id="appendices-legacy-exceptions-var-declare"></a>
+<a id="appendices-legacy-exceptions-var-scope"></a>
+<a id="features-classes-old-style"></a></p>
+
+<div class="footnotes">
+<hr>
+<ol>
+
+<li id="fn1">
+<p>命名空间导入通常被称为“模块导入” <a href="#fnref1" rev="footnote">↩</a></p>
+</li>
+
+<li id="fn2">
+<p>命名导入有时被称为“解构导入”，因为它们使用与解构赋值相似的语法。 <a href="#fnref2" rev="footnote">↩</a></p>
+</li>
+
+</ol>
+</div>
+</div>
+</body>
+</html>

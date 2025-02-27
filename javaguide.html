@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Google Java 风格指南</title>
+<link rel="stylesheet" href="javaguide.css">
+<script src="include/styleguide.js"></script>
+<link rel="shortcut icon" href="/styleguide/favicon.ico">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head>
+<body onload="initStyleGuide();">
+<div id="content">
+<h1>Google Java 风格指南</h1>
+<div id="tocDiv" class="vertical_toc"></div>
+
+<div class="main_body">
+
+<h2 id="s1-introduction">1 引言</h2>
+
+<p>本文档是 Google 对 Java™ 编程语言源代码编码标准的<strong>完整</strong>定义。如果一个 Java 源文件遵循此处的规则，则称其为<em>Google 风格</em>。</p>
+
+<p>与其他编程风格指南一样，本指南涵盖的不仅仅是格式的美观问题，还包括其他类型的约定或编码标准。然而，本文档主要关注我们普遍遵循的<strong>严格规则</strong>，并避免提供不明确可执行的<em>建议</em>（无论是人工还是工具执行）。</p>
+
+<h3 id="s1.1-terminology">1.1 术语说明</h3>
+
+<p>在本文档中，除非另有说明：</p>
+
+<ol>
+  <li>术语<em>类</em>包括“普通”类、枚举类、接口或注解类型（<code class="prettyprint lang-java">@interface</code>）。</li>
+
+  <li>术语<em>成员</em>（类的一个成员）包括嵌套类、字段、方法或<em>构造函数</em>；即，除初始化器和注释之外，类的所有顶级内容。</li>
+
+  <li>术语<em>注释</em>始终指<em>实现</em>注释。我们不使用“文档注释”这一短语，而是使用常见的术语“Javadoc”。</li>
+</ol>
+
+<p>其他“术语说明”将偶尔出现在整个文档中。</p>
+
+<h3 id="s1.2-guide-notes">1.2 指南说明</h3>
+
+<p>本文档中的示例代码是<strong>非规范性</strong>的。也就是说，虽然示例符合 Google 风格，但它们可能不是表示代码的唯一风格化方式。示例中做出的可选格式选择不应作为规则强制执行。</p>
+
+<h2 id="s2-source-file-basics">2 源文件基础</h2>
+
+<h3 id="s2.1-file-name">2.1 文件名</h3>
+
+<p>源文件名由其中包含的顶级类的区分大小写的名称组成（其中有且仅有一个），加上<code>.java</code>扩展名。</p>
+
+<h3 id="s2.2-file-encoding">2.2 文件编码：UTF-8</h3>
+
+<p>源文件使用<strong>UTF-8</strong>编码。</p>
+
+<h3 id="s2.3-special-characters">2.3 特殊字符</h3>
+
+<h4 id="s2.3.1-whitespace-characters">2.3.1 空白字符</h4>
+
+<p>除了行终止符序列外，源文件中唯一出现的空白字符是<strong>ASCII 水平空格字符</strong>（<strong>0x20</strong>）。这意味着：</p>
+
+<ol>
+  <li>字符串和字符字面量中的所有其他空白字符都已转义。</li>
+
+  <li>制表符<strong>不</strong>用于缩进。</li>
+</ol>
+
+<h4 id="s2.3.2-special-escape-sequences">2.3.2 特殊转义序列</h4>
+
+<p>对于任何具有
+<a href="http://docs.oracle.com/javase/tutorial/java/data/characters.html">
+  特殊转义序列</a>
+的字符（<code class="prettyprint lang-java">\b</code>,
+<code class="prettyprint lang-java">\t</code>,
+<code class="prettyprint lang-java">\n</code>,
+<code class="prettyprint lang-java">\f</code>,
+<code class="prettyprint lang-java">\r</code>,
+<code class="prettyprint lang-java">\"</code>,
+<code class="prettyprint lang-java">\'</code> 和
+<code class="prettyprint lang-java">\\</code>），使用该序列而不是相应的八进制
+（例如 <code class="badcode">\012</code>）或 Unicode
+（例如 <code class="badcode">\u000a</code>）转义。</p>
+
+<h4 id="s2.3.3-non-ascii-characters">2.3.3 非 ASCII 字符</h4>
+
+<p>对于剩余的非 ASCII 字符，使用实际的 Unicode 字符
+（例如 <code class="prettyprint lang-java">∞</code>）或等效的 Unicode 转义
+（例如 <code class="prettyprint lang-java">\u221e</code>）。选择取决于哪个能使代码<strong>更易读和理解</strong>，尽管在字符串字面量和注释之外强烈不鼓励使用 Unicode 转义。</p>
+
+<p class="tip"><strong>提示：</strong> 在使用 Unicode 转义的情况下，有时即使使用实际的 Unicode 字符，也可以添加解释性注释，这会非常有帮助。</p>
+
+<p>示例：</p>
+
+<table>
+  <tbody><tr>
+    <th>示例</th>
+    <th>讨论</th>
+  </tr>
+
+  <tr>
+    <td><code class="prettyprint lang-java">String unitAbbrev = "μs";</code></td>
+    <td>最佳：即使没有注释也非常清晰。</td>
+  </tr>
+
+  <tr>
+    <td><code class="prettyprint lang-java">String unitAbbrev = "\u03bcs"; // "μs"</code></td>
+    <td>允许，但没有理由这样做。</td>
+  </tr>
+
+  <tr>
+    <td><code class="prettyprint lang-java">String unitAbbrev = "\u03bcs";
+      // 希腊字母 mu, "s"</code></td>
+    <td>允许，但笨拙且容易出错。</td>
+  </tr>
+
+  <tr>
+    <td><code class="badcode">String unitAbbrev = "\u03bcs";</code></td>
+    <td>差：读者不知道这是什么。</td>
+  </tr>
+
+  <tr>
+     <td><code class="prettyprint lang-java">return '\ufeff' + content;
+       // 字节顺序标记</code></td>
+     <td>好：对不可打印字符使用转义，并在必要时添加注释。</td>
+  </tr>
+</tbody></table>
+
+<p class="tip"><strong>提示：</strong> 永远不要因为担心某些程序可能无法正确处理非 ASCII 字符而使你的代码可读性降低。如果发生这种情况，这些程序是<strong>有问题的</strong>，必须<strong>修复</strong>。</p>
+
+<a id="filestructure"></a>
+<h2 id="s3-source-file-structure">3 源文件结构</h2>
+
+<div>
+<p>源文件由以下内容组成，<strong>按顺序</strong>：</p>
+
+<ol>
+  <li>许可或版权信息（如果存在）</li>
+  <li>包声明</li>
+  <li>导入语句</li>
+  <li>恰好一个顶级类</li>
+</ol>
+</div>
+
+<p>每个存在的部分之间用<strong>恰好一行空白</strong>分隔。</p>
+<h3 id="s3.1-copyright-statement">3.1 许可或版权信息（如果存在）</h3>
+
+<p>如果文件中应包含许可或版权信息，则应放在此处。</p>
+
+<h3 id="s3.2-package-statement">3.2 包声明</h3>
+
+<p>包声明<strong>不换行</strong>。列限制（章节4.4，<a href="#s4.4-column-limit">列限制：100</a>）不适用于包声明。</p>
+
+<a id="imports"></a>
+<h3 id="s3.3-import-statements">3.3 导入语句</h3>
+
+<h4 id="s3.3.1-wildcard-imports">3.3.1 不使用通配符导入</h4>
+
+<p><strong>通配符导入</strong>，无论是静态的还是非静态的，<strong>都不使用</strong>。</p>
+
+<h4 id="s3.3.2-import-line-wrapping">3.3.2 不换行</h4>
+
+<p>导入语句<strong>不换行</strong>。列限制（章节4.4，<a href="#s4.4-column-limit">列限制：100</a>）不适用于导入语句。</p>
+
+<h4 id="s3.3.3-import-ordering-and-spacing">3.3.3 排序和间距</h4>
+
+<p>导入按以下顺序排列：</p>
+
+<ol>
+  <li>所有静态导入在一个单独的块中。</li>
+  <li>所有非静态导入在一个单独的块中。</li>
+</ol>
+
+<p>如果同时存在静态和非静态导入，则两个块之间用一行空行隔开。导入语句之间没有其他空行。</p>
+
+<p>在每个块中，导入的名称按ASCII排序顺序出现。（<strong>注意：</strong>这与导入<em>语句</em>按ASCII排序顺序不同，因为'.'在';'之前排序。）</p>
+
+<h4 id="s3.3.4-import-class-not-static">3.3.4 不对类使用静态导入</h4>
+
+<p>静态导入不用于静态嵌套类。它们使用普通导入进行导入。</p>
+
+<h3 id="s3.4-class-declaration">3.4 类声明</h3>
+
+<a id="oneclassperfile"></a>
+<h4 id="s3.4.1-one-top-level-class">3.4.1 每个文件恰有一个顶级类声明</h4>
+
+<p>每个顶级类都位于自己的源文件中。</p>
+
+<a id="s3.4.2-class-member-ordering"></a>
+<h4 id="s3.4.2-ordering-class-contents">3.4.2 类内容的排序</h4>
+
+<p>您为类的成员和初始化器选择的顺序对其可学习性有很大影响。然而，没有一种正确的配方来决定如何做；不同的类可能以不同的方式排列其内容。</p>
+
+<p>重要的是，每个类都使用<strong><em>某种逻辑顺序</em></strong>，如果被问到，其维护者可以解释这种顺序。例如，新方法不会习惯性地添加到类的末尾，因为这会产生“按添加日期排序”的顺序，这不是一种逻辑顺序。</p>
+
+<a id="overloads"></a>
+<h5 id="s3.4.2.1-overloads-never-split">3.4.2.1 重载：永不分开</h5>
+
+<p>共享相同名称的类方法出现在一个连续的组中，中间没有其他成员。多个构造函数（总是具有相同的名称）也是如此。即使像<code class="prettyprint lang-java">static</code>或<code class="prettyprint lang-java">private</code>这样的修饰符在方法之间不同，此规则也适用。</p>
+
+<h2 id="s4-formatting">4 格式化</h2>
+
+<p class="terminology"><strong>术语说明：</strong> <em>块状结构</em>指的是类、方法或构造函数的主体。请注意，根据章节4.8.3.1关于<a href="#s4.8.3.1-array-initializers">数组初始化器</a>的规定，任何数组初始化器<em>可以</em>选择性地被视为块状结构处理。</p>
+
+<a id="braces"></a>
+<h3 id="s4.1-braces">4.1 大括号</h3>
+
+<h4 id="s4.1.1-braces-always-used">4.1.1 可选大括号的使用</h4>
+
+<p>大括号用于
+<code class="prettyprint lang-java">if</code>,
+<code class="prettyprint lang-java">else</code>,
+<code class="prettyprint lang-java">for</code>,
+<code class="prettyprint lang-java">do</code> 和
+<code class="prettyprint lang-java">while</code> 语句，即使主体为空或仅包含一个语句。</p>
+
+<p>其他可选的大括号，如在lambda表达式中的大括号，仍然是可选的。</p>
+
+<h4 id="s4.1.2-blocks-k-r-style">4.1.2 非空块：K &amp; R 风格</h4>
+
+<p>大括号遵循 Kernighan 和 Ritchie 风格
+("<a href="https://blog.codinghorror.com/new-programming-jargon/#3">埃及括号</a>")
+用于 <em>非空</em> 块和块状结构：</p>
+
+<ul>
+  <li>在打开大括号前没有换行，除非下文详细说明的情况例外。</li>
+
+  <li>在打开大括号后换行。</li>
+
+  <li>在关闭大括号前换行。</li>
+
+  <li>在关闭大括号后换行，<em>仅当</em> 该大括号终止一个语句或终止方法、构造函数或 <em>命名</em> 类的身体时。
+  例如，如果大括号后面跟着
+  <code class="prettyprint lang-java">else</code> 或逗号，则 <em>不</em> 换行。</li>
+</ul>
+
+<p>例外：在这些规则允许以分号（<code class="prettyprint lang-java">;</code>）结束的单个语句的地方，
+可以出现语句块，并且此块的开括号前有换行。这类块通常用于限制局部变量的作用域，例如在 switch 语句中引入。</p>
+
+<p>示例：</p>
+
+<pre class="prettyprint lang-java">return () -&gt; {
+  while (condition()) {
+    method();
+  }
+};
+
+return new MyClass() {
+  @Override public void method() {
+    if (condition()) {
+      try {
+        something();
+      } catch (ProblemException e) {
+        recover();
+      }
+    } else if (otherCondition()) {
+      somethingElse();
+    } else {
+      lastThing();
+    }
+    {
+      int x = foo();
+      frob(x);
+    }
+  }
+};
+</pre>
+
+<p>枚举类的几个例外情况在第4.8.1节，
+<a href="#s4.8.1-enum-classes">枚举类</a> 中给出。</p>
+
+<a id="emptyblocks"></a>
+<h4 id="s4.1.3-braces-empty-blocks">4.1.3 空块：可以简洁</h4>
+
+<p>一个空块或块状结构可以采用 K &amp; R 风格（如
+<a href="#s4.1.2-blocks-k-r-style">第4.1.2节</a> 中所述）。或者，它可以在打开后立即关闭，
+中间没有字符或换行
+(<code class="prettyprint lang-java">{}</code>)，<strong>除非</strong> 它是 <em>多块语句</em> 的一部分
+（直接包含多个块的语句：
+<code class="prettyprint lang-java">if/else</code> 或
+<code class="prettyprint lang-java">try/catch/finally</code>）。</p>
+
+<p>示例：</p>
+
+<pre class="prettyprint lang-java">  // 这是可以接受的
+  void doNothing() {}
+
+  // 这同样是可以接受的
+  void doNothingElse() {
+  }
+</pre>
+<pre class="prettyprint lang-java badcode">  // 这是不可接受的：在多块语句中不允许简洁的空块
+  try {
+    doSomething();
+  } catch (Exception e) {}
+</pre>
+
+<h3 id="s4.2-block-indentation">4.2 块缩进：+2 个空格</h3>
+
+<p>每次打开一个新的块或块状结构时，缩进增加两个空格。当块结束时，缩进返回到之前的缩进级别。缩进级别适用于块中的代码和注释。（见第4.1.2节，
+<a href="#s4.1.2-blocks-k-r-style">非空块：K &amp; R 风格</a> 中的示例。）</p>
+
+<h3 id="s4.3-one-statement-per-line">4.3 每行一个语句</h3>
+
+<p>每个语句后跟一个换行符。</p>
+
+<a id="columnlimit"></a>
+<h3 id="s4.4-column-limit">4.4 列限制：100</h3>
+
+<p>Java 代码的列限制为100个字符。一个“字符”指的是任何Unicode代码点。
+除下文注明的例外，任何超过此限制的行必须按第4.5节，
+<a href="#s4.5-line-wrapping">换行</a> 中解释的方式进行换行。
+</p>
+
+<p class="tip">每个Unicode代码点算作一个字符，即使其显示宽度更大或更小。例如，如果使用
+<a href="https://en.wikipedia.org/wiki/Halfwidth_and_fullwidth_forms">全角字符</a>，
+您可以选择在规则严格要求之前就换行。</p>
+
+<p><strong>例外情况：</strong></p>
+
+<ol>
+  <li>无法遵守列限制的行（例如，Javadoc中的长URL，或长JSNI方法引用）。</li>
+
+  <li><code class="prettyprint lang-java">package</code> 和
+  <code class="prettyprint lang-java">import</code> 语句（见第3.2节
+  <a href="#s3.2-package-statement">包声明</a> 和第3.3节
+  <a href="#s3.3-import-statements">导入语句</a>）。</li>
+
+  <li>注释中可能被复制粘贴到shell中的命令行。</li>
+
+  <li>非常长的标识符，在极少数需要的情况下，可以超过列限制。在这种情况下，周围代码的有效换行方式由
+
+
+    <a href="https://github.com/google/google-java-format">google-java-format</a> 生成。
+  </li>
+</ol>
+<h3 id="s4.5-line-wrapping">4.5 行包装</h3>
+
+<p class="terminology"><strong>术语说明：</strong> 当原本可以合法地占据一行的代码被分成多行时，这种活动被称为<em>行包装</em>。</p>
+
+<p>没有一个全面的、确定的公式可以准确地展示在每种情况下如何进行行包装。通常情况下，同样的代码片段有几种有效的行包装方式。</p>
+
+<p class="note"><strong>注意：</strong> 虽然行包装的典型原因是为了避免超出列限制，但即使代码实际上可以适应列限制，作者也可以自行决定进行行包装。</p>
+
+<p class="tip"><strong>提示：</strong> 提取方法或局部变量可能可以解决问题，而无需进行行包装。</p>
+
+<h4 id="s4.5.1-line-wrapping-where-to-break">4.5.1 在哪里断行</h4>
+
+<p>行包装的主要指令是：优先在<strong>更高的语法级别</strong>处断行。此外：</p>
+
+<ol>
+  <li>当在一行在<em>非赋值</em>运算符处断行时，断行应在符号的<em>前</em>面。（请注意，这与Google风格指南中用于其他语言（如C++和JavaScript）的做法不同。）
+    <ul>
+      <li>这也适用于以下“类似运算符”的符号：
+        <ul>
+          <li>点分隔符（<code class="prettyprint lang-java">.</code>）</li>
+          <li>方法引用的两个冒号（<code class="prettyprint lang-java">::</code>）</li>
+          <li>类型边界中的与符号（<code class="prettyprint lang-java">&lt;T extends Foo &amp; Bar&gt;</code>）</li>
+          <li>catch块中的管道符号（<code class="prettyprint lang-java">catch (FooException | BarException e)</code>）。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li>当在一行在<em>赋值</em>运算符处断行时，断行通常在符号的<em>后</em>面，但两种方式都可以接受。
+    <ul>
+      <li>这也适用于增强型<code class="prettyprint lang-java">for</code>（“foreach”）语句中的“类似赋值运算符”的冒号。</li>
+    </ul>
+  </li>
+
+  <li>方法或构造函数名称应附着在其后的左括号（<code class="prettyprint lang-java">(</code>）上。</li>
+
+  <li>逗号（<code class="prettyprint lang-java">,</code>）应附着在其前面的标记上。</li>
+
+  <li>在lambda表达式中，箭头旁不应断行，除非lambda的主体由单个无大括号的表达式组成，在这种情况下可以紧跟在箭头后断行。示例：
+<pre class="prettyprint lang-java">MyLambda&lt;String, Long, Object&gt; lambda =
+    (String label, Long value, Object obj) -&gt; {
+        ...
+    };
+
+Predicate&lt;String&gt; predicate = str -&gt;
+    longExpressionInvolving(str);
+</pre>
+  </li>
+</ol>
+
+<p class="note"><strong>注意：</strong> 行包装的主要目标是使代码清晰，<em>不一定</em>是使代码占据最少的行数。</p>
+
+<a id="indentation"></a>
+<h4 id="s4.5.2-line-wrapping-indent">4.5.2 至少缩进+4个空格的续行</h4>
+
+<p>在行包装时，每一行在第一行之后（每个<em>续行</em>）至少从原始行缩进+4个空格。</p>
+
+<p>当有多行续行时，缩进可以根据需要超过+4个空格。在一般情况下，只有当两行续行以语法上并行的元素开始时，它们才使用相同的缩进级别。</p>
+
+<p>关于<a href="#s4.6.3-horizontal-alignment">水平对齐</a>的第4.6.3节讨论了不鼓励使用可变数量的空格来与前面的行对齐某些标记的做法。</p>
+<h3 id="s4.6-whitespace">4.6 空白</h3>
+
+<h4 id="s4.6.1-vertical-whitespace">4.6.1 垂直空白</h4>
+
+<p>单个空行总是出现在以下位置：</p>
+
+<ol>
+  <li>类中连续的成员或初始化器之间：字段、构造函数、方法、嵌套类、静态初始化器和实例初始化器。
+  <ul>
+    <li><span class="exception"><strong>例外：</strong> 两个连续字段之间的空行是可选的。在它们之间没有其他代码时使用空行，以创建字段的<em>逻辑分组</em>。</span></li>
+    <li><span class="exception"><strong>例外：</strong> 枚举常量之间的空行在<a href="#s4.8.1-enum-classes">第4.8.1节</a>中介绍。</span></li>
+  </ul>
+  </li>
+
+  <li>如本文档其他部分所要求的（例如第3节，<a href="#s3-source-file-structure">源文件结构</a>，和第3.3节，<a href="#s3.3-import-statements">导入语句</a>）。</li>
+</ol>
+
+<p>单个空行也可以出现在任何提高可读性的地方，例如在语句之间组织代码成逻辑子部分。在类中的第一个成员或初始化器之前，或最后一个成员或初始化器之后的空行，既不鼓励也不反对。
+
+</p><p><em>多个</em>连续的空行是允许的，但从不被要求（或鼓励）。</p>
+
+<h4 id="s4.6.2-horizontal-whitespace">4.6.2 水平空白</h4>
+
+<p>除了语言或其他风格规则要求的地方，以及字面量、注释和Javadoc之外，单个ASCII空格也仅出现在以下位置：</p>
+
+<ol>
+  <li>将任何保留字（如<code class="prettyprint lang-java">if</code>、<code class="prettyprint lang-java">for</code>或<code class="prettyprint lang-java">catch</code>）与其后面的左括号（<code class="prettyprint lang-java">(</code>）分隔开</li>
+
+  <li>将任何保留字（如<code class="prettyprint lang-java">else</code>或<code class="prettyprint lang-java">catch</code>）与其前面的右大括号（<code class="prettyprint lang-java">}</code>）分隔开</li>
+
+  <li>在任何左大括号（<code class="prettyprint lang-java">{</code>）之前，有两个例外：
+  <ul>
+    <li><code class="prettyprint lang-java">@SomeAnnotation({a, b})</code>（不使用空格）</li>
+
+    <li><code class="prettyprint lang-java">String[][] x = {{"foo"}};</code>（根据下面的第9项，不需要在<code class="prettyprint lang-java">{{</code>之间使用空格）</li>
+  </ul>
+  </li>
+
+  <li>在任何二元或三元运算符的两侧。这也适用于以下“类似运算符”的符号：
+  <ul>
+    <li>在结合类型绑定中的与符号：<code class="prettyprint lang-java">&lt;T extends Foo &amp; Bar&gt;</code></li>
+
+    <li>在处理多个异常的catch块中的管道符号：<code class="prettyprint lang-java">catch (FooException | BarException e)</code></li>
+
+    <li>在增强型<code class="prettyprint lang-java">for</code>（“foreach”）语句中的冒号（<code class="prettyprint lang-java">:</code>）</li>
+
+    <li>在lambda表达式中的箭头：<code class="prettyprint lang-java">(String str) -&gt; str.length()</code></li>
+  </ul>
+    但不包括
+
+  <ul>
+    <li>方法引用的双冒号（<code class="prettyprint lang-java">::</code>），如<code class="prettyprint lang-java">Object::toString</code></li>
+    <li>点分隔符（<code class="prettyprint lang-java">.</code>），如<code class="prettyprint lang-java">object.toString()</code></li>
+  </ul>
+  </li>
+
+  <li>在<code class="prettyprint lang-java">,:;</code>或类型转换的右括号（<code class="prettyprint lang-java">)</code>）之后</li>
+
+  <li>在任何内容与开始注释的双斜杠（<code class="prettyprint lang-java">//</code>）之间。允许使用多个空格。</li>
+
+  <li>在开始注释的双斜杠（<code class="prettyprint lang-java">//</code>）与注释文本之间。允许使用多个空格。</li>
+
+  <li>在声明中的类型与变量之间：<code class="prettyprint lang-java">List&lt;String&gt; list</code></li>
+
+  <li><em>可选</em>在数组初始化器的两个大括号内：
+  <ul>
+    <li><code class="prettyprint lang-java">new int[] {5, 6}</code>和<code class="prettyprint lang-java">new int[] { 5, 6 }</code>都是有效的</li>
+  </ul>
+  </li>
+
+  <li>在类型注解与<code class="prettyprint lang-java">[]</code>或<code class="prettyprint lang-java">...</code>之间。</li>
+</ol>
+
+<p>此规则从不被解释为要求或禁止在行首或行尾添加额外的空格；它仅处理<em>内部</em>空格。</p>
+
+<h4 id="s4.6.3-horizontal-alignment">4.6.3 水平对齐：从不强制</h4>
+
+<p class="terminology"><strong>术语说明：</strong> <em>水平对齐</em>是指在代码中添加可变数量的额外空格，以使某些标记直接出现在前几行某些其他标记下方的做法。</p>
+
+<p>这种做法是允许的，但Google风格从不<strong>要求</strong>。甚至在已经使用的地方也不需要<em>保持</em>水平对齐。</p>
+
+<p>以下是没有对齐和使用对齐的示例：</p>
+
+<pre class="prettyprint lang-java">private int x; // 这很好
+private Color color; // 这也很好
+
+private int   x;      // 允许，但未来的编辑
+private Color color;  // 可能使其不对齐
+</pre>
+
+<p class="tip"><strong>提示：</strong> 对齐可以帮助提高可读性，但为了对齐而对齐会带来未来的问题。例如，考虑只影响一行的更改。如果该更改破坏了之前的对齐，重要的是**不要**仅仅为了重新对齐而在附近的行上引入额外的更改。在其他未受影响的行上引入格式更改会破坏版本历史，减慢审阅者的速度，并加剧合并冲突。这些实际问题优先于对齐。</p>
+
+<a id="parentheses"></a>
+<h3 id="s4.7-grouping-parentheses">4.7 分组括号：推荐使用</h3>
+
+<p>只有当作者和审阅者一致认为没有分组括号也不会导致代码被误解，并且没有分组括号也不会使代码更易读时，才可以省略可选的分组括号。假设每个读者都记住了整个Java运算符优先级表是不合理的。</p>
+<h3 id="s4.8-specific-constructs">4.8 特定构造</h3>
+
+<h4 id="s4.8.1-enum-classes">4.8.1 枚举类</h4>
+
+<p>在枚举常量后的每个逗号后，可以选择性地换行。额外的空行（通常只有一行）也是允许的。这是一种可能的格式：
+
+</p><pre class="prettyprint lang-java">private enum Answer {
+  YES {
+    @Override public String toString() {
+      return "yes";
+    }
+  },
+
+  NO,
+  MAYBE
+}
+</pre>
+
+<p>没有方法且常量没有文档说明的枚举类，可以选择性地格式化为数组初始化器的形式（参见第4.8.3.1节关于<a href="#s4.8.3.1-array-initializers">数组初始化器</a>的说明）。</p>
+
+<pre class="prettyprint lang-java">private enum Suit { CLUBS, HEARTS, SPADES, DIAMONDS }
+</pre>
+
+<p>由于枚举类<em>是类</em>，因此适用于所有其他格式化类的规则。</p>
+
+<a id="localvariables"></a>
+<h4 id="s4.8.2-variable-declarations">4.8.2 变量声明</h4>
+
+<h5 id="s4.8.2.1-variables-per-declaration">4.8.2.1 每个声明一个变量</h5>
+
+<p>每个变量声明（字段或局部变量）只声明一个变量：不使用像<code class="badcode">int a, b;</code>这样的声明方式。</p>
+
+<p><strong>例外：</strong> 在<code class="prettyprint lang-java">for</code>循环的头部，多个变量声明是可以接受的。</p>
+
+<h5 id="s4.8.2.2-variables-limited-scope">4.8.2.2 在需要时声明</h5>
+
+<p>局部变量<strong>不</strong>习惯性地在其所在的块或类似块的构造的开始处声明。相反，局部变量应在首次使用的地方附近声明（合理范围内），以最小化其作用域。局部变量声明通常带有初始化器，或在声明后立即初始化。</p>
+
+<h4 id="s4.8.3-arrays">4.8.3 数组</h4>
+
+<h5 id="s4.8.3.1-array-initializers">4.8.3.1 数组初始化器：可以是“块状”</h5>
+
+<p>任何数组初始化器都可以<em>选择性地</em>格式化为“块状构造”。例如，以下都是有效的（<strong>不是</strong>详尽列表）：</p>
+
+<pre class="prettyprint lang-java">new int[] {           new int[] {
+  0, 1, 2, 3            0,
+}                       1,
+                        2,
+new int[] {             3,
+  0, 1,               }
+  2, 3
+}                     new int[]
+                          {0, 1, 2, 3}
+</pre>
+
+<h5 id="s4.8.3.2-array-declarations">4.8.3.2 不使用C风格的数组声明</h5>
+
+<p>方括号是类型的一部分，而不是变量的一部分：<code class="prettyprint lang-java">String[] args</code>，而不是<code class="badcode">String args[]</code>。</p>
+
+<h4 id="s4.8.4-switch">4.8.4 Switch语句</h4>
+
+<p class="terminology"><strong>术语说明：</strong> 在<em>switch块</em>的大括号内包含一个或多个<em>语句组</em>。每个语句组由一个或多个<em>switch标签</em>（要么是<code class="prettyprint lang-java">case FOO:</code>，要么是<code class="prettyprint lang-java">default:</code>）组成，后跟一个或多个语句（对于<em>最后</em>的语句组，可以是<em>零</em>个或多个语句）。</p>
+
+<h5 id="s4.8.4.1-switch-indentation">4.8.4.1 缩进</h5>
+
+<p>与任何其他块一样，switch块的内容缩进+2。</p>
+
+<p>在switch标签后，有一个换行符，并且缩进级别增加+2，就像打开了一个块一样。接下来的switch标签返回到之前的缩进级别，就像关闭了一个块一样。</p>
+
+<a id="fallthrough"></a>
+<h5 id="s4.8.4.2-switch-fall-through">4.8.4.2 贯穿执行：带注释</h5>
+
+<p>在switch块内，每个语句组要么突然终止（使用<code class="prettyprint lang-java">break</code>、<code class="prettyprint lang-java">continue</code>、<code class="prettyprint lang-java">return</code>或抛出异常），要么用注释标记，表示执行将或<em>可能</em>继续到下一个语句组。任何表达贯穿执行概念的注释都是足够的（通常是<code class="prettyprint lang-java">// fall through</code>）。在switch块的最后一个语句组中不需要这种特殊注释。示例：</p>
+
+<pre class="prettyprint lang-java">switch (input) {
+  case 1:
+  case 2:
+    prepareOneOrTwo();
+    // fall through
+  case 3:
+    handleOneTwoOrThree();
+    break;
+  default:
+    handleLargeNumber(input);
+}
+</pre>
+
+<p>请注意，在<code class="prettyprint lang-java">case 1:</code>之后不需要注释，只需在语句组的末尾添加即可。</p>
+
+<h5 id="s4.8.4.3-switch-default">4.8.4.3 <code>default</code>标签的存在</h5>
+
+<p>每个switch语句都包含一个<code class="prettyprint lang-java">default</code>语句组，即使它不包含任何代码。</p>
+
+<p><strong>例外：</strong> 对于<code>enum</code>类型的switch语句，<em>可以</em>省略<code class="prettyprint lang-java">default</code>语句组，<em>如果</em>它包含了覆盖该类型所有可能值的显式case。这使得IDE或其他静态分析工具能够在遗漏任何case时发出警告。
+
+</p>
+
+<a id="annotations"></a>
+<h4 id="s4.8.5-annotations">4.8.5 注解</h4>
+
+<h5 id="s4.8.5.1-type-use-annotation-style">4.8.5.1 类型使用注解</h5>
+
+<p>类型使用注解出现在被注解类型的前面。一个注解是类型使用注解，如果它被元注解为<code class="prettyprint lang-java">@Target(ElementType.TYPE_USE)</code>。示例：</p>
+
+<pre class="prettyprint lang-java">final @Nullable String name;
+
+public @Nullable Person getPersonByName(String name);
+</pre>
+
+<h5 id="s4.8.5.2-class-annotation-style">4.8.5.2 类注解</h5>
+
+<p>应用于类的注解出现在文档块之后，每个注解单独列在一行上（即，每行一个注解）。这些换行不构成换行（第4.5节，<a href="#s4.5-line-wrapping">换行</a>），因此缩进级别不增加。示例：</p>
+
+<pre class="prettyprint lang-java">@Deprecated
+@CheckReturnValue
+public final class Frozzler { ... }
+</pre>
+<h5 id="s4.8.5.3-method-annotation-style">4.8.5.3 方法和构造函数注解</h5>
+
+<p>方法和构造函数声明上的注解规则与<a href="#s4.8.5.2-class-annotation-style">上一节</a>相同。例如：</p>
+
+<pre class="prettyprint lang-java">@Deprecated
+@Override
+public String getNameIfPresent() { ... }
+</pre>
+
+<p class="exception"><strong>例外：</strong>一个<em>单一</em>无参数的注解<em>可以</em>与签名的第一行一起出现，例如：</p>
+
+<pre class="prettyprint lang-java">@Override public int hashCode() { ... }
+</pre>
+
+<h5 id="s4.8.5.4-field-annotation-style">4.8.5.4 字段注解</h5>
+
+<p>应用于字段的注解也应紧跟在文档块之后，但在这种情况下，<em>多个</em>注解（可能带有参数）可以列在同一行；例如：</p>
+
+<pre class="prettyprint lang-java">@Partial @Mock DataLoader loader;
+</pre>
+
+<h5 id="s4.8.5.5-local-parameter-annotation-style">4.8.5.5 参数和局部变量注解</h5>
+
+<p>对于参数或局部变量上的注解格式没有具体规则（当然，除了当注解是类型使用注解时）。</p>
+
+<a id="comments"></a>
+<h4 id="s4.8.6-comments">4.8.6 注释</h4>
+
+<p>本节讨论<em>实现注释</em>。Javadoc 在第7节中单独讨论，参见<a href="#s7-javadoc">Javadoc</a>。</p>
+
+<p>任何换行符之前可以有任意空白字符，后跟一个实现注释。这类注释使得该行不再为空白行。</p>
+
+<h5 id="s4.8.6.1-block-comment-style">4.8.6.1 块注释风格</h5>
+
+<p>块注释与周围代码的缩进级别相同。它们可以采用<code class="prettyprint lang-java">/* ... */</code>风格或<code class="prettyprint lang-java">// ...</code>风格。对于多行的<code class="prettyprint lang-java">/* ... */</code>注释，后续行必须以与前一行<code>*</code>对齐的<code>*</code>开始。</p>
+
+<pre class="prettyprint lang-java">/*
+ * 这可以。         // 这也行。         /* 或者你可以
+ *                    //                  * 这样做。 */
+ */
+</pre>
+
+<p>注释不应用星号或其他字符绘制的框包围。</p>
+
+<p class="tip"><strong>提示：</strong>编写多行注释时，如果希望自动代码格式化工具在必要时重新包装行（段落风格），请使用<code class="prettyprint lang-java">/* ... */</code>风格。大多数格式化工具不会重新包装<code class="prettyprint lang-java">// ...</code>风格的注释块中的行。</p>
+
+<a id="modifiers"></a>
+<h4 id="s4.8.7-modifiers">4.8.7 修饰符</h4>
+
+<p>类和成员修饰符存在时，按Java语言规范推荐的顺序出现：</p>
+
+<pre>public protected private abstract default static final transient volatile synchronized native strictfp
+</pre>
+
+<h4 id="s4.8.8-numeric-literals">4.8.8 数字字面量</h4>
+
+<p><code>long</code>类型的整数字面量使用大写<code>L</code>后缀，绝不使用小写（以避免与数字<code>1</code>混淆）。例如，<code>3000000000L</code>而不是<code class="badcode">3000000000l</code>。</p>
+
+<a id="naming"></a>
+<h2 id="s5-naming">5 命名</h2>
+
+<h3 id="s5.1-identifier-names">5.1 所有标识符的通用规则</h3>
+
+<p>标识符仅使用ASCII字母和数字，以及在下文中提到的少数情况下使用下划线。因此，每个有效的标识符名称都符合正则表达式<code>\w+</code>。</p>
+
+<p>在Google风格中，不使用特殊前缀或后缀。例如，这些名称不符合Google风格：<code class="badcode">name_</code>，<code class="badcode">mName</code>，<code class="badcode">s_name</code>和<code class="badcode">kName</code>。</p>
+<h3 id="s5.2-specific-identifier-names">5.2 按标识符类型划分的规则</h3>
+
+<h4 id="s5.2.1-package-names">5.2.1 包名</h4>
+
+<p>包名仅使用小写字母和数字（不使用下划线）。连续的单词直接拼接在一起。例如，<code>com.example.deepspace</code>，而不是
+<code class="badcode">com.example.deepSpace</code> 或
+<code class="badcode">com.example.deep_space</code>。</p>
+
+<h4 id="s5.2.2-class-names">5.2.2 类名</h4>
+
+<p>类名使用 <a href="#s5.3-camel-case">大驼峰命名法</a> 书写。</p>
+
+<p>类名通常是名词或名词短语。例如，
+<code class="prettyprint lang-java">Character</code> 或
+<code class="prettyprint lang-java">ImmutableList</code>。接口名也可以是名词或名词短语（例如，<code class="prettyprint lang-java">List</code>），但有时也可以是形容词或形容词短语（例如，
+<code class="prettyprint lang-java">Readable</code>）。</p>
+
+<p>对于注释类型的命名，没有特定的规则或甚至是公认的惯例。</p>
+
+<p>一个 <em>测试</em> 类以 <code class="prettyprint lang-java">Test</code> 结尾，
+例如，<code class="prettyprint lang-java">HashIntegrationTest</code>。
+如果它覆盖单个类，其名称是该类的名称加上 <code class="prettyprint lang-java">Test</code>，例如 <code class="prettyprint
+  lang-java">HashImplTest</code>。</p>
+
+<h4 id="s5.2.3-method-names">5.2.3 方法名</h4>
+
+<p>方法名使用 <a href="#s5.3-camel-case">小驼峰命名法</a> 书写。</p>
+
+<p>方法名通常是动词或动词短语。例如，
+<code class="prettyprint lang-java">sendMessage</code> 或
+<code class="prettyprint lang-java">stop</code>。</p>
+
+<p>在 JUnit <em>测试</em> 方法名中可以使用下划线来分隔名称的逻辑组件，每个组件使用 <a href="#s5.3-camel-case">小驼峰命名法</a> 书写，例如 <code class="prettyprint lang-java">transferMoney_deductsFromSource</code>。没有一种正确的方式来命名测试方法。</p>
+
+<a id="constants"></a>
+<h4 id="s5.2.4-constant-names">5.2.4 常量名</h4>
+
+<p>常量名使用 <code class="prettyprint lang-java">UPPER_SNAKE_CASE</code>：全大写字母，每个单词之间用单个下划线分隔。但什么是常量，确切地说？</p>
+
+<p>常量是静态最终字段，其内容是深度不可变的，其方法没有可检测的副作用。示例包括基本类型、字符串、不可变值类以及任何设置为 <code>null</code> 的内容。如果实例的任何可观察状态可以改变，它就不是常量。仅仅 <em>打算</em> 永远不改变对象是不够的。示例：</p>
+
+<pre class="prettyprint lang-java">// 常量
+static final int NUMBER = 5;
+static final ImmutableList&lt;String&gt; NAMES = ImmutableList.of("Ed", "Ann");
+static final Map&lt;String, Integer&gt; AGES = ImmutableMap.of("Ed", 35, "Ann", 32);
+static final Joiner COMMA_JOINER = Joiner.on(','); // 因为 Joiner 是不可变的
+static final SomeMutableType[] EMPTY_ARRAY = {};
+
+// 不是常量
+static String nonFinal = "non-final";
+final String nonStatic = "non-static";
+static final Set&lt;String&gt; mutableCollection = new HashSet&lt;String&gt;();
+static final ImmutableSet&lt;SomeMutableType&gt; mutableElements = ImmutableSet.of(mutable);
+static final ImmutableMap&lt;String, SomeMutableType&gt; mutableValues =
+    ImmutableMap.of("Ed", mutableInstance, "Ann", mutableInstance2);
+static final Logger logger = Logger.getLogger(MyClass.getName());
+static final String[] nonEmptyArray = {"these", "can", "change"};
+</pre>
+
+<p>这些名称通常是名词或名词短语。</p>
+
+<h4 id="s5.2.5-non-constant-field-names">5.2.5 非常量字段名</h4>
+
+<p>非常量字段名（静态或其他）使用 <a href="#s5.3-camel-case">小驼峰命名法</a> 书写。</p>
+
+<p>这些名称通常是名词或名词短语。例如，
+<code class="prettyprint lang-java">computedValues</code> 或
+<code class="prettyprint lang-java">index</code>。</p>
+
+<h4 id="s5.2.6-parameter-names">5.2.6 参数名</h4>
+
+<p>参数名使用 <a href="#s5.3-camel-case">小驼峰命名法</a> 书写。</p>
+
+<p>公共方法中的单字符参数名应避免使用。</p>
+
+<h4 id="s5.2.7-local-variable-names">5.2.7 局部变量名</h4>
+
+<p>局部变量名使用 <a href="#s5.3-camel-case">小驼峰命名法</a> 书写。</p>
+
+<p>即使是最终和不可变的，局部变量也不被视为常量，不应按常量的方式命名。</p>
+
+<h4 id="s5.2.8-type-variable-names">5.2.8 类型变量名</h4>
+
+<p>每个类型变量以两种样式之一命名：</p>
+
+<ul>
+  <li>单个大写字母，后面可选地跟随单个数字（例如
+  <code class="prettyprint lang-java">E</code>，<code class="prettyprint lang-java">T</code>,
+  <code class="prettyprint lang-java">X</code>，<code class="prettyprint lang-java">T2</code>)
+  </li>
+
+  <li>类名使用的形式（见第 5.2.2 节，
+  <a href="#s5.2.2-class-names">类名</a>），后面跟随大写字母
+  <code class="prettyprint lang-java">T</code>（示例：
+  <code class="prettyprint lang-java">RequestT</code>,
+  <code class="prettyprint lang-java">FooBarT</code>）。</li>
+</ul>
+
+<a id="acronyms"></a>
+<a id="camelcase"></a>
+<h3 id="s5.3-camel-case">5.3 驼峰命名法：定义</h3>
+
+<p>有时将一个英文短语转换为驼峰命名法有多种合理的方式，例如当存在缩写或像“IPv6”或“iOS”这样的特殊结构时。为了提高可预测性，Google 风格指定了以下（几乎）确定性的方案。</p>
+
+<p>从名称的散文形式开始：</p>
+
+<ol>
+  <li>将短语转换为纯 ASCII 并删除任何撇号。例如，“Müller's algorithm”可能会变成“Muellers algorithm”。</li>
+
+  <li>将结果分成单词，根据空格和任何剩余的标点符号（通常是连字符）进行分割。
+
+  <ul>
+    <li><em>推荐：</em>如果任何单词在常用中已经具有常规的驼峰命名法外观，请将其拆分为其组成部分（例如，“AdWords”变成“ad words”）。请注意，像“iOS”这样的单词实际上并不符合驼峰命名法；它违反了<em>任何</em>惯例，因此此建议不适用。</li>
+  </ul>
+  </li>
+
+  <li>现在将<em>所有</em>内容转换为小写（包括缩写），然后仅将以下内容的第一个字符大写：
+  <ul>
+    <li>...每个单词，以生成<em>大驼峰命名法</em>，或</li>
+    <li>...除第一个单词之外的每个单词，以生成<em>小驼峰命名法</em></li>
+  </ul>
+  </li>
+
+  <li>最后，将所有单词连接成一个单一的标识符。</li>
+</ol>
+
+<p>请注意，原始单词的大小写几乎完全被忽略。示例：</p>
+
+<table>
+  <tbody><tr>
+    <th>散文形式</th>
+    <th>正确</th>
+    <th>错误</th>
+  </tr>
+  <tr>
+    <td>"XML HTTP request"</td>
+    <td><code class="prettyprint lang-java">XmlHttpRequest</code></td>
+    <td><code class="badcode">XMLHTTPRequest</code></td>
+  </tr>
+  <tr>
+    <td>"new customer ID"</td>
+    <td><code class="prettyprint lang-java">newCustomerId</code></td>
+    <td><code class="badcode">newCustomerID</code></td>
+  </tr>
+  <tr>
+    <td>"inner stopwatch"</td>
+    <td><code class="prettyprint lang-java">innerStopwatch</code></td>
+    <td><code class="badcode">innerStopWatch</code></td>
+  </tr>
+  <tr>
+    <td>"supports IPv6 on iOS?"</td>
+    <td><code class="prettyprint lang-java">supportsIpv6OnIos</code></td>
+    <td><code class="badcode">supportsIPv6OnIOS</code></td>
+  </tr>
+  <tr>
+    <td>"YouTube importer"</td>
+    <td><code class="prettyprint lang-java">YouTubeImporter</code><br>
+        <code class="prettyprint lang-java">YoutubeImporter</code>*</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>"Turn on 2SV"</td>
+    <td><code class="prettyprint lang-java">turnOn2sv</code></td>
+    <td><code class="badcode">turnOn2Sv</code></td>
+  </tr>
+</tbody></table>
+
+<p>*可接受，但不推荐。</p>
+
+<p class="note"><strong>注意：</strong>在英语语言中，一些单词的连字符使用是模糊的：例如“nonempty”和“non-empty”都是正确的，因此方法名称<code class="prettyprint lang-java">checkNonempty</code>和<code class="prettyprint lang-java">checkNonEmpty</code>同样都是正确的。</p>
+
+
+<h2 id="s6-programming-practices">6 编程实践</h2>
+
+<h3 id="s6.1-override-annotation">6.1 <code>@Override</code>：始终使用</h3>
+
+<p>只要合法，方法就使用<code class="prettyprint lang-java">@Override</code>注解标记。这包括类方法覆盖超类方法、类方法实现接口方法以及接口方法重新指定超接口方法。</p>
+
+<p class="exception"><strong>例外：</strong>如果父方法是<code class="prettyprint lang-java">@Deprecated</code>，则可以省略<code class="prettyprint lang-java">@Override</code>。</p>
+
+<a id="caughtexceptions"></a>
+<h3 id="s6.2-caught-exceptions">6.2 捕获的异常：不被忽略</h3>
+
+<p>除了下文注明的例外情况外，对捕获的异常不采取任何行动的情况非常罕见。（典型的响应是记录它，或者如果它被认为是“不可能”的，则作为<code class="prettyprint lang-java">AssertionError</code>重新抛出。）</p>
+
+<p>当在 catch 块中确实适当不采取任何行动时，注释中会解释这样做的理由。</p>
+
+<pre class="prettyprint lang-java">try {
+  int i = Integer.parseInt(response);
+  return handleNumericResponse(i);
+} catch (NumberFormatException ok) {
+  // 它不是数字；没关系，继续
+}
+return handleTextResponse(response);
+</pre>
+
+<p class="exception"><strong>例外：</strong>在测试中，如果捕获的异常的名称是或以<code class="prettyprint lang-java">expected</code>开头，则可以无需注释地忽略它。以下是确保被测试代码确实抛出预期类型的异常的常见习惯用法，因此这里不需要注释。</p>
+
+<pre class="prettyprint lang-java">try {
+  emptyStack.pop();
+  fail();
+} catch (NoSuchElementException expected) {
+}
+</pre>
+
+<h3 id="s6.3-static-members">6.3 静态成员：使用类限定</h3>
+
+<p>当必须限定对静态类成员的引用时，它使用该类的名称进行限定，而不是使用该类类型的引用或表达式进行限定。</p>
+
+<pre class="prettyprint lang-java">Foo aFoo = ...;
+Foo.aStaticMethod(); // 好
+<span class="badcode">aFoo.aStaticMethod();</span> // 坏
+<span class="badcode">somethingThatYieldsAFoo().aStaticMethod();</span> // 非常坏
+</pre>
+
+<a id="finalizers"></a>
+<h3 id="s6.4-finalizers">6.4 终结器：不使用</h3>
+
+<p>不要覆盖<code class="prettyprint lang-java">Object.finalize</code>。终结支持已<a href="https://openjdk.org/jeps/421"><em>计划移除</em></a>。</p>
+
+
+<a id="javadoc"></a>
+<h2 id="s7-javadoc">7 Javadoc</h2>
+<h3 id="s7.1-javadoc-formatting">7.1 格式化</h3>
+
+<h4 id="s7.1.1-javadoc-multi-line">7.1.1 一般形式</h4>
+
+<p>Javadoc块的<em>基本</em>格式化如以下示例所示：</p>
+
+<pre class="prettyprint lang-java">/**
+ * 多行Javadoc文本写在这里，
+ * 正常换行...
+ */
+public int method(String p1) { ... }
+</pre>
+
+<p>...或者在这种单行示例中：</p>
+
+<pre class="prettyprint lang-java">/** 特别简短的Javadoc片段。 */
+</pre>
+
+<p>基本形式总是可以接受的。当整个Javadoc块（包括注释标记）可以在一行内容纳时，可以使用单行形式。请注意，这仅适用于没有像<code>@return</code>这样的块标签的情况。</p>
+
+<h4 id="s7.1.2-javadoc-paragraphs">7.1.2 段落</h4>
+
+<p>段落之间，以及在块标签组之前（如果存在），会有一行空白行——即只包含对齐的前导星号（<code>*</code>）的行。除了第一段，每个段落的第一个词之前都有<code>&lt;p&gt;</code>，且其后没有空格。其他块级元素的HTML标签，如<code>&lt;ul&gt;</code>或<code>&lt;table&gt;</code>，<em>不</em>需要在前面加上<code>&lt;p&gt;</code>。</p>
+
+<a id="s7.1.3-javadoc-at-clauses"></a>
+
+<h4 id="s7.1.3-javadoc-block-tags">7.1.3 块标签</h4>
+
+<p>使用的任何标准“块标签”按<code>@param</code>、<code>@return</code>、<code>@throws</code>、<code>@deprecated</code>的顺序出现，这四种类型从不出现空描述。当一个块标签不能在一行内容纳时，续行从<code>@</code>的位置向右缩进四个（或更多）空格。
+</p>
+
+<h3 id="s7.2-summary-fragment">7.2 摘要片段</h3>
+
+<p>每个Javadoc块都以一个简短的<strong>摘要片段</strong>开始。这个片段非常重要：它是某些上下文中唯一显示的文本，如类和方法索引。</p>
+
+<p>这是一个片段——名词短语或动词短语，而不是完整的句子。它<strong>不</strong>以<code class="badcode">A {@code Foo} is a...</code>或<code class="badcode">This method returns...</code>开头，也不构成完整的祈使句，如<code class="badcode">Save the record.</code>。然而，片段的首字母大写并按完整句子的方式标点符号。</p>
+
+<p class="tip"><strong>提示：</strong>一个常见的错误是将简单的Javadoc写成<code class="badcode prettyprint lang-java">/** @return the customer ID */</code>的形式。这是错误的，应该改为<code class="prettyprint lang-java">/** Returns the customer ID. */</code>。</p>
+
+<a id="s7.3.3-javadoc-optional"></a>
+<h3 id="s7.3-javadoc-where-required">7.3 Javadoc的使用位置</h3>
+
+<p>至少，Javadoc存在于每个<code class="prettyprint lang-java">public</code>类，以及此类类的每个<code class="prettyprint lang-java">public</code>或<code class="prettyprint lang-java">protected</code>成员中，除了下面提到的几个例外情况。</p>
+
+<p>如第7.3.4节<a href="#s7.3.4-javadoc-non-required">非必需的Javadoc</a>中所解释的，还可能存在额外的Javadoc内容。</p>
+
+<h4 id="s7.3.1-javadoc-exception-self-explanatory">7.3.1 例外：自解释成员</h4>
+
+<p>对于“简单、明显”的成员，如<code class="prettyprint lang-java">getFoo()</code>，在确实没有任何其他值得说的内容，除了“返回foo”时，Javadoc是可选的。</p>
+
+<p class="note"><strong>重要提示：</strong>引用此例外来证明省略典型读者可能需要了解的相关信息是不恰当的。例如，对于一个名为<code class="prettyprint lang-java">getCanonicalName</code>的方法，不要省略其文档（理由是它只会说<code class="badcode">/** Returns the canonical name. */</code>），如果典型读者可能不知道“canonical name”这个术语的含义！</p>
+
+<h4 id="s7.3.2-javadoc-exception-overrides">7.3.2 例外：覆盖</h4>
+
+<p>Javadoc并不总是存在于覆盖超类型方法的方法上。
+
+</p>
+
+<h4 id="s7.3.4-javadoc-non-required">7.3.4 非必需的Javadoc</h4>
+
+<p>其他类和成员根据需要或愿望具有Javadoc。
+
+</p><p>每当实现注释将用于定义类或成员的整体目的或行为时，该注释应作为Javadoc编写（使用<code>/**</code>）。</p>
+
+<p>非必需的Javadoc不严格要求遵循第7.1.1、7.1.2、7.1.3和7.2节的格式化规则，尽管当然建议这样做。</p>
+
+</div>
+</div>
+</body>
+</html>

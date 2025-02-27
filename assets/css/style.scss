@@ -1,0 +1,11 @@
+---
+# 保留此 YAML 前言块以触发 Jekyll 处理。
+# 有关更多信息，请参见 https://jekyllrb.com/docs/frontmatter。
+---
+
+@import "{{ site.theme }}";
+
+// 隐藏“此网站是开源的。改进此页面。”
+.footer {
+  display: none;
+}

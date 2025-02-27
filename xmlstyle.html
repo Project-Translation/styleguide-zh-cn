@@ -1,0 +1,625 @@
+<link href="/styleguide/favicon.ico" type="image/x-icon" rel="shortcut icon">
+<style type="text/css">
+/* 默认CSS */
+table {
+font-size: 1em;
+line-height: inherit;
+}
+tr {
+text-align: left;
+}
+div, address, ol, ul, li, option, select {
+margin-top: 0px;
+margin-bottom: 0px;
+}
+p {
+margin: 0px;
+}
+body {
+margin: 6px;
+padding: 0px;
+font-family: Verdana, sans-serif;
+font-size: 10pt;
+background-color: #ffffff;
+}
+img {
+-moz-force-broken-image-icon: 1;
+}
+@media screen {
+html.pageview {
+background-color: #f3f3f3 !important;
+}
+body {
+min-height: 1100px;
+counter-reset: __goog_page__;
+}
+* html body {
+height: 1100px;
+}
+.pageview body {
+border-top: 1px solid #ccc;
+border-left: 1px solid #ccc;
+border-right: 2px solid #bbb;
+border-bottom: 2px solid #bbb;
+width: 648px !important;
+margin: 15px auto 25px;
+padding: 40px 50px;
+}
+/* IE6 */
+* html {
+overflow-y: scroll;
+}
+* html.pageview body {
+overflow-x: auto;
+}
+/* 防止在Safari中滚动时出现重绘错误。这个“Star-7”CSS hack
+针对Safari 3.1，但不包括WebKit夜间版本和Safari 4。
+这没关系，因为这个错误在WebKit夜间版本/Safari 4中已修复 :-). */
+html*#wys_frame::before {
+content: '\A0';
+position: fixed;
+overflow: hidden;
+width: 0;
+height: 0;
+top: 0;
+left: 0;
+}
+.writely-callout-data {
+display: none;
+*display: inline-block;
+*width: 0;
+*height: 0;
+*overflow: hidden;
+}
+.writely-footnote-marker {
+background-image: url('images/footnote_doc_icon.gif');
+background-color: transparent;
+background-repeat: no-repeat;
+width: 7px;
+overflow: hidden;
+height: 16px;
+vertical-align: top;
+-moz-user-select: none;
+}
+.editor .writely-footnote-marker {
+cursor: move;
+}
+.writely-footnote-marker-highlight {
+background-position: -15px 0;
+-moz-user-select: text;
+}
+.writely-footnote-hide-selection ::-moz-selection, .writely-footnote-hide-selection::-moz-selection {
+background: transparent;
+}
+.writely-footnote-hide-selection ::selection, .writely-footnote-hide-selection::selection {
+background: transparent;
+}
+.writely-footnote-hide-selection {
+cursor: move;
+}
+.editor .writely-comment-yellow {
+background-color: #FF9;
+background-position: -240px 0;
+}
+.editor .writely-comment-yellow-hover {
+background-color: #FF0;
+background-position: -224px 0;
+}
+.editor .writely-comment-blue {
+background-color: #C0D3FF;
+background-position: -16px 0;
+}
+.editor .writely-comment-blue-hover {
+background-color: #6292FE;
+background-position: 0 0;
+}
+.editor .writely-comment-orange {
+background-color: #FFDEAD;
+background-position: -80px 0;
+}
+.editor .writely-comment-orange-hover {
+background-color: #F90;
+background-position: -64px 0;
+}
+.editor .writely-comment-green {
+background-color: #99FBB3;
+background-position: -48px 0;
+}
+.editor .writely-comment-green-hover {
+background-color: #00F442;
+background-position: -32px 0;
+}
+.editor .writely-comment-cyan {
+background-color: #CFF;
+background-position: -208px 0;
+}
+.editor .writely-comment-cyan-hover {
+background-color: #0FF;
+background-position: -192px 0;
+}
+.editor .writely-comment-purple {
+background-color: #EBCCFF;
+background-position: -144px 0;
+}
+.editor .writely-comment-purple-hover {
+background-color: #90F;
+background-position: -128px 0;
+}
+.editor .writely-comment-magenta {
+background-color: #FCF;
+background-position: -112px 0;
+}
+.editor .writely-comment-magenta-hover {
+background-color: #F0F;
+background-position: -96px 0;
+}
+.editor .writely-comment-red {
+background-color: #FFCACA;
+background-position: -176px 0;
+}
+.editor .writely-comment-red-hover {
+background-color: #FF7A7A;
+background-position: -160px 0;
+}
+.editor .writely-comment-marker {
+background-image: url('images/markericons_horiz.gif');
+background-color: transparent;
+padding-right: 11px;
+background-repeat: no-repeat;
+width: 16px;
+height: 16px;
+-moz-user-select: none;
+}
+.editor .writely-comment-hidden {
+padding: 0;
+background: none;
+}
+.editor .writely-comment-marker-hidden {
+background: none;
+padding: 0;
+width: 0;
+}
+.editor .writely-comment-none {
+opacity: .2;
+filter:progid:DXImageTransform.Microsoft.Alpha(opacity=20);
+-moz-opacity: .2;
+}
+.editor .writely-comment-none-hover {
+opacity: .2;
+filter:progid:DXImageTransform.Microsoft.Alpha(opacity=20);
+-moz-opacity: .2;
+}
+.br_fix br:not(:-moz-last-node):not(:-moz-first-node) {
+position:relative;
+left: -1ex
+}
+.br_fix br+br {
+position: static !important
+}
+}
+h6 { font-size: 8pt }
+h5 { font-size: 8pt }
+h4 { font-size: 10pt }
+h3 { font-size: 12pt }
+h2 { font-size: 14pt }
+h1 { font-size: 18pt }
+blockquote {padding: 10px; border: 1px #DDD dashed }
+a img {border: 0}
+.pb {
+border-width: 0;
+page-break-after: always;
+/* 我们不希望这个可以调整大小，所以使用!important强制设置宽度和高度 */
+height: 1px !important;
+width: 100% !important;
+}
+.editor .pb {
+border-top: 1px dashed #C0C0C0;
+border-bottom: 1px dashed #C0C0C0;
+}
+div.google_header, div.google_footer {
+position: relative;
+margin-top: 1em;
+margin-bottom: 1em;
+}
+/* 目录 */
+.editor div.writely-toc {
+background-color: #f3f3f3;
+border: 1px solid #ccc;
+}
+.writely-toc > ol {
+padding-left: 3em;
+font-weight: bold;
+}
+ol.writely-toc-subheading {
+padding-left: 1em;
+font-weight: normal;
+}
+/* 仅IE6 */
+* html writely-toc ol {
+list-style-position: inside;
+}
+.writely-toc-none {
+list-style-type: none;
+}
+.writely-toc-decimal {
+list-style-type: decimal;
+}
+.writely-toc-upper-alpha {
+list-style-type: upper-alpha;
+}
+.writely-toc-lower-alpha {
+.writely-toc-lower-alpha {
+list-style-type: lower-alpha;
+}
+.writely-toc-upper-roman {
+list-style-type: upper-roman;
+}
+.writely-toc-lower-roman {
+list-style-type: lower-roman;
+}
+.writely-toc-disc {
+list-style-type: disc;
+}
+/* 有序列表转换为编号列表可以保留有序类型，反之亦然。这会引起混淆，因此禁止这种做法 */
+ul[type="i"], ul[type="I"], ul[type="1"], ul[type="a"], ul[type="A"] {
+list-style-type: disc;
+}
+ol[type="disc"], ol[type="circle"], ol[type="square"] {
+list-style-type: decimal;
+}
+/* 结束默认CSS */
+/* 自定义CSS */
+/* 结束自定义CSS */
+/* 用户界面编辑CSS */
+body {
+font-family: Verdana;
+font-size: 10.0pt;
+line-height: normal;
+background-color: #ffffff;
+}
+/* 结束用户界面编辑CSS */
+/* 编辑器CSS */
+.editor a:visited {color: #551A8B}
+.editor table.zeroBorder {border: 1px dotted gray}
+.editor table.zeroBorder td {border: 1px dotted gray}
+.editor table.zeroBorder th {border: 1px dotted gray}
+.editor div.google_header, .editor div.google_footer {
+border: 2px #DDDDDD dashed;
+position: static;
+width: 100%;
+min-height: 2em;
+}
+.editor .misspell {background-color: yellow}
+.editor .writely-comment {
+font-size: 9pt;
+line-height: 1.4;
+padding: 1px;
+border: 1px dashed #C0C0C0
+}
+/* 结束编辑器CSS */
+</style>
+<style>
+body {
+margin: 0px;
+}
+#doc-contents {
+margin: 6px;
+}
+#google-view-footer {
+clear: both;
+border-top: thin solid;
+padding-top: 0.3em;
+padding-bottom: 0.3em;
+}
+a.google-small-link:link, a.google-small-link:visited {
+color:#112ABB;
+font-family:Arial,Sans-serif;
+font-size:11px !important;
+}
+body, p, div, td {
+direction: inherit;
+}
+@media print {
+#google-view-footer {
+display: none;
+}
+}
+</style>
+<script>
+function viewOnLoad() {
+if (document.location.href.indexOf('spi=1') != -1) {
+if (navigator.userAgent.toLowerCase().indexOf('msie') != -1) {
+window.print();
+} else {
+window.setTimeout(window.print, 10);
+}
+}
+if (document.location.href.indexOf('hgd=1') != -1) {
+var footer = document.getElementById("google-view-footer");
+if (footer) {
+footer.style.display = 'none';
+}
+}
+}
+</script>
+</head>
+<body>
+<div id="doc-contents">
+<div>
+<h1 style="text-align: center;">
+Google XML文档格式风格指南</h1><div style="text-align: center;">版本 1.0<br>版权所有 Google 2008<br><br></div><h2>简介</h2>本文档提供了一套在设计新的XML文档格式时（在某种程度上也适用于XML文档本身；见第11节）的一般使用指南。文档格式通常包括正式部分（DTDs、schemas）和用规范英语散文表达的部分。<br><br>这些指南适用于新设计，不打算强制对现有设计进行追溯性更改。在参与公共或私人文档格式设计的创建时，这些指南可能有帮助，但不应控制小组共识。<br><br>本指南旨在设计由机器生成和消费的XML，而不是为人类设计。其规则<i>不适用</i>于如XHTML（应尽可能像HTML一样格式化）或ODF这样的格式，这些格式旨在表达富文本。一个包含XHTML或其他富文本格式的嵌入内容的文档，但也包含纯粹的机器可解释部分，应当遵循本风格指南来处理机器可解释部分。它也不影响通过从proto缓冲区或其他类型的格式翻译而创建的XML文档格式。<br><br>大多数指南都添加了简短的理由。它们在同一文档中维护，希望它们不会过时，但它们不被视为规范。<br><br>术语MUST、MUST NOT、SHOULD、SHOULD NOT和MAY在本文档中使用时，遵循<a title="RFC 2119" href="https://www.ietf.org/rfc/rfc2119.txt" id="iecm">RFC 2119</a>的意义。<br>&nbsp;<br><h2>1. 设计与否，这是个问题<br></h2><ol><li>尽可能尝试重用现有的XML格式，尤其是那些允许扩展的格式。创建全新的格式应谨慎进行；首先阅读<a title="Tim Bray的警告" href="https://www.tbray.org/ongoing/When/200x/2006/01/08/No-New-XML-Languages" id="d3cy">Tim Bray的警告</a>。尽量让你的格式得到广泛审查，如果可能的话，也包括组织外部的审查。<i>理由：</i>新文档格式是有成本的：它们必须被审查、记录，并被用户学习。<br><br></li><li>如果您正在重用或扩展现有格式，请<i>合理</i>地使用规定的元素和属性，尤其是任何必需的元素和属性。不要完全重新定义它们，但要尝试看看如果普通语义不适合，它们可能如何以创造性的方式使用。当格式要求使用某个元素或属性但不适合您的用例时，作为最后手段，使用某个固定字符串作为其值。<i>理由：</i>标记重用是好的，标记滥用是坏的。<br><br></li><li>在扩展格式时，使用现有格式的隐式风格，即使它与本指南相矛盾。<i>理由：</i>一致性。<br></li></ol><br><h2>2. 模式</h2><ol><li>文档格式应当使用模式语言来表达。<i>理由：</i>清晰性和机器可检查性。<br><br></li><li>模式语言应当是<a title="RELAX NG" href="http://www.relaxng.org/" id="p1s7">RELAX NG</a>的<a title="紧凑语法" href="http://www.relaxng.org/compact-tutorial-20030326.html" id="ulci">紧凑语法</a>。可以向模式中添加嵌入的<a title="Schematron" href="http://www.schematron.com/" id="ymh-">Schematron</a>规则以进行额外的精细控制。<i>理由：</i>RELAX NG是最灵活的模式语言，几乎没有对设计的任意限制。紧凑语法非常易于阅读和学习，并且在必要时可以一对一地转换为XML语法和从XML语法转换。Schematron很好地处理了任意跨元素和跨属性的约束。<br><br></li><li>模式应当使用<a title="&quot;Salami Slice&quot;风格" href="http://www.xfront.com/GlobalVersusLocal.html#SecondDesign" id="r:fj">"Salami Slice"风格</a>（每个元素一条规则）。如果模式简短且简单，可以使用<a title="&quot;Russian Doll&quot;风格" href="http://www.xfront.com/GlobalVersusLocal.html#FirstDesign" id="h14y">"Russian Doll"风格</a>（模式类似于文档）。<a title="&quot;Venetian Blind&quot;风格" href="http://www.xfront.com/GlobalVersusLocal.html#ThirdDesign" id="dr_g">"Venetian Blind"风格</a>（每个元素类型一条规则）不适合RELAX NG，不应使用。<br><br></li><li>应当提供正则表达式以协助验证复杂值。<br><br></li><li>可以提供DTD和/或W3C XML模式以与现有产品、工具或用户兼容。<i>理由：</i>我们不能一次改变整个世界。<br></li></ol></div><div><br><h2>3. 命名空间</h2><ol><li>元素名称必须位于命名空间中，除非扩展的是不使用命名空间的预先存在的文档类型。应当使用默认命名空间。<i>理由：</i>无命名空间的文档已经过时；每一组名称都应位于某个命名空间中。使用默认命名空间提高了可读性。<br><br></li><li>属性名称不应位于命名空间中，除非它们来自外部文档类型或旨在在外部文档类型中使用。<i>理由：</i>位于命名空间中的属性名称必须始终有前缀，这在输入时很烦人且难以阅读。<br><br>
+</li><li>命名空间名称是HTTP URI。命名空间名称应当采用形式<span style="font-family: Courier New;">https://example.com/</span><i style="font-family: Courier New;">whatever</i><span style="font-family: Courier New;">/</span><i><span style="font-family: Courier New;">year</span></i>，其中<i>whatever</i>是基于文档类型名称的唯一值，<i>year</i>是命名空间创建的年份。可能有额外的URI路径部分
+在<i>年</i>之前。[<i>理由：</i>现有惯例。提供年份允许代码名称的可能重复使用。]<br><br></li><li>除非特定元素或属性的语义发生了严重不兼容的变化，否则命名空间不得更改。[<i>理由：</i>更改命名空间需要更改所有客户端代码。]<br><br></li><li>命名空间前缀应当简短（但不要太短以至于可能与其他项目冲突）。单字母前缀不得使用。前缀应当仅包含小写ASCII字母。[<i>理由：</i>便于输入和避免编码兼容性问题。]</li></ol><br>
+<h2>4. 名称和枚举值</h2><b>注意：</b>“名称”指的是元素、属性和枚举值的名称。<br><br><ol><li>所有名称必须使用lowerCamelCase格式。即，它们以小写字母开头，然后名称中的每个新单词以大写字母开头。[ <i>理由：</i> 采用单一风格提供了一致性，这在引用名称时有帮助，因为已知的大写字母无需记忆。它与Java风格匹配，其他语言可以通过自动名称转换处理。]<br><br></li><li>名称必须仅包含ASCII字母和数字。[ <i>理由：</i> 输入方便且不存在编码兼容性问题。]<br><br></li><li>名称不应超过25个字符。应避免使用较长的名称，通过设计简洁且信息丰富的名称。如果名称只能通过变得晦涩来保持在这一限制内，则应忽略此限制。[ <i>理由：</i> 较长的名称使用起来不便且需要额外的带宽。]<br><br></li><li>如果足够知名，可以在构建名称时使用已发布的标准缩写。不得使用临时缩写。出于驼峰命名法的目的，首字母缩写词必须被视为单词：informationUri，而非informationURI。[ <i>理由：</i> 一个社区熟知的缩写对需要使用相同文档格式的其他社区往往是难以理解的；将首字母缩写词视为单词可以更容易看出单词边界。]<br></li></ol><p><br></p><p>
+
+</p><h2>
+5. 元素</h2><ol><li>所有元素必须包含无内容、字符内容或子元素。不得使用混合内容。[ <i>理由：</i> 许多XML数据模型无法正确处理混合内容，其使用使得元素顺序依赖。始终如此，文本格式不受此规则约束。]<br><br></li><li>仅用于包装重复子元素的XML元素不应使用。[ <i>理由：</i> 它们在Atom中未使用，且无任何附加价值。]</li></ol>
+
+<p><br></p><h2>6. 属性</h2><ol><li>文档格式不得依赖于开始标签中属性的顺序。[ <i>理由：</i> 很少有XML解析器报告顺序，且它不属于XML信息集的一部分。]<br><br></li><li>元素不应被过多属性所超载（经验法则是最多10个）。相反，应使用子元素来封装密切相关的属性。[ <i>理由：</i> 这种方法保持了XML提供的内置扩展性，并在规范发展时有助于提供前向兼容性。]<br><br></li><li>属性不得用于保存其中换行符有意义的值。[ <i>理由：</i> 符合标准的XML解析器会将此类换行符转换为空格。]<br><br></li><li>文档格式必须允许属性值使用单引号或双引号。[ <i>理由：</i> XML解析器不报告两者的区别。]<br></li></ol>
+
+<p><br></p>
+<p>
+</p><h2>
+7. 值</h2><ol><li>数值应为32位有符号整数、64位有符号整数或64位IEEE双精度浮点数，均以10为基数表示。这些分别对应于XML Schema类型 <span style="font-family: Courier New;">xsd:int</span>、<span style="font-family: Courier New;">xsd:long</span> 和 <span style="font-family: Courier New;">xsd:double</span>。如果在特定情况下需要，也可以使用 <span style="font-family: Courier New;">xsd:integer</span>（无限精度整数）值。[ <i>理由：</i> XML Schema中的数值类型过多：这些提供了一个合理的子集。]<br><br></li><li>
+
+布尔值不应使用（应使用枚举代替）。如果必须使用，它们必须表示为 <span style="font-family: Courier New;">true</span> 或 <span style="font-family: Courier New;">false</span>，对应于XML Schema类型 <span style="font-family: Courier New;">xsd:boolean</span> 的子集。不得使用 <span style="font-family: Courier New;">xsd:boolean</span> 的替代值 <span style="font-family: Courier New;">1</span> 和 <span style="font-family: Courier New;">0</span>。[ <i>理由：</i> 布尔参数不可扩展。允许数值的额外灵活性不会被任何解析器抽象掉。]<br><br></li><li>日期应使用 <a title="RFC 3339" href="https://www.ietf.org/rfc/rfc3339.txt" id="sk98">RFC 3339</a> 格式表示，这是ISO 8601格式和XML Schema <span style="font-family: Courier New;">xsd:dateTime</span> 格式的子集。应使用UTC时间而非本地时间。
+
+[ <i>理由：</i> 日期格式和时区过多，尽管认识到有时本地时间保留了重要信息。]<br><br></li><li>字符内容和属性值中的嵌入语法不应使用。值中的语法意味着XML工具基本上无用。日期、URI和XPath表达式等语法是例外。[ <i>理由：</i> 用户应能仅使用XML解析器处理XML文档，而无需额外的专用解析器，这些解析器容易出错。]<br><br></li><li>小心处理值中的空白。XML解析器不会去除元素中的空白，但在属性中会将换行符转换为空格。然而，应用程序框架可能进行更激进的空白去除。您的文档格式应给出空白去除的规则。<br></li></ol>
+
+<p><br>
+</p>
+<p>
+</p><h2>8. 键值对<br></h2><ol><li>
+简单的键值对应使用名称表示键的空元素表示，包含 <span style="font-family: Courier New;">value</span> 属性的值。具有 <span style="font-family: Courier New;">value</span> 属性的元素也可能具有 <span style="font-family: Courier New;">unit</span> 属性，以指定测量值的单位。对于物理测量，应使用 <a title="SI系统" href="https://en.wikipedia.org/wiki/International_System_of_Units" id="rhxg">SI系统</a>。[ <i>理由：</i>
+
+简单性和设计一致性。将值保存在属性中
+将其隐藏起来，因为仅显示值而不显示键是没有用的。]</li><li>如果可能的键的数量非常大或无界，键值对可以用带有<code>key</code>、<code>value</code>以及可选的<code>unit</code>和<code>scheme</code>属性的单一通用元素来表示（这些属性用于区分来自不同领域的键）。在这种情况下，还应提供（不一定在同一文档中）带有人类可读解释的键列表。</li></ol><h2>9. 二进制数据</h2><p><b>注意：</b>关于二进制数据是否应作为XML文档的一部分没有硬性规定。如果数据过大，最好链接到它。</p><p></p><ol><li>二进制数据不得直接作为原样包含在XML文档中，必须使用Base64编码进行编码。[<i>理由：</i> XML不允许任意二进制字节。]</li><li>Base64要求的换行符可以省略。[<i>理由：</i> 换行符的目的是保持纯文本行短，但XML并不是真正的纯文本。]</li><li>可以为此元素附加一个名为<code>xsi:type</code>、值为<code>xs:base64Binary</code>的属性，以表明使用了Base64格式。[理由：不透明的二进制数据块应附带解码说明。]</li></ol>
+<h2>10. 处理指令</h2><ol><li>除非为了指定纯粹的本地处理约定，否则不得创建新的处理指令，并且应尽量避免使用。可以使用现有的标准化处理指令。[<i>理由：</i>处理指令在XML数据模型中显得不协调，并且总是可以用元素替代；它们存在的主要目的是为了避免破坏向后兼容性。]</li></ol><p>&nbsp;</p>
+
+<p>
+</p><p>&nbsp;</p><h2>11. XML文档实例的表示<br></h2><p><b>注意：</b>&nbsp; 这些点只是指导方针，因为程序创建的实例的格式往往不在程序员的控制范围内（例如，当使用XML序列化库时）。<i>在任何情况下</i>，XML解析器都不应依赖这些指导方针。使用标准的XML解析器，而不是手工编写的解决方案。<br></p><p><br></p><ol><li>使用的字符编码应为UTF-8。例外情况需要极具说服力的理由。[<i>理由：</i> UTF-8是通用的且广泛使用。]<br><br></li><li>命名空间应尽可能在文档的根元素中声明。[<i>理由：</i>清晰性和一致性。]<br><br></li><li>命名空间URI到前缀的映射应在整个文档中保持不变，并且也应在设计文档中使用。[<i>理由：</i>清晰性和一致性。]<br><br></li><li>对于标准命名空间，应使用众所周知的前缀，如html:（用于XHTML）、dc:（用于都柏林核心元数据）和xs:（用于XML Schema）。[<i>理由：</i>人类可读性。]<br><br></li><li>标签中不应使用多余的空白。在开始标签中每个属性前使用一个空格；如果开始标签过长，空格可以用换行符替换。[<i>理由：</i>一致性和简洁性。]<br><br></li><li>空元素可以表示为空标签或紧跟结束标签的开始标签。应用程序不应区分这两种格式。[<i>理由：</i> XML解析器不区分它们。]<br><br></li><li>文档可以使用2个空格缩进来美化打印子元素。包含字符内容的元素不应换行。长开始标签可以在除最后一个属性值之外的任何属性值后使用换行符（可能带有额外的缩进）进行断行。[<i>理由：</i>与我们的风格普遍兼容。换行字符内容会影响其值。]<br><br></li><li>属性值可以用引号或单引号包围。规范不得要求或禁止使用任何一种形式。可以自由使用<span style="font-family: Courier New;">&amp;apos;</span>和<span style="font-family: Courier New;">&amp;quot;</span>来转义每种类型的引号。[<i>理由：</i>没有XML解析器报告这种区别。]<br><br>
+
+</li><li>注释不得用于承载实际数据。注释可用于手写XML中的TODO。注释不应在公开传输的文档中使用。[<i>理由：</i>注释通常会被解析器丢弃。]<br><br></li><li>如果仍然使用注释，它们应仅出现在文档序言或包含子元素的元素中。如果需要美化打印，注释应像元素一样进行美化打印，但可以换行。注释不应出现在包含字符内容的元素中。[<i>理由：</i>注释中的空白和周围的空白提高了可读性，但在字符内容中嵌入注释可能会导致对内容中哪些空白存在或不存在的混淆。]<br><br></li><li>注释应在<span style="font-family: Courier New;">&lt;!--</span>之后和<span style="font-family: Courier New;">--&gt;</span>之前有空白。[<i>理由：</i>可读性。]<br><br></li><li>可以使用CDATA节；它们与使用<span style="font-family: Courier New;">&amp;amp;</span>和<span style="font-family: Courier New;">&amp;lt;</span>等效。规范不得要求或禁止使用CDATA节。[<i>理由：</i>很少有XML解析器报告这种区别，并且CDATA和文本的组合通常被报告为单个对象。]<br><br></li><li>除XML标准实体引用<span style="font-family: Courier New;">&amp;amp;</span>、<span style="font-family: Courier New;">&amp;lt;</span>、<span style="font-family: Courier New;">&amp;gt;</span>、<span style="font-family: Courier New;">&amp;quot;</span>和<span style="font-family: Courier New;">&amp;apos;</span>之外，不得使用其他实体引用。可以使用字符引用，但除非字符编码不是UTF-8，否则优先使用实际字符。如常规，文本格式不受此规则约束。<br></li></ol>
+
+<br><p>&nbsp;</p><p>
+</p>
+<p>
+</p><br><br><h2>
+12. 元素与属性
+</h2>
+<p>
+<b>注意：</b>&nbsp; 决定何时使用属性和何时使用元素没有严格的规则。这里列出了一些设计者应考虑的因素；没有给出理由。
+</p>
+<h3>
+12.1. 一般要点：<br>
+</h3>
+
+<ol>
+<li>
+<p>
+属性比元素更具限制性，所有设计都有一些元素，因此全元素设计是最简单的——但这并不意味着是最好的。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+在树形数据模型中，元素通常在内部表示为节点，这些节点比用于表示属性的字符串占用更多内存。有时这些节点属于不同的特定于应用程序的类，在许多语言中，代表这些类也需要占用内存。
+</p>
+<p>
+<br>
+
+</p>
+</li>
+<li>
+<p>
+在流处理时，元素是一次处理一个的（可能甚至是分段处理的，这取决于您使用的XML解析器），而元素的所有属性及其值是一次性报告的，这会占用内存，特别是如果某些属性值非常长。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+元素内容和属性值都需要适当的转义，因此设计时不应考虑转义问题。
+</p>
+<p>
+<br>
+</p>
+
+</li>
+<li>
+<p>
+在某些编程语言和库中，处理元素更容易；在其他情况下，处理属性更容易。注意不要将处理的便利性作为标准。特别是，XSLT可以同样轻松地处理两者。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+如果某数据通常应显示给用户，请考虑使用元素；如果不应显示，请考虑使用属性。（这条规则经常因各种原因被违反。）
+
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+如果您正在扩展现有模式，请按照该模式中处理方式的类比来做。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+合理的模式语言，如RELAX NG和Schematron，对元素和属性对称处理。较旧且较粗糙的模式语言，如DTD和XML Schema，往往对元素的支持更好。
+
+</p>
+</li>
+</ol>
+<p>
+</p>
+<h3>
+12.2 使用元素<br>
+</h3>
+<ol>
+<li>
+<p>
+如果某事物在数据模型中可能出现多次，请使用元素，而不是引入名称如 <span style="font-family: Courier New;">foo1, foo2, foo3</span> 的属性 ....
+</p>
+
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+使用元素来表示可以被视为独立对象的信息，并且当信息通过父/子关系与另一信息相关时。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+当数据包含严格的类型或关系规则时，使用元素。
+</p>
+<p>
+
+<br>
+</p>
+</li>
+<li>
+<p>
+如果两条数据之间的顺序很重要，请为它们使用元素：属性本质上是无序的。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+如果某数据有或可能有自己的子结构，请将其放在元素中：将子结构放入属性中总是很混乱。同样，如果数据是某个更大数据的组成部分，请将其放在元素中。
+</p>
+
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+对前一条规则的一个例外：多个空格分隔的标记可以安全地放在属性中。原则上，分隔符可以是任何东西，但目前模式语言验证器只能处理空格，因此最好坚持使用空格。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+如果某数据跨越多行，请使用元素：XML解析器会将属性值中的换行符转换为空格。
+
+<br><br></p></li><li>如果某数据非常大，请使用元素，以便其内容可以流式传输。<br><br></li>
+<li>
+<p>
+如果某数据是自然语言，请将其放在元素中，以便您可以使用 <span style="font-family: Courier New;">xml:lang</span> 属性来标记所使用的语言。某些类型的自然语言文本，如日语，经常使用 <a href="https://www.w3.org/TR/2001/REC-ruby-20010531" id="pa2f" title="annotations">注释</a>，这些通常使用子元素表示；像希伯来语和阿拉伯语这样的从右到左的语言可能同样需要子元素来正确管理 <a href="https://www.w3.org/TR/2001/REC-ruby-20010531" id="ehyv" title="bidirectionality">双向性</a>。
+</p>
+
+<p>
+</p>
+</li>
+</ol>
+<h3>
+12.3 使用属性<br>
+</h3>
+<ol>
+<li>
+<p>
+如果数据是来自枚举、代码列表或受控词汇表的代码，尽可能将其放在属性中。例如，语言标签、货币代码、医疗诊断代码等，最好作为属性处理。
+</p>
+<p>
+<br>
+
+</p>
+</li>
+<li>
+<p>
+如果某数据实际上是另一数据的元数据（例如，表示主数据服务的类或角色，或指定处理它的方法），尽可能将其放在属性中。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+特别是，如果某数据是另一数据的ID，或是对此ID的引用，请将标识部分放在属性中。当它是ID时，使用属性名 <span style="font-family: Courier New;">xml:id</span>。
+
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+超文本引用通常放在 <span style="font-family: Courier New;">href</span> 属性中。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+
+<p>
+如果某数据适用于一个元素及其任何后代元素，除非在其中一些元素中被覆盖，通常将其放在属性中。众所周知的例子有 <span style="font-family: Courier New;">xml:lang</span>、<span style="font-family: Courier New;">xml:space</span>、<span style="font-family: Courier New;">xml:base</span> 和命名空间声明。
+</p>
+<p>
+<br>
+</p>
+</li>
+<li>
+<p>
+
+如果简洁性真的是最重要的事情，请使用属性，但考虑使用 <span style="font-family: Courier New;">gzip</span> 压缩——它对具有高度重复结构的文档非常有效。</p></li>
+</ol></div><br><div><div><div><div><div>
+<br><h2>13. 结束语
+</h2>
+<p>
+</p><p>
+使用常识并保持一致性。设计时考虑可扩展性。你确实需要它。[理由：长期而痛苦的经验。]<br></p><p><br> </p>
+
+<p>
+在设计XML格式时，花几分钟查看其他格式并确定它们的风格。制定风格指南的目的是让人们专注于你要表达的内容，而不是你表达的方式。<br></p><p>
+<br>
+宁可打破这些规则中的任何或所有（是的，即使是那些说必须的规则），也不要因为盲目遵循它们而创造出粗糙、随意、令人厌恶的设计。特别是，属性和子元素的随机混合很难理解和使用，尽管当数据明显分为两组如简单/复杂或元数据/数据时，使用两者通常是有意义的。
+</p>
+<div><p>
+<br>
+新手总是问：
+</p>
+
+<p>
+&nbsp;&nbsp;&nbsp; “元素还是属性？
+</p>
+<p>
+哪个对我最有用？”
+</p>
+<p>
+&nbsp;&nbsp;&nbsp; 那些懂的人像狮子般咆哮；
+</p>
+<p>
+&nbsp;&nbsp;&nbsp; 聪明的黑客像老虎般微笑。
+</p>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --一首 <a href="https://en.wikipedia.org/wiki/Waka_%28poetry%29#Forms_of_waka" id="s3k3" title="tanka">短歌</a>，或扩展的俳句
+
+</p>
+</div>
+<p>
+<br>
+</p>
+<br>[TODO: 如果建立了模式注册表，请添加链接]<br><br></div><br></div><br></div></div></div><br>
+<br clear="all"/>
+</div>

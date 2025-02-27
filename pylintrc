@@ -1,0 +1,363 @@
+# 此 Pylint 配置文件包含了尽最大努力的配置，以维护
+# Google Python 风格指南中描述的最佳实践和风格：
+#   https://google.github.io/styleguide/pyguide.html
+#
+# 其规范的开源位置为：
+#   https://google.github.io/styleguide/pylintrc
+
+# 版权所有 2018 Google LLC
+#
+# 根据 Apache 许可证 2.0 版（以下简称“许可证”）授权；
+# 除非符合许可证的规定，否则不得使用此文件。
+# 您可以在以下位置获取许可证的副本：
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# 除非适用法律要求或书面同意，根据许可证分发的软件
+# 是基于“按原样”基础分发的，不附带任何明示或暗示的
+# 保证或条件。请参阅许可证，了解有关权限和
+# 限制的具体语言。
+
+[MAIN]
+
+# 要跳过的文件或目录。它们应该是基本名称，而不是路径。
+ignore=third_party
+
+# 与正则表达式模式匹配的文件或目录将被跳过。正则表达式
+# 匹配的是基本名称，而不是路径。
+ignore-patterns=
+
+# 保存收集的数据以便后续比较。
+persistent=no
+
+# 要加载的插件列表（以逗号分隔的 Python 模块名称），通常用于注册额外的检查器。
+load-plugins=
+
+# 使用多个进程来加速 Pylint。
+jobs=4
+
+# 允许加载任意 C 扩展。扩展将被导入到活动的 Python 解释器中，并可能运行任意代码。
+unsafe-load-any-extension=no
+
+
+[MESSAGES CONTROL]
+
+# 仅显示具有列出置信度的警告。留空以显示所有警告。有效级别：HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
+confidence=
+
+# 启用具有给定 id 的消息、报告、类别或检查器。您可以
+# 提供多个以逗号（,）分隔的标识符，或者在命令行上多次使用此选项（在配置文件中不应出现多次）。另请参阅“--disable”选项的示例。
+#enable=
+
+# 禁用具有给定 id 的消息、报告、类别或检查器。您可以
+# 提供多个以逗号（,）分隔的标识符，或者多次使用此选项（仅在命令行上，不在配置文件中，在配置文件中应仅出现一次）。您也可以使用“--disable=all”来首先禁用所有内容，然后重新启用特定的检查。例如，如果您只想运行相似性检查器，可以使用“--disable=all --enable=similarities”。如果您只想运行类检查器，但不显示警告级别的消息，请使用“--disable=all --enable=classes --disable=W”
+disable=R,
+        abstract-method,
+        apply-builtin,
+        arguments-differ,
+        attribute-defined-outside-init,
+        backtick,
+        bad-option-value,
+        basestring-builtin,
+        buffer-builtin,
+        c-extension-no-member,
+        consider-using-enumerate,
+        cmp-builtin,
+        cmp-method,
+        coerce-builtin,
+        coerce-method,
+        delslice-method,
+        div-method,
+        eq-without-hash,
+        execfile-builtin,
+        file-builtin,
+        filter-builtin-not-iterating,
+        fixme,
+        getslice-method,
+        global-statement,
+        hex-method,
+        idiv-method,
+        implicit-str-concat,
+        import-error,
+        import-self,
+        import-star-module-level,
+        input-builtin,
+        intern-builtin,
+        invalid-str-codec,
+        locally-disabled,
+        long-builtin,
+        long-suffix,
+        map-builtin-not-iterating,
+        misplaced-comparison-constant,
+        missing-function-docstring,
+        metaclass-assignment,
+        next-method-called,
+        next-method-defined,
+        no-absolute-import,
+        no-init,  # 新增
+        no-member,
+        no-name-in-module,
+        no-self-use,
+        nonzero-method,
+        oct-method,
+        old-division,
+        old-ne-operator,
+        old-octal-literal,
+        old-raise-syntax,
+        parameter-unpacking,
+        print-statement,
+        raising-string,
+        range-builtin-not-iterating,
+        raw_input-builtin,
+        rdiv-method,
+        reduce-builtin,
+        relative-import,
+        reload-builtin,
+        round-builtin,
+        setslice-method,
+        signature-differs,
+        standarderror-builtin,
+        suppressed-message,
+        sys-max-int,
+        trailing-newlines,
+        unichr-builtin,
+        unicode-builtin,
+        unnecessary-pass,
+        unpacking-in-except,
+        useless-else-on-loop,
+        useless-suppression,
+        using-cmp-argument,
+        wrong-import-order,
+        xrange-builtin,
+        zip-builtin-not-iterating,
+
+
+[REPORTS]
+
+# 设置输出格式。可用的格式有 text, parseable, colorized, msvs
+# （Visual Studio）和 html。您也可以提供一个报告类，例如
+# mypackage.mymodule.MyReporterClass。
+output-format=text
+
+# 指定是否显示完整报告或仅显示消息
+reports=no
+
+# 激活评分。
+score=no
+# Python 表达式应返回一个小于 10 的评分（10 为最高评分）。您可以访问变量 errors、warning、statement，它们分别包含错误数、警告消息数和分析的总语句数。这用于全局评估报告（RP0004）。
+evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)
+
+# 用于显示消息的模板。这是一个 Python 新式格式字符串，用于格式化消息信息。请参阅文档以获取所有详细信息
+#msg-template=
+
+
+[BASIC]
+
+# 始终应接受的好变量名，以逗号分隔
+good-names=main,_
+
+# 始终应拒绝的坏变量名，以逗号分隔
+bad-names=
+
+# 用冒号分隔的名称集，这些名称在名称正则表达式允许多种样式时确定彼此的命名风格。
+name-group=
+
+# 在名称无效时包含正确的命名格式提示
+include-naming-hint=no
+
+# 生成属性的装饰器列表，例如 abc.abstractproperty。添加到此列表中以注册其他生成有效属性的装饰器。
+property-classes=abc.abstractproperty,cached_property.cached_property,cached_property.threaded_cached_property,cached_property.cached_property_with_ttl,cached_property.threaded_cached_property_with_ttl
+
+# 匹配正确函数名的正则表达式
+function-rgx=^(?:(?P<exempt>setUp|tearDown|setUpModule|tearDownModule)|(?P<camel_case>_?[A-Z][a-zA-Z0-9]*)|(?P<snake_case>_?[a-z][a-z0-9_]*))$
+
+# 匹配正确变量名的正则表达式
+variable-rgx=^[a-z][a-z0-9_]*$
+
+# 匹配正确常量名的正则表达式
+const-rgx=^(_?[A-Z][A-Z0-9_]*|__[a-z0-9_]+__|_?[a-z][a-z0-9_]*)$
+
+# 匹配正确属性名的正则表达式
+attr-rgx=^_{0,2}[a-z][a-z0-9_]*$
+
+# 匹配正确参数名的正则表达式
+argument-rgx=^[a-z][a-z0-9_]*$
+
+# 匹配正确类属性名的正则表达式
+class-attribute-rgx=^(_?[A-Z][A-Z0-9_]*|__[a-z0-9_]+__|_?[a-z][a-z0-9_]*)$
+
+# 匹配正确内联迭代名的正则表达式
+inlinevar-rgx=^[a-z][a-z0-9_]*$
+
+# 匹配正确类名的正则表达式
+class-rgx=^_?[A-Z][a-zA-Z0-9]*$
+
+# 匹配正确模块名的正则表达式
+module-rgx=^(_?[a-z][a-z0-9_]*|__init__)$
+
+# 匹配正确方法名的正则表达式
+method-rgx=(?x)^(?:(?P<exempt>_[a-z0-9_]+__|runTest|setUp|tearDown|setUpTestCase|tearDownTestCase|setupSelf|tearDownClass|setUpClass|(test|assert)_*[A-Z0-9][a-zA-Z0-9_]*|next)|(?P<camel_case>_{0,2}[A-Z][a-zA-Z0-9_]*)|(?P<snake_case>_{0,2}[a-z][a-z0-9_]*))$
+
+# 仅应匹配不需要文档字符串的函数或类名的正则表达式。
+no-docstring-rgx=(__.*__|main|test.*|.*test|.*Test)$
+
+# 需要文档字符串的函数/类的最短行数，较短的免除此要求。
+docstring-min-length=12
+
+
+[TYPECHECK]
+
+# 生成上下文管理器的装饰器列表，例如 contextlib.contextmanager。添加到此列表中以注册其他生成有效上下文管理器的装饰器。
+contextmanager-decorators=contextlib.contextmanager,contextlib2.contextmanager
+
+# 不应检查其成员属性的模块名称列表（对于在运行时操作命名空间的模块/项目很有用，因此无法通过静态分析推断出现有的成员属性）。它支持限定模块名称，以及 Unix 模式匹配。
+ignored-modules=
+
+# 不应检查其成员属性的类名称列表（对于具有动态设置属性的类很有用）。这支持使用限定名称。
+ignored-classes=optparse.Values,thread._local,_thread._local
+
+# 由 pylint 推断系统错过的动态设置的成员列表，因此在访问时不应触发 E1101。接受 Python 正则表达式。
+generated-members=
+
+
+[FORMAT]
+
+# 单行上的最大字符数。
+max-line-length=80
+
+# TODO(https://github.com/pylint-dev/pylint/issues/3352): 指示 pylint 免除因 pytype 指令而变得过长的行。
+
+# 允许超过限制的行的正则表达式。
+ignore-long-lines=(?x)(
+  ^\s*(\#\ )?<?https?://\S+>?$|
+  ^\s*(from\s+\S+\s+)?import\s+.+$)
+
+# 如果没有 else 语句，允许 if 语句的正文与测试在同一行。
+single-line-if-stmt=yes
+
+# 模块中的最大行数
+max-module-lines=99999
+
+# 用作缩进单位的字符串。内部 Google 风格指南要求 2 个空格。Google 公开发布的风格指南说 4 个，与 PEP 8 一致。
+indent-string='    '
+
+# 在悬挂或继续行内需要的缩进空格数。
+indent-after-paren=4
+# 预期的行结束格式，例如空（任何行结束符）、LF 或 CRLF。
+expected-line-ending-format=
+
+
+[MISCELLANEOUS]
+
+# 需要考虑的笔记标签列表，以逗号分隔。
+notes=TODO
+
+
+[STRING]
+
+# 此标志控制当模块内引号分隔符的使用不一致时，是否生成不一致引号警告。
+check-quote-consistency=yes
+
+
+[VARIABLES]
+
+# 指定是否应检查 __init__ 文件中的未使用导入。
+init-import=no
+
+# 匹配虚拟变量名称（即预期不使用的变量）的正则表达式。
+dummy-variables-rgx=^\*{0,2}(_$|unused_|dummy_)
+
+# 假定在内置函数中定义的附加名称列表。请记住，尽可能避免定义新的内置函数。
+additional-builtins=
+
+# 可以通过名称识别回调函数的字符串列表。回调名称必须以这些字符串之一开头或结尾。
+callbacks=cb_,_cb
+
+# 可以包含重新定义内置对象的模块的限定名称列表。
+redefining-builtins-modules=six,six.moves,past.builtins,future.builtins,functools
+
+
+[LOGGING]
+
+# 检查字符串格式参数是否符合日志函数参数格式的日志模块。
+logging-modules=logging,absl.logging,tensorflow.io.logging
+
+
+[SIMILARITIES]
+
+# 相似性的最少行数。
+min-similarity-lines=4
+
+# 计算相似性时忽略注释。
+ignore-comments=yes
+
+# 计算相似性时忽略文档字符串。
+ignore-docstrings=yes
+
+# 计算相似性时忽略导入。
+ignore-imports=no
+
+
+[SPELLING]
+
+# 拼写字典名称。可用的字典：无。要使其工作，请安装 python-enchant 包。
+spelling-dict=
+
+# 不应检查的逗号分隔的单词列表。
+spelling-ignore-words=
+
+# 包含私人字典的文件路径；每行一个单词。
+spelling-private-dict-file=
+
+# 指定是否将未知单词存储到 --spelling-private-dict-file 选项中指示的私人字典中，而不是发出消息。
+spelling-store-unknown-words=no
+
+
+[IMPORTS]
+
+# 不应使用的已废弃模块，以逗号分隔
+deprecated-modules=regsub,
+                   TERMIOS,
+                   Bastion,
+                   rexec,
+                   sets
+
+# 在给定文件中创建每个（即内部和外部）依赖关系的图表（报告 RP0402 不得被禁用）
+import-graph=
+
+# 在给定文件中创建外部依赖关系的图表（报告 RP0402 不得被禁用）
+ext-import-graph=
+
+# 在给定文件中创建内部依赖关系的图表（报告 RP0402 不得被禁用）
+int-import-graph=
+
+# 强制导入顺序识别模块为标准兼容库的一部分。
+known-standard-library=
+
+# 强制导入顺序识别模块为第三方库的一部分。
+known-third-party=enchant, absl
+
+# 分析导入回退块。这可以用来支持兼容 Python 2 和 3 的代码，这意味着该块可能包含仅存在于一个或另一个解释器中的代码，导致分析时出现误报。
+analyse-fallback-blocks=no
+
+
+[CLASSES]
+
+# 用于声明（即赋值）实例属性的方法名称列表。
+defining-attr-methods=__init__,
+                      __new__,
+                      setUp
+
+# 应从受保护访问警告中排除的成员名称列表。
+exclude-protected=_asdict,
+                  _fields,
+                  _replace,
+                  _source,
+                  _make
+
+# 类方法中第一个参数的有效名称列表。
+valid-classmethod-first-arg=cls,
+                            class_
+
+# 元类类方法中第一个参数的有效名称列表。
+valid-metaclass-classmethod-first-arg=mcs

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="refresh" content="1; url=jsoncstyleguide.xml">
+  <title>正在重定向</title>
+</head>
+<!-- BODY 上的 onLoad 重定向是最佳选择：它能保留 #片段和
+     ?查询参数。但它需要 JavaScript。如果失败，
+     meta-refresh 会启动；它适用范围更广，但会丢失片段
+     和查询参数，需要一秒钟的时间，并且会污染浏览器历史记录。
+     如果两者都失败，我们允许用户手动点击新链接。
+-->
+<body onload="location.replace(location.href.replace('.html', '.xml'))">
+  正在将您重定向到 <a href="jsoncstyleguide.xml">jsoncstyleguide.xml</a>。
+</body>
+</html>

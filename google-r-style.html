@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="1; url=Rguide.html">
+  <title>正在重定向</title>
+</head>
+<!-- BODY 的 onLoad 重定向是最佳方案：它保留了 #片段 和 ?查询。
+     但它需要 javascript。如果失败，meta-refresh 会启动；
+     它更通用，但会丢失片段和查询，需要一秒钟，并且会污染浏览器历史记录。
+     如果它们都失败，我们让用户手动点击新链接。
+-->
+<body onload="location.replace(location.href.replace('google-r-style.html', 'Rguide.html'))">
+  正在将您重定向到 <a href="Rguide.html">Rguide.html</a>。
+</body>
+</html>
