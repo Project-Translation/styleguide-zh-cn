@@ -2,7 +2,7 @@
 
 # Go 风格指南
 
-https://google.github.io/styleguide/go/guide
+https://jqknono.github.io/styleguide/go/guide
 
 [概述](index) | [指南](guide) | [决策](decisions) |
 [最佳实践](best-practices)

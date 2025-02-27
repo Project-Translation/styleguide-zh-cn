@@ -23,8 +23,8 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
           <HEAD>
               <TITLE><xsl:value-of select="@title"/></TITLE>
               <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-              <META http-equiv="refresh" content="0;url=https://google.github.io/styleguide/shellguide.html" />
-              <LINK rel="canonical" href="https://google.github.io/styleguide/shellguide.html" />
+              <META http-equiv="refresh" content="0;url=https://jqknono.github.io/styleguide/shellguide.html" />
+              <LINK rel="canonical" href="https://jqknono.github.io/styleguide/shellguide.html" />
               <LINK HREF="/styleguide/favicon.ico" type="image/x-icon"
                     rel="shortcut icon"/>
               <LINK HREF="styleguide.css"

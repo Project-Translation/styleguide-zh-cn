@@ -112,7 +112,7 @@ Python 是 Google 使用的主要动态语言。本风格指南列出了 Python 
 <a id="lint"></a>
 ### 2.1 Lint 
 
-使用此 [pylintrc](https://google.github.io/styleguide/pylintrc) 运行 `pylint` 检查您的代码。
+使用此 [pylintrc](https://jqknono.github.io/styleguide/pylintrc) 运行 `pylint` 检查您的代码。
 
 <a id="s2.1.1-definition"></a>
 <a id="211-definition"></a>

@@ -1,6 +1,6 @@
 # Go 风格最佳实践
 
-https://google.github.io/styleguide/go/best-practices
+https://jqknono.github.io/styleguide/go/best-practices
 
 [概览](index) | [指南](guide) | [决策](decisions) |
 [最佳实践](best-practices)
@@ -220,7 +220,7 @@ go_library(
 
 另见：
 
-*   [Go 提示 #42：编写测试存根](https://google.github.io/styleguide/go/index.html#gotip)
+*   [Go 提示 #42：编写测试存根](https://jqknono.github.io/styleguide/go/index.html#gotip)
 
 <a id="naming-doubles-multiple-behaviors"></a>
 
@@ -599,9 +599,9 @@ import (
 * [Go 博客关于错误的文章](https://go.dev/blog/go1.13-errors)
 * [包 `errors`](https://pkg.go.dev/errors)
 * [包 `upspin.io/errors`](https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html)
-* [GoTip #89：何时使用规范状态代码作为错误](https://google.github.io/styleguide/go/index.html#gotip)
-* [GoTip #48：错误哨兵值](https://google.github.io/styleguide/go/index.html#gotip)
-* [GoTip #13：设计用于检查的错误](https://google.github.io/styleguide/go/index.html#gotip)
+* [GoTip #89：何时使用规范状态代码作为错误](https://jqknono.github.io/styleguide/go/index.html#gotip)
+* [GoTip #48：错误哨兵值](https://jqknono.github.io/styleguide/go/index.html#gotip)
+* [GoTip #13：设计用于检查的错误](https://jqknono.github.io/styleguide/go/index.html#gotip)
 
 <a id="error-structure"></a>
 ### 错误结构
@@ -665,7 +665,7 @@ func handlePet(...) {
 }
 ```
 
-不要尝试根据错误的字符串形式来区分错误。（有关更多信息，请参见 [Go 提示 #13：设计用于检查的错误](https://google.github.io/styleguide/go/index.html#gotip)。）
+不要尝试根据错误的字符串形式来区分错误。（有关更多信息，请参见 [Go 提示 #13：设计用于检查的错误](https://jqknono.github.io/styleguide/go/index.html#gotip)。）
 
 ```go
 // 不好：
@@ -678,7 +678,7 @@ func handlePet(...) {
 
 如果错误中包含调用者以编程方式需要的额外信息， ideally 应以结构化方式呈现。例如，[`os.PathError`] 类型被记录为将失败操作的路径名放置在结构字段中，调用者可以轻松访问。
 
-可以根据需要使用其他错误结构，例如包含错误代码和详细字符串的项目结构。[包 `status`][status] 是一种常见的封装；如果您选择这种方法（您没有义务这样做），请使用 [规范代码]。请参见 [Go 提示 #89：何时使用规范状态代码作为错误](https://google.github.io/styleguide/go/index.html#gotip)，以了解使用状态代码是否是正确的选择。
+可以根据需要使用其他错误结构，例如包含错误代码和详细字符串的项目结构。[包 `status`][status] 是一种常见的封装；如果您选择这种方法（您没有义务这样做），请使用 [规范代码]。请参见 [Go 提示 #89：何时使用规范状态代码作为错误](https://jqknono.github.io/styleguide/go/index.html#gotip)，以了解使用状态代码是否是正确的选择。
 
 [`os.PathError`]: https://pkg.go.dev/os#PathError
 [`errors.Is`]: https://pkg.go.dev/errors#Is
@@ -788,7 +788,7 @@ func (*FortuneTeller) SuggestFortune(context.Context, *pb.SuggestionRequest) (*p
 
 错误可以使用
 [`%w` 动词](https://blog.golang.org/go1.13-errors)包装，或者放置在实现了 `Unwrap() error` 的
-[结构化错误](https://google.github.io/styleguide/go/index.html#gotip) 中（例如：
+[结构化错误](https://jqknono.github.io/styleguide/go/index.html#gotip) 中（例如：
 [`fs.PathError`](https://pkg.go.dev/io/fs#PathError)）。
 
 包装后的错误形成错误链：每增加一层包装，就在错误链的前端添加一个新条目。可以使用
@@ -859,7 +859,7 @@ fmt.Println(err3) // err3-1 err2-1 err1 err2-2 err3-2
 
 *   在Google内部，我们有监控系统，可以设置比写入日志文件并希望有人注意到它更有效的警报。这与标准库[包`expvar`]类似但不完全相同。
 
-[良好的测试失败消息]: https://google.github.io/styleguide/go/decisions#useful-test-failures
+[良好的测试失败消息]: https://jqknono.github.io/styleguide/go/decisions#useful-test-failures
 [停止程序]: #checks-and-panics
 [`rate.Sometimes`]: https://pkg.go.dev/golang.org/x/time/rate#Sometimes
 [PII]: https://en.wikipedia.org/wiki/Personal_data
@@ -913,7 +913,7 @@ log.V(2).Infof("处理 %v", sql.Explain())
 
 **注意：** 标准的 [`net/http` 服务器]违反了这一建议，并从请求处理程序中恢复恐慌。经验丰富的 Go 工程师的共识是，这是历史上的一个错误。如果你从其他语言的应用程序服务器中抽样服务器日志，通常会发现大量未处理的大型堆栈跟踪。在你的服务器中避免这种陷阱。
 
-[反对恐慌的决定]: https://google.github.io/styleguide/go/decisions#dont-panic
+[反对恐慌的决定]: https://jqknono.github.io/styleguide/go/decisions#dont-panic
 [`net/http` 服务器]: https://pkg.go.dev/net/http#Server
 
 <a id="when-to-panic"></a>
@@ -1000,8 +1000,8 @@ func Sprintf(format string, data ...any) string
 *   [GoTip #51: 配置模式]
 
 [评论]: decisions#commentary
-[GoTip #41: 识别函数调用参数]: https://google.github.io/styleguide/go/index.html#gotip
-[GoTip #51: 配置模式]: https://google.github.io/styleguide/go/index.html#gotip
+[GoTip #41: 识别函数调用参数]: https://jqknono.github.io/styleguide/go/index.html#gotip
+[GoTip #51: 配置模式]: https://jqknono.github.io/styleguide/go/index.html#gotip
 
 <a id="documentation-conventions-contexts"></a>
 
@@ -1184,7 +1184,7 @@ func (c *Client) Get(url string) (resp *Response, err error)
 
 *   [GoTip #110: 不要将退出与延迟混合]
 
-[GoTip #110: 不要将退出与延迟混合]: https://google.github.io/styleguide/go/index.html#gotip
+[GoTip #110: 不要将退出与延迟混合]: https://jqknono.github.io/styleguide/go/index.html#gotip
 
 <a id="documentation-conventions-errors"></a>
 
@@ -1240,8 +1240,8 @@ package os
 
 另见：
 
-*   [Go 提示 #106：错误命名约定](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go 提示 #89：何时使用规范状态码作为错误](https://google.github.io/styleguide/go/index.html#gotip)
+*   [Go 提示 #106：错误命名约定](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go 提示 #89：何时使用规范状态码作为错误](https://jqknono.github.io/styleguide/go/index.html#gotip)
 
 <a id="documentation-preview"></a>
 
@@ -1521,7 +1521,7 @@ var (
 
 **警告：**预分配超过所需的内存可能会浪费舰队中的内存，甚至损害性能。如果有疑问，请参阅[Go技巧#3：基准测试Go代码]，并默认使用[零初始化](#vardeclzero)或[复合字面量声明](#vardeclcomposite)。
 
-[Go技巧#3：基准测试Go代码]: https://google.github.io/styleguide/go/index.html#gotip
+[Go技巧#3：基准测试Go代码]: https://jqknono.github.io/styleguide/go/index.html#gotip
 
 <a id="decl-chan"></a>
 
@@ -1571,7 +1571,7 @@ func sum(values chan int) (out int) {
 以下建议主要适用于导出的API，这些API的标准高于未导出的API。对于您的用例，这些技术可能是不必要的。使用您的判断，并平衡[清晰度]和[最小机制]的原则。
 
 另见：
-[Go技巧#24：使用特定于用例的构造](https://google.github.io/styleguide/go/index.html#gotip)
+[Go技巧#24：使用特定于用例的构造](https://jqknono.github.io/styleguide/go/index.html#gotip)
 
 [选项结构]: #option-structure
 [变参选项]: #variadic-options
@@ -2015,9 +2015,9 @@ func TestAcceptance(t *testing.T) {
 }
 ```
 
-[sentinels]: https://google.github.io/styleguide/go/index.html#gotip
-[custom types]: https://google.github.io/styleguide/go/index.html#gotip
-[aggregates errors]: https://google.github.io/styleguide/go/index.html#gotip
+[sentinels]: https://jqknono.github.io/styleguide/go/index.html#gotip
+[custom types]: https://jqknono.github.io/styleguide/go/index.html#gotip
+[aggregates errors]: https://jqknono.github.io/styleguide/go/index.html#gotip
 
 <a id="use-real-transports"></a>
 
@@ -2091,7 +2091,7 @@ func addGameAssets(t *testing.T, dir string) error {
 
 失败消息应包括对发生情况的描述。这很重要，因为您可能正在为许多用户提供测试API，尤其是当助手中产生错误的步骤数量增加时。当测试失败时，用户应该知道在哪里，为什么失败。
 
-**提示：** Go 1.14引入了[`t.Cleanup`]函数，可用于注册在测试完成时运行的清理函数。该函数也适用于测试助手。有关简化测试助手的指导，请参见[GoTip #4: 清理您的测试](https://google.github.io/styleguide/go/index.html#gotip)。
+**提示：** Go 1.14引入了[`t.Cleanup`]函数，可用于注册在测试完成时运行的清理函数。该函数也适用于测试助手。有关简化测试助手的指导，请参见[GoTip #4: 清理您的测试](https://jqknono.github.io/styleguide/go/index.html#gotip)。
 
 下面的代码片段在一个虚构的文件`paint_test.go`中演示了`(*testing.T).Helper`如何影响Go测试中的失败报告：
 
@@ -2506,7 +2506,7 @@ for i, d := range digitsOfPi {
 str := b.String()
 ```
 
-**注意：** 有关更多讨论，请参见 [GoTip #29: 有效构建字符串](https://google.github.io/styleguide/go/index.html#gotip)。
+**注意：** 有关更多讨论，请参见 [GoTip #29: 有效构建字符串](https://jqknono.github.io/styleguide/go/index.html#gotip)。
 
 <a id="string-constants"></a>
 
@@ -2576,12 +2576,12 @@ func main() {
 
 另见：
 
-*   [Go提示#5：瘦身您的客户端库](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#24：使用特定用例的构造](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#40：通过函数参数改进时间测试性](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#41：识别函数调用参数](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#44：通过结构字段改进时间测试性](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#80：依赖注入原则](https://google.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#5：瘦身您的客户端库](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#24：使用特定用例的构造](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#40：通过函数参数改进时间测试性](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#41：识别函数调用参数](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#44：通过结构字段改进时间测试性](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#80：依赖注入原则](https://jqknono.github.io/styleguide/go/index.html#gotip)
 
 不支持显式依赖传递的API会随着客户端数量的增加变得脆弱：
 
@@ -2652,9 +2652,9 @@ func TestRegression_InvalidUser(t *testing.T) {
 
 另见：
 
-*   [Go提示#36：封装包级状态](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#71：减少并行测试的不稳定性](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go提示#80：依赖注入原则](https://google.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#36：封装包级状态](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#71：减少并行测试的不稳定性](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go提示#80：依赖注入原则](https://jqknono.github.io/styleguide/go/index.html#gotip)
 *   错误处理：
     [先看后跳](https://docs.python.org/3/glossary.html#term-LBYL)
     与
@@ -2781,5 +2781,5 @@ func TestRegression_InvalidUser(t *testing.T) {
 
 另见：
 
-*   [Go 提示 #36：封装包级状态](https://google.github.io/styleguide/go/index.html#gotip)
-*   [Go 提示 #80：依赖注入原则](https://google.github.io/styleguide/go/index.html#gotip)
+*   [Go 提示 #36：封装包级状态](https://jqknono.github.io/styleguide/go/index.html#gotip)
+*   [Go 提示 #80：依赖注入原则](https://jqknono.github.io/styleguide/go/index.html#gotip)

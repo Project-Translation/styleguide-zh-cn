@@ -187,7 +187,7 @@ function del_thing() {
 
 对临时代码、短期解决方案或足够好但不完美的代码使用 TODO 注释。
 
-这与 [C++ 指南](https://google.github.io/styleguide/cppguide.html#TODO_Comments) 中的约定相匹配。
+这与 [C++ 指南](https://jqknono.github.io/styleguide/cppguide.html#TODO_Comments) 中的约定相匹配。
 
 TODO 应包含全大写的字符串 `TODO`，后跟对问题有最佳了解的人的姓名、电子邮件地址或其他标识符。主要目的是拥有一个一致的 `TODO`，可以搜索以了解如何在需要时获取更多详细信息。TODO 并不是对所提及的人承诺解决问题。因此，当您创建一个 TODO 时，几乎总是给出您自己的名字。
 

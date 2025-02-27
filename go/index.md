@@ -1,6 +1,6 @@
 # Go 风格指南
 
-https://google.github.io/styleguide/go
+https://jqknono.github.io/styleguide/go
 
 [概述](index) | [指南](guide) | [决策](decisions) |
 [最佳实践](best-practices)
@@ -19,9 +19,9 @@ Go 风格指南及配套文档旨在整理当前编写可读且符合 Go 语言�
 
 文档            | 链接                                                  | 主要受众    | [规范性] | [权威性]
 ------------------- | ----------------------------------------------------- | ------------------- | ----------- | -----------
-**风格指南**     | https://google.github.io/styleguide/go/guide          | 所有人            | 是         | 是
-**风格决策** | https://google.github.io/styleguide/go/decisions      | 可读性导师 | 是         | 否
-**最佳实践**  | https://google.github.io/styleguide/go/best-practices | 任何感兴趣的人   | 否          | 否
+**风格指南**     | https://jqknono.github.io/styleguide/go/guide          | 所有人            | 是         | 是
+**风格决策** | https://jqknono.github.io/styleguide/go/decisions      | 可读性导师 | 是         | 否
+**最佳实践**  | https://jqknono.github.io/styleguide/go/best-practices | 任何感兴趣的人   | 否          | 否
 
 [规范性]: #normative
 [权威性]: #canonical
@@ -30,13 +30,13 @@ Go 风格指南及配套文档旨在整理当前编写可读且符合 Go 语言�
 
 ### 文档
 
-1.  **[风格指南](https://google.github.io/styleguide/go/guide)** 概述了 Google 中 Go 风格的基础。 本文档是权威性的，是风格决策和最佳实践中建议的基础。
+1.  **[风格指南](https://jqknono.github.io/styleguide/go/guide)** 概述了 Google 中 Go 风格的基础。 本文档是权威性的，是风格决策和最佳实践中建议的基础。
 
-1.  **[风格决策](https://google.github.io/styleguide/go/decisions)** 是一份更详细的文档，总结了关于特定风格点的决策，并在适当的情况下讨论了决策背后的原因。
+1.  **[风格决策](https://jqknono.github.io/styleguide/go/decisions)** 是一份更详细的文档，总结了关于特定风格点的决策，并在适当的情况下讨论了决策背后的原因。
 
     这些决策可能会根据新数据、新语言特性、新库或新兴模式而偶尔发生变化，但不期望 Google 的单个 Go 程序员能够及时了解本文档。
 
-1.  **[最佳实践](https://google.github.io/styleguide/go/best-practices)** 记录了一些随着时间推移而演变的模式，这些模式可以解决常见问题，易于阅读，并且能够满足代码维护的需要。
+1.  **[最佳实践](https://jqknono.github.io/styleguide/go/best-practices)** 记录了一些随着时间推移而演变的模式，这些模式可以解决常见问题，易于阅读，并且能够满足代码维护的需要。
 
     这些最佳实践不是权威性的，但鼓励 Google 的 Go 程序员尽可能使用它们，以保持代码库的统一性和一致性。
 
@@ -71,19 +71,19 @@ Go 风格指南及配套文档旨在整理当前编写可读且符合 Go 语言�
 
     在这些文档中，“权威性”用于描述被认为是所有代码（旧的和新的）都应遵循的标准，并且预计不会随着时间的推移而发生重大变化。 权威性文档中的原则应被作者和审查者理解，因此权威性文档中包含的所有内容都必须达到很高的标准。 因此，权威性文档通常较短，并且规定的风格要素少于非权威性文档。
 
-    https://google.github.io/styleguide/go#canonical
+    https://jqknono.github.io/styleguide/go#canonical
 
 *   **规范性**：旨在建立一致性 <a id="normative"></a>
 
     在这些文档中，“规范性”用于描述 Go 代码审查者使用的一致同意的风格要素，以便建议、术语和理由保持一致。 这些要素可能会随着时间的推移而发生变化，这些文档将反映这些变化，以便审查者可以保持一致和最新。 Go 代码的作者不需要熟悉规范性文档，但审查者在可读性审查中经常会将这些文档用作参考。
 
-    https://google.github.io/styleguide/go#normative
+    https://jqknono.github.io/styleguide/go#normative
 
 *   **符合语言习惯**：常见且熟悉 <a id="idiomatic"></a>
 
     在这些文档中，“符合语言习惯”用于指代 Go 代码中普遍存在的事物，并且已成为易于识别的熟悉模式。 一般来说，如果符合语言习惯的模式和不符合语言习惯的模式在上下文中服务于相同的目的，则应首选符合语言习惯的模式，因为读者会最熟悉这种模式。
 
-    https://google.github.io/styleguide/go#idiomatic
+    https://jqknono.github.io/styleguide/go#idiomatic
 
 <a id="references"></a>
 

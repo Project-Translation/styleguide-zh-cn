@@ -1,9 +1,9 @@
 # 此 Pylint 配置文件包含了尽最大努力的配置，以维护
 # Google Python 风格指南中描述的最佳实践和风格：
-#   https://google.github.io/styleguide/pyguide.html
+#   https://jqknono.github.io/styleguide/pyguide.html
 #
 # 其规范的开源位置为：
-#   https://google.github.io/styleguide/pylintrc
+#   https://jqknono.github.io/styleguide/pylintrc
 
 # 版权所有 2018 Google LLC
 #
