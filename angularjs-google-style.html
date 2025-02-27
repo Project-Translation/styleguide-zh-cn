@@ -7,80 +7,85 @@
     <link rel="stylesheet" type="text/css" href="styleguide.css">
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
     <script language="javascript" src="/eng/doc/devguide/include/styleguide.js"></script>
-    <title>Google 的 AngularJS 风格指南</title>
+    <title>Google的AngularJS风格指南</title>
     <style type="text/css"><!--
     th { background-color: #ddd; }
     //--></style>
 </head>
 <body onload="prettyPrint();initStyleGuide();">
-<h1 class="external">Google Closure 用户的 AngularJS 风格指南</h1>
+<h1 class="external">Google Closure用户的AngularJS风格指南</h1>
 
-<p class="external">这是主要为 Google 工程师编写的文档的外部版本。它描述了使用 Closure 的 AngularJS 应用程序的推荐风格，正如 Google 内部所使用的那样。更广泛的 AngularJS 社区成员可以根据自己的使用情况自由应用（或不应用）这些建议。</p>
+<p class="external">这是主要为Google工程师编写的文档的外部版本。它描述了使用Closure的AngularJS应用程序的推荐风格，如Google内部所使用。更广泛的AngularJS社区成员可以根据自己的用例自由应用（或不应用）这些建议。</p>
 
-<p class="external">本文档描述了 google3 中 AngularJS 应用程序的风格。此指南补充并扩展了 <a href="https://google.github.io/styleguide/jsguide.html">Google JavaScript 风格指南</a>。
+<p class="external">本文档描述了google3中AngularJS应用程序的风格。本指南补充并扩展了<a href="https://google.github.io/styleguide/jsguide.html">
+    Google JavaScript风格指南</a>。
 </p>
 
-<p><b>风格注意事项</b>：AngularJS 外部网页上的示例和许多外部应用程序的编写风格自由使用闭包，偏好函数式继承，并且不经常使用 <a class="external"
+<p><b>风格注意事项</b>：AngularJS外部网页上的示例，以及许多外部应用程序，都是以一种自由使用闭包、偏好功能继承且不常使用
+    <a class="external"
                                href="https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System">
-        JavaScript 类型</a>。Google 遵循更严格的 JavaScript 风格以支持 JSCompiler 优化和大型代码库 - 请参阅 javascript-style 邮件列表。这不是 Angular 特有的问题，在此风格指南中不再讨论。（但如果你想进一步阅读：
-    <a  href="http://martinfowler.com/bliki/Lambda.html">Martin Fowler 关于闭包</a>,
-    <a href="http://jibbering.com/faq/notes/closures/">更长的描述</a>，附录 A 的
+        JavaScript类型</a>的风格编写的。Google遵循更严格的JavaScript风格，以支持JSCompiler优化和大型代码库 - 请参见javascript-style邮件列表。
+    这不是Angular特有的问题，在本风格指南中不再讨论。
+    （但如果你想进一步阅读：
+    <a  href="http://martinfowler.com/bliki/Lambda.html">Martin Fowler关于闭包</a>,
+    <a href="http://jibbering.com/faq/notes/closures/">更长的描述</a>, 
     <a href="https://books.google.com/books/about/Closure_The_Definitive_Guide.html?id=p7uyWPcVGZsC">
-        闭包书</a>对继承模式有很好的描述，并解释了为什么它偏好伪经典，
+        闭包书</a>的附录A对继承模式有很好的描述，并解释了为何偏好伪经典，
     <a href="https://books.google.com/books/about/JavaScript.html?id=PXa2bby0oQ0C">
-        JavaScript，好的部分</a>作为对比。）</p>
+        JavaScript，优秀部分</a>作为对比。）</p>
 
-<h5>1 Angular 语言规则</h5>
+<h5>1 Angular语言规则</h5>
 <ul>
-    <li> <a target="_self" href="#googprovide">使用 Closure 的 goog.require 和 goog.provide 管理依赖</a>
+    <li> <a target="_self" href="#googprovide">使用Closure的goog.require和goog.provide管理依赖</a>
     <li> <a target="_self" href="#modules"> 模块</a>
-    <li> <a target="_self" href="#moduledeps"> 模块应使用 "name" 属性引用其他模块</a>
-    <li> <a target="_self" href="#externs">使用提供的 Angular externs 文件</a>
-    <li> <a target="_self" href="#compilerflags">JSCompiler 标志</a>
+    <li> <a target="_self" href="#moduledeps"> 模块应使用“name”属性引用其他模块</a>
+    <li> <a target="_self" href="#externs">使用提供的Angular外部文件</a>
+    <li> <a target="_self" href="#compilerflags">JSCompiler标志</a>
     <li> <a target="_self" href="#controllers">控制器和作用域</a>
     <li> <a target="_self" href="#directives">指令</a>
     <li> <a target="_self" href="#services">服务</a>
 </ul>
-<h5>2 Angular 风格规则</h5>
+<h5>2 Angular风格规则</h5>
 <ul>
-    <li><a target="_self" href="#dollarsign">保留 $ 用于 Angular 属性和服务
+    <li><a target="_self" href="#dollarsign">为Angular属性和服务保留$符号
     </a>
-    <li><a target="_self" href="#customelements">自定义元素</a>
+    <li><a target="_self" href="#customelements">自定义元素。</a>
 </ul>
-<h5>3 Angular 技巧、窍门和最佳实践</h5>
+<h5>3 Angular技巧、窍门和最佳实践</h5>
 <ul>
     <li><a target="_self" href="#testing">测试</a>
     <li><a target="_self" href="#appstructure">考虑使用应用程序结构的最佳实践</a>
     <li><a target="_self" href="#scopeinheritance">了解作用域继承的工作原理</a>
-    <li><a target="_self" href="#nginject">使用 @ngInject 进行简单的依赖注入编译</a>
+    <li><a target="_self" href="#nginject">使用@ngInject进行简单的依赖注入编译</a>
 </ul>
 
 <h5><a target="_self" href="#bestpractices">4 最佳实践链接和文档</a></h5>
 
-<h2>1 Angular 语言规则</h2>
+<h2>1 Angular语言规则</h2>
 
-<h3 id="googprovide">使用 Closure 的 goog.require 和 goog.provide 管理依赖</h3>
-<p>为您的项目选择一个命名空间，并使用 goog.provide 和 goog.require。</p>
+<h3 id="googprovide">使用Closure的goog.require和goog.provide管理依赖</h3>
+<p>为您的项目选择一个命名空间，并使用goog.provide和goog.require。</p>
 <pre class="prettyprint lang-js">
 goog.provide('hello.about.AboutCtrl');
 goog.provide('hello.versions.Versions');
 </pre>
 
 <p><b>为什么？</b>
-    Google BUILD 规则与 closure provide/require 很好地集成。</p>
+    Google BUILD规则与closure provide/require很好地集成。</p>
 
 <h3 id="modules">模块</h3>
 
-<p>您的主要应用程序模块应位于根客户端目录中。除定义模块的文件外，不应更改模块。</p>
+<p>您的主要应用程序模块应位于根客户端目录中。除定义它的位置外，模块不应被更改。</p>
 
-<p>模块可以定义在与其组件相同的文件中（这对于仅包含一个服务的模块效果很好），也可以在单独的文件中用于连接各个部分。</p>
+<p>模块可以定义在与其组件相同的文件中（这对于包含一个服务的模块效果很好），也可以在单独的文件中用于连接各个部分。</p>
 
 <p><b>为什么？</b>
-    模块对于任何希望将其作为可重用组件包含的人来说应该是统一的。如果一个模块的含义取决于包含的文件，它就不一致。
+    模块对于任何想要将其作为可重用组件包含的人来说应该是统一的。
+    如果一个模块根据包含的文件不同而有不同的含义，它就是不一致的。
 </p>
 
 <h3 id="moduledeps">
-    模块应使用 Angular 模块的 "name" 属性引用其他模块
+    模块应使用Angular模块的“name”属性引用其他模块
 </h3>
 
 <p>例如：</p>
@@ -101,27 +106,26 @@ goog.provide('hello.versions.Versions');
   </font></pre>
 
 <p><b>为什么？</b>
-    使用 my.submoduleA 的属性可以防止 Closure 预提交失败，抱怨文件被要求但从未使用。使用 .name 属性避免重复字符串。</p>
+    使用my.submoduleA的属性可以防止Closure预提交失败，抱怨文件被要求但从未使用。使用.name属性避免重复字符串。</p>
 
-<h3 id="externs">使用通用的 externs 文件</h3>
+<h3 id="externs">使用通用外部文件</h3>
 
-<p>这最大限度地允许 JS 编译器在存在 Angular 提供的外部类型的情况下强制执行类型安全性，并且意味着您不必担心 Angular 变量以令人困惑的方式被混淆。 </p>
+<p>这最大限度地允许JS编译器在存在来自Angular的外部提供的类型的情况下强制执行类型安全性，并且意味着您不必担心Angular变量以令人困惑的方式被混淆。</p>
 
-<p>注意：对于 Google 之外的读者：当前的 externs 文件位于 Google 内部目录中，但可以在 github 上找到示例 <a href="https://github.com/angular/angular.js/pull/4722">
-        这里</a>。</p>
-
+<p>注意对Google外部的读者：当前的外部文件位于Google内部目录中，但可以在github上找到一个示例<a href="https://github.com/angular/angular.js/pull/4722">
+    这里</a>。</p>
 <h3 id="compilerflags">JSCompiler 标志</h3>
-<p><b>提醒</b>：根据 JS 风格指南，面向客户的代码必须编译。</p>
+<p><b>提醒</b>：根据 JS 风格指南，面对客户的代码必须进行编译。</p>
 
-<p><b>推荐</b>：使用 JSCompiler（默认情况下与 js_binary 一起使用的 closure 编译器）和来自 //javascript/angular/build_defs/build_defs 的 ANGULAR_COMPILER_FLAGS_FULL 作为您的基本标志。
+<p><b>推荐</b>：使用 JSCompiler（默认与 js_binary 一起使用的 closure 编译器）和来自 //javascript/angular/build_defs/build_defs 的 ANGULAR_COMPILER_FLAGS_FULL 作为您的基础标志。
 </p>
 
-<p>注意 - 如果您使用 @export 标记方法，您需要添加编译器标志</p>
+<p>注意 - 如果您在方法上使用 @export，您需要添加编译器标志</p>
 <pre>
 "--generate_exports",
 </pre>
 
-<p>如果您使用 @export 标记属性，您需要添加标志：</p>
+<p>如果您在属性上使用 @export，您需要添加以下标志：</p>
 <pre>
 "--generate_exports",
 "--remove_unused_prototype_props_in_externs=false",
@@ -129,12 +133,12 @@ goog.provide('hello.versions.Versions');
 </pre>
 
 <h3 id="controllers">控制器和作用域</h3>
-<p>控制器是类。方法应定义在 MyCtrl.prototype 上。</p>
+<p>控制器是类。方法应在 MyCtrl.prototype 上定义。</p>
 
-<p>Google Angular 应用程序应使用 <b>'controller as'</b> 风格将控制器导出到作用域上。这在 Angular 1.2 中完全实现，并且可以在 Angular 1.2 之前的版本中模拟。
+<p>Google Angular 应用程序应使用 <b>'controller as'</b> 风格将控制器导出到作用域上。这在 Angular 1.2 中已完全实现，并且可以在 Angular 1.2 之前的版本中模拟。
 </p>
 
-<p>在 Angular 1.2 之前，看起来像这样：</p>
+<p>在 Angular 1.2 之前，这看起来像这样：</p>
 <pre class="prettyprint lang-js">
 /**
  * 主页控制器。
@@ -146,7 +150,7 @@ goog.provide('hello.versions.Versions');
  */
 hello.mainpage.HomeCtrl = function($scope) {
   /** @export */
-  $scope.homeCtrl = this; // 这是一个桥梁，直到 Angular 1.2 的 controller-as
+  $scope.homeCtrl = this; // 这是一个桥接，直到 Angular 1.2 的 controller-as
 
   /**
    * @type {string}
@@ -175,7 +179,7 @@ hello.mainpage.HomeCtrl.prototype.add = function(a, b) {
 &lt;/div&gt;
 </pre>
 
-<p>在 Angular 1.2 之后，看起来像这样：</p>
+<p>在 Angular 1.2 之后，这看起来像这样：</p>
 
 <pre class="prettyprint lang-js">
 /**
@@ -204,7 +208,7 @@ hello.mainpage.HomeCtrl.prototype.add = function(a, b) {
 };
 </pre>
 
-<p>如果您使用属性重命名进行编译，请使用 @export 注释暴露属性和方法。记得也 @export 构造函数。</p>
+<p>如果您使用属性重命名进行编译，请使用 @export 注解来暴露属性和方法。记得也要 @export 构造函数。</p>
 
 <p>以及在模板中：</p>
 
@@ -216,11 +220,12 @@ hello.mainpage.HomeCtrl.prototype.add = function(a, b) {
 </pre>
 
 <p><b>为什么？</b>
-    将方法和属性直接放到控制器上，而不是构建一个作用域对象，更符合 Google Closure 类的风格。此外，使用 'controller as' 使得在多个控制器应用于一个元素时，很明显您正在访问哪个控制器。由于绑定中总是有一个 '.'，您不必担心原型继承掩盖基本类型的问题。</p>
+    将方法和属性直接放到控制器上，而不是构建一个作用域对象，更符合 Google Closure 类的风格。此外，使用 'controller as' 可以清楚地知道您正在访问哪个控制器，当多个控制器应用于一个元素时。由于绑定中总是有一个 '.'，您不必担心原型继承会掩盖基本类型。
+</p>
 
 <h3 id="directives">指令</h3>
 
-<p>所有 DOM 操作都应在指令内完成。指令应保持小巧并使用组合。定义指令的文件应 goog.provide 一个返回指令定义对象的静态函数。</p>
+<p>所有 DOM 操作都应在指令内完成。指令应保持小巧并使用组合。定义指令的文件应使用 goog.provide 提供一个返回指令定义对象的静态函数。</p>
 
 <pre class="prettyprint lang-js">
 goog.provide('hello.pane.paneDirective');
@@ -240,7 +245,8 @@ hello.pane.paneDirective = function() {
 
 <p>在模块上使用 <code>module.service</code> 注册的服务是类。
     使用 <code>module.service</code> 而不是 <code>module.provider</code> 或
-    <code>module.factory</code>，除非您需要进行超出仅创建类新实例的初始化。</p>
+    <code>module.factory</code>，除非您需要在创建类的新实例之外进行初始化。
+</p>
 
 <pre class="prettyprint lang-js">
 /**
@@ -264,17 +270,17 @@ module.service('request', hello.request.Request);
 
 <h2>2 Angular 风格规则</h2>
 
-<h3 id="dollarsign">保留 $ 用于 Angular 属性和服务</h3>
-<p>不要使用 $ 来前置您自己的对象属性和服务标识符。请将这种命名风格视为 AngularJS 和 jQuery 保留的。</p>
+<h3 id="dollarsign">为 Angular 属性和服务保留 $</h3>
+<p>不要使用 $ 来前置您自己的对象属性和服务标识符。请将这种命名风格视为由 AngularJS 和 jQuery 保留的。</p>
 
-<p>是：</p>
+<p>正确：</p>
 <pre class="prettyprint lang-js">
   $scope.myModel = { value: 'foo' }
   myModule.service('myService', function() { /*...*/ });
   var MyCtrl = function($http) {this.http_ = $http;};
 </pre>
 
-<p><font color="red">否：</font></p>
+<p><font color="red">错误：</font></p>
 <pre class="prettyprint">
   $scope.$myModel = { value: 'foo' } // 错误
   $scope.myModel = { $value: 'foo' } // 错误
@@ -288,19 +294,19 @@ module.service('request', hello.request.Request);
 
 <h3 id="customelements">自定义元素</h3>
 
-<p>对于自定义元素（例如 <code>&lt;ng-include src="template"&gt;&lt;/ng-include&gt;</code>），IE8 需要特殊支持（类似 html5shiv 的 hack）来启用 css 样式。请注意此限制，适用于针对旧版本 IE 的应用程序。</p>
+<p>对于自定义元素（例如 <code>&lt;ng-include src="template"&gt;&lt;/ng-include&gt;</code>），IE8 需要特殊支持（类似 html5shiv 的 hack）来启用 css 样式。请注意在针对旧版本 IE 的应用程序中这一限制。
+</p>
 
 <h2>3 Angular 技巧、窍门和最佳实践</h2>
 
-<p>这些不是严格的风格指南规则，但作为 Google Angular 新手的参考放在这里。</p>
-
+<p>这些不是严格的风格指南规则，但作为在 Google 使用 Angular 的初学者参考而放置在这里。</p>
 <h3 id="testing">测试</h3>
 
 <p>Angular 设计用于测试驱动开发。</p>
 
-<p>推荐的单元测试设置是 Jasmine + Karma（尽管您可以使用 closure 测试或 js_test）</p>
+<p>推荐的单元测试设置是 Jasmine + Karma（尽管您可以使用 closure tests 或 js_test）。</p>
 
-<p>Angular 提供了在 Jasmine 测试中加载模块和使用注入器的简单适配器。
+<p>Angular 提供了易于使用的适配器来加载模块并在 Jasmine 测试中使用注入器。
 <ul>
     <li><a href = "https://docs.angularjs.org/api/angular.mock.module">module</a>
     <li><a href="https://docs.angularjs.org/api/angular.mock.inject">inject</a>
@@ -308,15 +314,15 @@ module.service('request', hello.request.Request);
 </p>
 
 
-<h3 id="appstructure">考虑使用应用程序结构的最佳实践</h3>
+<h3 id="appstructure">考虑使用应用结构的最佳实践</h3>
 <p>
-    此 <a href="https://docs.google.com/document/d/1XXMvReO8-Awi1EZXAXS4PzDzdNvV6pGcuaF4Q9821Es/pub">目录结构文档</a> 描述了如何以控制器位于嵌套子目录中，所有组件（例如服务和指令）位于 'components' 目录中的方式来构建您的应用程序。
+    这个 <a href="https://docs.google.com/document/d/1XXMvReO8-Awi1EZXAXS4PzDzdNvV6pGcuaF4Q9821Es/pub">目录结构文档</a> 描述了如何将控制器放在嵌套子目录中，并将所有组件（例如服务和指令）放在 'components' 目录中来构建您的应用程序。
 </p>
 
 
 <h3 id="scopeinheritance">了解作用域继承的工作原理</h3>
 
-<p>请参阅 <a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes#wiki-JSproto">
+<p>参见 <a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes#wiki-JSproto">
     作用域原型继承的细微差别</a></p>
 
 <h3 id="nginject">使用 @ngInject 进行简单的依赖注入编译</h3>
@@ -341,12 +347,12 @@ my.app.MyCtrl = function($http, myService) {
 
 <ul>
     <li><a href="https://github.com/angular/angular.js/wiki/Best-Practices">
-        最佳实践</a> 来自 GitHub 上的 Angular</li>
+        最佳实践</a> 来自 Angular 的 GitHub</li>
     <li><a href="https://www.youtube.com/watch?v=ZhfUv0spHCY">
-        Meetup 视频</a>（非 Google 特定的）</li>
+        Meetup 视频</a>（非 Google 特定）</li>
 </ul>
 <address>
-    最后修改日期 2013 年 2 月 7 日
+    最后修改于 2013 年 2 月 7 日
 </address>
 </body>
 <html>
