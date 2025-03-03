@@ -3,7 +3,7 @@
 <GUIDE title="Google Vimscript Style Guide">
   <p class="revision">
 
-    Revision 1.1
+    修订版 1.1
   </p>
 
   
@@ -16,277 +16,220 @@
   <OVERVIEW>
     <CATEGORY title="Background">
       <p>
-        This is a casual version of the vimscript style guide, because
-        vimscript is a casual language. When submitting vim plugin code, you
-        must adhere to these rules. For clarifications, justifications, and
-        explanations about the finer points of vimscript, please refer to the
-        <a href="vimscriptfull.xml">heavy guide</a>.
+        这是vimscript风格指南的非正式版本，因为vimscript是一种非正式的语言。在提交vim插件代码时，您必须遵守这些规则。对于vimscript的细微点的澄清、理由和解释，请参考
+        <a href="vimscriptfull.xml">详细指南</a>。
       </p>
     </CATEGORY>
   </OVERVIEW>
-
-  <CATEGORY title="Portability">
+<CATEGORY title="Portability">
     <p>
-      It's hard to get vimscript right. Many commands depend upon the user's
-      settings. By following these guidelines, you can hope to make your
-      scripts portable.
+      编写vimscript脚本很困难。许多命令依赖于用户的设置。通过遵循这些指导原则，您可以希望使您的脚本具有可移植性。
     </p>
     <STYLEPOINT title="Strings">
-      <SUMMARY>Prefer single quoted strings</SUMMARY>
+      <SUMMARY>优先使用单引号字符串</SUMMARY>
       <BODY>
         <p>
-          Double quoted strings are semantically different in vimscript, and
-          you probably don't want them (they break regexes).
+          在vimscript中，双引号字符串在语义上有区别，您可能不希望使用它们（它们会破坏正则表达式）。
         </p>
         <p>
-          Use double quoted strings when you need an escape sequence (such as
-          <code>"\n"</code>) or if you know it doesn't matter and you need to
-          embed single quotes.
+          当您需要转义序列（如<code>"\n"</code>）或知道这无关紧要并且需要嵌入单引号时，请使用双引号字符串。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Matching Strings">
       <SUMMARY>
-        Use the <code>=~#</code> or <code>=~?</code> operator families over the
-        <code>=~</code> family.
+        使用<code>=~#</code>或<code>=~?</code>操作符族而不是<code>=~</code>族。
       </SUMMARY>
       <BODY>
         <p>
-          The matching behavior depends upon the user's ignorecase and smartcase
-          settings and on whether you compare them with the <code>=~</code>,
-          <code>=~#</code>, or <code>=~?</code> family of operators. Use the
-          <code>=~#</code> and <code>=~?</code> operator families explicitly
-          when comparing strings unless you explicitly need to honor the user's
-          case sensitivity settings.
+          匹配行为取决于用户的ignorecase和smartcase设置，以及您是使用<code>=~</code>、<code>=~#</code>还是<code>=~?</code>操作符族进行比较。除非您明确需要遵循用户的大小写敏感设置，否则在比较字符串时明确使用<code>=~#</code>和<code>=~?</code>操作符族。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Regular Expressions">
-      <SUMMARY>Prefix all regexes with <code>\m\C</code>.</SUMMARY>
+      <SUMMARY>在所有正则表达式前加上<code>\m\C</code>。</SUMMARY>
       <BODY>
         <p>
-          In addition to the case sensitivity settings, regex behavior depends
-          upon the user's nomagic setting. To make regexes act like nomagic and
-          noignorecase are set, prepend all regexes with <code>\m\C</code>.
+          除了大小写敏感设置外，正则表达式行为还取决于用户的nomagic设置。为了使正则表达式表现得像是设置了nomagic和noignorecase，请在所有正则表达式前加上<code>\m\C</code>。
         </p>
         <p>
-          You are welcome to use other magic levels (<code>\v</code>) and case
-          sensitivities (<code>\c</code>) so long as they are intentional and
-          explicit.
+          只要是故意且明确的，您可以使用其他魔法级别（如<code>\v</code>）和大小写敏感性（如<code>\c</code>）。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Dangerous commands">
-      <SUMMARY>Avoid commands with unintended side effects.</SUMMARY>
+      <SUMMARY>避免具有意外副作用的命令。</SUMMARY>
       <BODY>
         <p>
-          Avoid using <code>:s[ubstitute]</code> as it moves the cursor and
-          prints error messages. Prefer functions (such as
-          <code>search()</code>) better suited to scripts.
+          避免使用<code>:s[ubstitute]</code>，因为它会移动光标并打印错误消息。更适合脚本的函数（如<code>search()</code>）是更好的选择。
         </p>
         <p>
-          For many vim commands, functions exist that do the same thing with
-          fewer side effects. See <code>:help functions()</code> for a list of
-          built-in functions.
+          对于许多vim命令，存在执行相同操作但副作用更少的函数。请参阅<code>:help functions()</code>以获取内置函数列表。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Fragile commands">
-      <SUMMARY>Avoid commands that rely on user settings.</SUMMARY>
+      <SUMMARY>避免依赖用户设置的命令。</SUMMARY>
       <BODY>
         <p>
-          Always use <code>normal!</code> instead of <code>normal</code>. The
-          latter depends upon the user's key mappings and could do anything.
+          始终使用<code>normal!</code>而不是<code>normal</code>。后者依赖于用户的键映射，可能会做任何事情。
         </p>
         <p>
-          Avoid <code>:s[ubstitute]</code>, as its behavior depends upon a
-          number of local settings.
+          避免使用<code>:s[ubstitute]</code>，因为其行为依赖于许多本地设置。
         </p>
         <p>
-          The same applies to other commands not listed here.
+          这同样适用于此处未列出的其他命令。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Catching Exceptions">
-      <SUMMARY>Match error codes, not error text.</SUMMARY>
+      <SUMMARY>匹配错误代码，而非错误文本。</SUMMARY>
       <BODY>
-        <p>Error text may be locale dependent.</p>
+        <p>错误文本可能依赖于本地化设置。</p>
       </BODY>
     </STYLEPOINT>
   </CATEGORY>
 
   <CATEGORY title="General Guidelines">
-    
-    
-    <STYLEPOINT title="Messaging">
-      <SUMMARY>Message the user infrequently.</SUMMARY>
+<STYLEPOINT title="Messaging">
+      <SUMMARY>不频繁地向用户发送消息。</SUMMARY>
       <BODY>
         <p>
-          Loud scripts are annoying. Message the user only when:
+          吵闹的脚本令人厌烦。仅在以下情况下向用户发送消息：
           <ul>
-            <li>A long-running process has kicked off.</li>
-            <li>An error has occurred.</li>
+            <li>长时间运行的进程已启动。</li>
+            <li>发生错误。</li>
           </ul>
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Type checking">
-      <SUMMARY>Use strict and explicit checks where possible.</SUMMARY>
+      <SUMMARY>尽可能使用严格和明确的检查。</SUMMARY>
       <BODY>
         <p>
-          Vimscript has unsafe, unintuitive behavior when dealing with some
-          types. For instance, <code>0 == 'foo'</code> evaluates to true.
+          Vimscript 在处理某些类型时具有不安全的、非直观的行为。例如，<code>0 == 'foo'</code> 被评估为真。
         </p>
         <p>
-          Use strict comparison operators where possible. When comparing against
-          a string literal, use the <code>is#</code> operator. Otherwise, prefer
-          <code>maktaba#value#IsEqual</code> or check <code>type()</code>
-          explicitly.
+          尽可能使用严格的比较运算符。在与字符串字面量进行比较时，使用 <code>is#</code> 运算符。否则，优先使用 <code>maktaba#value#IsEqual</code> 或明确检查 <code>type()</code>。
         </p>
         <p>
-          Check variable types explicitly before using them. Use functions from
-          <code>maktaba#ensure</code>, or check <code>maktaba#value</code> or
-          <code>type()</code> and throw your own errors.
+          在使用变量之前明确检查其类型。使用 <code>maktaba#ensure</code> 中的函数，或者检查 <code>maktaba#value</code> 或 <code>type()</code> 并抛出自己的错误。
         </p>
         <p>
-          Use <code>:unlet</code> for variables that may change types,
-          particularly those assigned inside loops.
+          对可能改变类型的变量使用 <code>:unlet</code>，特别是那些在循环中赋值的变量。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Python">
-      <SUMMARY>Use sparingly.</SUMMARY>
+      <SUMMARY>谨慎使用。</SUMMARY>
       <BODY>
         <p>
-          Use python only when it provides critical functionality, for example
-          when writing threaded code.
+          仅在 Python 提供关键功能时使用，例如编写多线程代码时。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Other Languages">
-      <SUMMARY>Use vimscript instead.</SUMMARY>
+      <SUMMARY>改用 vimscript。</SUMMARY>
       <BODY>
         <p>
-          Avoid using other scripting languages such as ruby and lua. We can
-          not guarantee that the end user's vim has been compiled with support
-          for non-vimscript languages.
+          避免使用其他脚本语言，如 ruby 和 lua。我们无法保证最终用户的 vim 已编译支持非 vimscript 语言。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Boilerplate">
       <SUMMARY>
-        Use <a href="https://github.com/google/maktaba">maktaba</a>.
+        使用 <a href="https://github.com/google/maktaba">maktaba</a>。
       </SUMMARY>
       <BODY>
         <p>
-          maktaba removes boilerplate, including:
+          maktaba 移除了样板代码，包括：
           <ul>
-            <li>Plugin creation</li>
-            <li>Error handling</li>
-            <li>Dependency checking</li>
+            <li>插件创建</li>
+            <li>错误处理</li>
+            <li>依赖检查</li>
           </ul>
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Plugin layout">
-      <SUMMARY>Organize functionality into modular plugins</SUMMARY>
+      <SUMMARY>将功能组织成模块化的插件</SUMMARY>
       <BODY>
         <p>
-          Group your functionality as a plugin, unified in one directory (or
-          code repository) which shares your plugin's name (with a "vim-" prefix
-          or ".vim" suffix if desired). It should be split into plugin/,
-          autoload/, etc. subdirectories as necessary, and it should declare
-          metadata in the addon-info.json format (see the
-          <a href="https://github.com/MarcWeber/vim-addon-manager/blob/master/doc/vim-addon-manager-additional-documentation.txt">VAM documentation</a> for details).
+          将您的功能作为插件进行分组，统一在一个目录（或代码仓库）中，该目录与您的插件名称共享（如果需要，可以加上“vim-”前缀或“.vim”后缀）。它应该根据需要拆分为 plugin/、autoload/ 等子目录，并应在 addon-info.json 格式中声明元数据（有关详细信息，请参阅 <a href="https://github.com/MarcWeber/vim-addon-manager/blob/master/doc/vim-addon-manager-additional-documentation.txt">VAM 文档</a>）。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Functions">
       <SUMMARY>
-        In the autoload/ directory, defined with <code>[!]</code> and
-        <code>[abort]</code>.
+        在 autoload/ 目录中，使用 <code>[!]</code> 和 <code>[abort]</code> 定义。
       </SUMMARY>
       <BODY>
         <p>
-          Autoloading allows functions to be loaded on demand, which makes
-          startuptime faster and enforces function namespacing.
+          自动加载允许按需加载函数，这使得启动时间更快并强制执行函数命名空间。
         </p>
         <p>
-          Script-local functions are welcome, but should also live in autoload/
-          and be called by autoloaded functions.
+          脚本本地函数是受欢迎的，但也应该位于 autoload/ 中，并由自动加载的函数调用。
         </p>
         <p>
-          Non-library plugins should expose commands instead of functions.
-          Command logic should be extracted into functions and autoloaded.
+          非库插件应该暴露命令而不是函数。命令逻辑应提取到函数中并自动加载。
         </p>
         <p>
-          <code>[!]</code> allows developers to reload their functions
-          without complaint.
+          <code>[!]</code> 允许开发者重新加载他们的函数
+无怨言。
         </p>
         <p>
-          <code>[abort]</code> forces the function to halt when it encounters
-          an error.
+          <code>[abort]</code> 在遇到错误时强制函数停止。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Commands">
       <SUMMARY>
-        In the plugin/commands.vim or under the ftplugin/ directory, defined
-        without <code>[!]</code>.
+        在 plugin/commands.vim 或 ftplugin/ 目录下定义，不带 <code>[!]</code>。
       </SUMMARY>
       <BODY>
         <p>
-          General commands go in <code>plugin/commands.vim</code>.
-          Filetype-specific commands go in <code>ftplugin/</code>.
+          通用命令放在 <code>plugin/commands.vim</code> 中。
+          特定文件类型的命令放在 <code>ftplugin/</code> 中。
         </p>
         <p>
-          Excluding <code>[!]</code> prevents your plugin from silently
-          clobbering existing commands.  Command conflicts should be resolved by
-          the user.
+          不使用 <code>[!]</code> 可以防止你的插件悄无声息地覆盖现有命令。命令冲突应由用户解决。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Autocommands">
       <SUMMARY>
-        Place them in plugin/autocmds.vim, within augroups.
+        将它们放在 plugin/autocmds.vim 中，使用 augroups。
       </SUMMARY>
       <BODY>
         <p>
-          Place all autocommands in augroups.
+          将所有自动命令放在 augroups 中。
         </p>
         <p>
-          The augroup name should be unique. It should either be, or be prefixed
-          with, the plugin name.
+          augroup 名称应是唯一的。它应该与插件名称相同或以插件名称为前缀。
         </p>
         <p>
-          Clear the augroup with <code>autocmd!</code> before defining new
-          autocommands in the augroup. This makes your plugin re-entrable.
+          在 augroup 中定义新自动命令之前，使用 <code>autocmd!</code> 清除 augroup。这使得你的插件可以重新进入。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Mappings">
       <SUMMARY>
-        Place them in <code>plugin/mappings.vim</code>, using
-        <code>maktaba#plugin#MapPrefix</code> to get a prefix.
+        将它们放在 <code>plugin/mappings.vim</code> 中，使用 <code>maktaba#plugin#MapPrefix</code> 获取前缀。
       </SUMMARY>
       <BODY>
         <p>
-          All key mappings should be defined in
-          <code>plugin/mappings.vim</code>.
+          所有键映射应在 <code>plugin/mappings.vim</code> 中定义。
         </p>
         <p>
-          Partial mappings (see :help using-&lt;Plug&gt;.) should be defined in
-          <code>plugin/plugs.vim</code>.
+          部分映射（参见 :help using-&lt;Plug&gt;。）应在 <code>plugin/plugs.vim</code> 中定义。
         </p>
       </BODY>
     </STYLEPOINT>
     <STYLEPOINT title="Settings">
-      <SUMMARY>Change settings locally</SUMMARY>
+      <SUMMARY>本地更改设置</SUMMARY>
       <BODY>
         <p>
-          Use <code>:setlocal</code> and <code>&amp;l:</code> instead of
-          <code>:set</code> and <code>&amp;</code> unless you have explicit
-          reason to do otherwise.
+          使用 <code>:setlocal</code> 和 <code>&amp;l:</code> 而不是 <code>:set</code> 和 <code>&amp;</code>，除非你有明确的理由这样做。
         </p>
       </BODY>
     </STYLEPOINT>
@@ -294,39 +237,36 @@
 
   <CATEGORY title="Style">
     <p>
-      Follow google style conventions. When in doubt, treat vimscript style
-      like python style.
+      遵循 Google 风格规范。当有疑问时，将 vimscript 风格视为 python 风格。
     </p>
 
     <STYLEPOINT title="Whitespace">
       <SUMMARY>
-        Similar to python.
+        类似于 python。
         
         <br/>
         <br/>
       </SUMMARY>
       <BODY>
         <ul>
-          <li>Use two spaces for indents</li>
-          <li>Do not use tabs</li>
-          <li>Use spaces around operators
-            <p>This does not apply to arguments to commands.</p>
+          <li>使用两个空格进行缩进</li>
+          <li>不使用制表符</li>
+          <li>在操作符周围使用空格
+            <p>这不适用于命令的参数。</p>
             <CODE_SNIPPET>
               let s:variable = "concatenated " . "strings"
               command -range=% MyCommand
             </CODE_SNIPPET>
           </li>
-          <li>Do not introduce trailing whitespace
-            <p>You need not go out of your way to remove it.</p>
+          <li>不引入尾随空白
+            <p>你不必特意去除它。</p>
             <p>
-              Trailing whitespace is allowed in mappings which prep commands
-              for user input, such as
-              "<code>noremap &lt;leader&gt;gf :grep -f </code>".
+              在为用户输入准备命令的映射中允许尾随空白，例如 "<code>noremap &lt;leader&gt;gf :grep -f </code>"。
             </p>
           </li>
-          <li>Restrict lines to 80 columns wide</li>
-          <li>Indent continued lines by four spaces</li>
-          <li>Do not align arguments of commands
+          <li>将行限制在 80 列宽</li>
+          <li>继续行缩进四个空格</li>
+          <li>不排列命令的参数
             <BAD_CODE_SNIPPET>
               command -bang MyCommand  call myplugin#foo()
               command       MyCommand2 call myplugin#bar()
@@ -339,74 +279,67 @@
         </ul>
       </BODY>
     </STYLEPOINT>
+<STYLEPOINT title="Naming">
+  <SUMMARY>
+    <p>
+      一般来说，使用
+      <code>plugin-names-like-this</code>,
+      <code>FunctionNamesLikeThis</code>,
+      <code>CommandNamesLikeThis</code>,
+      <code>augroup_names_like_this</code>,
+      <code>variable_names_like_this</code>.
+    </p>
+    <p>始终在变量前加上它们的作用域前缀。</p>
+  </SUMMARY>
+  <BODY>
+    <SUBSECTION title="plugin-names-like-this">
+      <p>保持它们简短而甜美。</p>
+      
+    </SUBSECTION>
+    <SUBSECTION title="FunctionNamesLikeThis">
+      <p>在脚本本地函数前加上<code>s:</code>前缀</p>
+      <p>自动加载函数可能没有作用域前缀。</p>
+      <p>
+        不要创建全局函数。改用自动加载函数。
+      </p>
+    </SUBSECTION>
+    <SUBSECTION title="CommandNamesLikeThis">
+      <p>优先选择简洁的命令名称而不是常见的命令前缀。</p>
+    </SUBSECTION>
+    <SUBSECTION title="variable_names_like_this">
+      <p>对于命名目的，augroup名称被视为变量。</p>
+    </SUBSECTION>
+    <SUBSECTION title="Prefix all variables with their scope.">
+      <ul>
+        <li>全局变量使用<code>g:</code></li>
+        <li>脚本本地变量使用<code>s:</code></li>
+        <li>函数参数使用<code>a:</code></li>
+        <li>函数本地变量使用<code>l:</code></li>
+        <li>Vim预定义变量使用<code>v:</code></li>
+        <li>缓冲区本地变量使用<code>b:</code></li>
+      </ul>
+      <p>
+        <code>g:</code>, <code>s:</code>, 和 <code>a:</code> 必须始终使用。
+      </p>
+      <p>
+        <code>b:</code> 改变变量的语义；当你想要缓冲区本地语义时使用它。
+      </p>
+      <p>
+        <code>l:</code> 和 <code>v:</code> 应该为了一致性、未来兼容性和避免细微的错误而使用。它们不是严格要求的。在新代码中添加它们，但不要特意在其他地方添加。
+      </p>
+    </SUBSECTION>
+  </BODY>
+</STYLEPOINT>
+</CATEGORY>
 
-    <STYLEPOINT title="Naming">
-      <SUMMARY>
-        <p>
-          In general, use
-          <code>plugin-names-like-this</code>,
-          <code>FunctionNamesLikeThis</code>,
-          <code>CommandNamesLikeThis</code>,
-          <code>augroup_names_like_this</code>,
-          <code>variable_names_like_this</code>.
-        </p>
-        <p>Always prefix variables with their scope.</p>
-      </SUMMARY>
-      <BODY>
-        <SUBSECTION title="plugin-names-like-this">
-          <p>Keep them short and sweet.</p>
-          
-        </SUBSECTION>
-        <SUBSECTION title="FunctionNamesLikeThis">
-          <p>Prefix script-local functions with <code>s:</code></p>
-          <p>Autoloaded functions may not have a scope prefix.</p>
-          <p>
-            Do not create global functions. Use autoloaded functions
-            instead.
-          </p>
-        </SUBSECTION>
-        <SUBSECTION title="CommandNamesLikeThis">
-          <p>Prefer succinct command names over common command prefixes.</p>
-        </SUBSECTION>
-        <SUBSECTION title="variable_names_like_this">
-          <p>Augroup names count as variables for naming purposes.</p>
-        </SUBSECTION>
-        <SUBSECTION title="Prefix all variables with their scope.">
-          <ul>
-            <li>Global variables with <code>g:</code></li>
-            <li>Script-local variables with <code>s:</code></li>
-            <li>Function arguments with <code>a:</code></li>
-            <li>Function-local variables with <code>l:</code></li>
-            <li>Vim-predefined variables with <code>v:</code></li>
-            <li>Buffer-local variables with <code>b:</code></li>
-          </ul>
-          <p>
-            <code>g:</code>, <code>s:</code>, and <code>a:</code> must always
-            be used.
-          </p>
-          <p>
-            <code>b:</code> changes the variable semantics; use it when you
-            want buffer-local semantics.
-          </p>
-          <p>
-            <code>l:</code> and <code>v:</code> should be used for consistency,
-            future proofing, and to avoid subtle bugs. They are not strictly
-            required. Add them in new code but don’t go out of your way to add
-            them elsewhere.
-          </p>
-        </SUBSECTION>
-      </BODY>
-    </STYLEPOINT>
-  </CATEGORY>
+<p align="right">
+  修订版 1.1
+</p>
 
-  <p align="right">
-    Revision 1.1
-  </p>
 
-  
-  <address>
-    Nate Soares<br/>
-    Artemis Sparks<br/>
-    David Barnett<br/>
-  </address>
+<address>
+  Nate Soares<br/>
+  Artemis Sparks<br/>
+  David Barnett<br/>
+</address>
 </GUIDE>

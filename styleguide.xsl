@@ -31,7 +31,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
               <SCRIPT language="javascript" type="text/javascript">
 
                 function GetElementsByName(name) {
-                  // 解决旧版本Opera上的一个bug。
+                  // 解决旧版本Opera的一个错误。
                   if (document.getElementsByName) {
                     return document.getElementsByName(name);
                   } else {
@@ -41,7 +41,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
 
                 /**
                  * @param {string} namePrefix 身体名称的前缀。
-                 * @param {function(boolean): boolean} getVisibility 计算新可见性状态的函数，根据当前状态。
+                 * @param {function(boolean): boolean} getVisibility 计算新可见性状态的函数，给定当前状态。
                  */
                 function ChangeVisibility(namePrefix, getVisibility) {
                   var bodyName = namePrefix + '<xsl:value-of select="$body_suffix"/>';
@@ -129,7 +129,9 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
                 }
 
                 window.onhashchange = RefreshVisibilityFromHashParam;
-```javascript
+                </SCRIPT>
+
+              <SCRIPT>
                 window.onload = function() {
                   // 如果URL包含"?showall=y"，则展开所有子项的详细信息
                   var showHideAllRegex = new RegExp("[\\?&amp;](showall)=([^&amp;#]*)");
@@ -174,10 +176,10 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
     </xsl:variable>
     <DIV style="margin-left: 50%; font-size: 75%;">
       <P>
-        每个样式点都有一个摘要，可以通过切换旁边的箭头按钮来获取更多信息，箭头按钮看起来像这样：
+        每个样式点都有一个摘要，可以通过切换旁边的箭头按钮获取更多信息，箭头按钮看起来像这样：
         <SPAN class="showhide_button" style="margin-left: 0; float: none">
           <xsl:value-of select="$show_button_text"/></SPAN>。
-        您可以通过大箭头按钮切换所有摘要：
+        您可以使用大箭头按钮切换所有摘要：
       </P>
       <DIV style=" font-size: larger; margin-left: +2em;">
         <SPAN class="showhide_button" style="font-size: 180%; float: none">
@@ -196,7 +198,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
   </xsl:template>
 
   <xsl:template match="PARTING_WORDS">
-    <H2>离别词</H2>
+    <H2>离别之语</H2>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -275,7 +277,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
       <xsl:apply-templates/>
     </DIV>
   </xsl:template>
-```
+
 <xsl:template match="BODY">
     <xsl:param name="anchor_prefix" />
     <DIV>
@@ -474,11 +476,11 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
   <xsl:param name="stylepoint"/>
 </xsl:template>
 
-<!-- 根据任意文本创建标准锚点。
+<!-- 根据任何文本创建标准锚点。
      将不适合URL的字符替换为下划线 -->
 <xsl:template name="anchorname">
   <xsl:param name="sectionname"/>
-  <!-- 需要奇怪的引用以去除撇号 -->
+  <!-- 奇怪的引用是必要的，以去除单引号 -->
   <xsl:variable name="bad_characters" select="&quot; ()#'&quot;"/>
   <xsl:value-of select="translate($sectionname,$bad_characters,'_____')"/>
 </xsl:template>
@@ -501,7 +503,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
   </xsl:choose>
 </xsl:template>
 
-<!-- 给定一个以\n结尾的文本块，计算该文本的缩进级别；即，所有非空行至少以n个空格开头的最大n值。 -->
+<!-- 给定一个以\n结尾的文本块，计算该文本的缩进级别；即，所有非空行至少以n个空格开头的最大数n。 -->
 <xsl:template name="num_leading_spaces">
   <xsl:param name="text"/>
   <xsl:param name="max_so_far"/>
@@ -545,7 +547,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
 <!-- 给定文本，确定代码的起始位置。
      这与num_leading_spaces_one_line类似，但将"Yes:"和"No:"视为空格。
      另外，如果第一行没有代码，它会搜索后续行直到找到非空行。
-     用于查找类似以下代码片段的代码起始位置：
+     用于查找类似以下代码片段中的代码起始位置：
      Yes: if(foo):
      No : if(foo):
      以及：
@@ -616,7 +618,7 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
      - def foo():  # Bar
      - if(foo):
 
-     但有些代码可能会混淆此函数。例如，以下行也被认为是"以冒号结尾"，尽管它们在Python中不是：
+     但有些代码可能会混淆此函数。例如，以下行也被认为是"end_with_colon"，尽管它们在Python中不是：
      - foo(":  #")
      - foo() # No need for :
 -->
@@ -665,9 +667,9 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
 
 <!-- 打印一行Python代码，并以适当的缩进递归调用自身处理剩余文本。
      此模板使用"a", "b", "c"和"d"来指代四个关键列号。它们是：
-     - a: 代码片段中所有行的共同缩进。这在xml中被去除以便于代码更清晰。
+     - a: 代码片段中所有行的共同缩进。这在xml中被去除以允许更清晰的代码。
      - b: 代码中最外层缩进的行。这与"a"不同，当代码带有"Yes:"或"No:"标签时。
-     - c: 当前Python块的缩进，换句话说，是此块第一行的缩进，即我们看到的最后以冒号结尾的行的缩进。
+     - c: 当前Python块的缩进，换句话说，是此块第一行的缩进，即我们看到的最后一个以冒号结尾的行的缩进。
      - d: 行的“总”缩进，忽略行上可能的"Yes:"或"No:"文本。
 
      例如，对于以下代码片段的最后一行，a, b, c和d的位置如下所示：
@@ -677,13 +679,13 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
                   baz()
          a    b c d
 算法如下：
-1) 将文本分割为第一行和剩余部分。请注意，substring-before函数应该处理字符串中不存在该字符的情况，但它没有做到，所以我们自动忽略代码片段的最后一行，该行总是空的（即关闭代码片段标签）。这与print_without_leading_chars的行为一致。
-2) 如果当前行为空（仅包含空白字符），则打印换行符，并对剩余文本和不变的其他参数进行递归调用。
+1) 将文本分割为第一行和其余部分。请注意，substring-before函数应该处理字符串中不存在该字符的情况，但它没有做到，所以我们自动忽略代码片段的最后一行，该行总是为空（即关闭代码片段标签）。这与print_without_leading_chars的行为一致。
+2) 如果当前行为空（仅有空白字符），打印换行符，并对文本的其余部分递归调用自身，参数保持不变。
 3) 否则，测量“d”。
 4) 通过以下方式测量“c”：
    - 如果前一行以冒号结尾或当前行相对于前一行缩进减少，则取“d”的值
    - 否则，取前一行的缩进
-5) 打印line[a:c]（注意我们忽略line[0:a]）
+5) 打印line[a:c]（注意我们忽略line[0:a]）。
 6) 在外部span中打印line[b:c]（为了在外部代码中加倍块缩进）。
 7) 打印line[c:<end>]，并处理函数名以生成内部和外部名称。
 8) 如果还有更多行，则递归处理。
@@ -761,8 +763,8 @@ xmlns:fn="http://www.w3.org/2005/xpath-functions">
 </xsl:template>
 
 <!-- 以内部和外部样式打印Python代码。
-     为了在外部符合PEP-8，我们识别2个空格的缩进和仅外部的4个空格的缩进。
-     标记为$$FunctionName/$$的函数名会添加一个外部的下划线小写版本。 -->
+     为了在外部符合PEP-8，我们识别2个空格的缩进和仅外部的4个空格缩进。
+     标记为$$FunctionName/$$的函数名会添加一个外部的lower_with_underscore版本。 -->
 <xsl:template name="print_python_code">
   <xsl:param name="text"/>
 

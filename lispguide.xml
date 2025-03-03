@@ -44,39 +44,35 @@ Robert Brown
 </CATEGORY>
 <CATEGORY title="Background">
   <p>
-    Common Lisp is a powerful multiparadigm programming language.
-    With great power comes great responsibility.
+    Common Lisp 是一种强大的多范式编程语言。
+    能力越大，责任越大。
   </p>
   <p>
-    This guide recommends formatting and stylistic choices
-    designed to make your code easier for other people to understand.
-    For those internal applications and free software libraries that
-    we develop at Google,
-    you should keep within these guidelines when making changes.
-    Note however that each project has its own rules and customs
-    that complement or override these general guidelines;
-    the speed-oriented QPX low fare search engine notably
-    has a very different style and feel from the QRes reservation system.
+    本指南推荐格式和风格选择，
+    旨在使您的代码更容易被其他人理解。
+    对于我们在 Google 开发的那些内部应用程序和自由软件库，
+    您在进行更改时应遵守这些准则。
+    但请注意，每个项目都有其自身的规则和习惯，
+    这些规则和习惯补充或覆盖了这些通用准则；
+    例如，以速度为导向的 QPX 低价搜索引擎
+    与 QRes 预订系统具有非常不同的风格和感觉。
   </p>
   <p>
-    If you're writing Common Lisp code outside Google,
-    we invite you to consider these guidelines.
-    You may find some of them useful
-    where they don't conflict with other priorities you have.
-    We welcome remarks and constructive feedback
-    on how to improve our guide, and
-    on what alternate styles work for you and why.
+    如果您在 Google 之外编写 Common Lisp 代码，
+    我们邀请您考虑这些准则。
+    您可能会发现其中一些在不与您拥有的其他优先级冲突的情况下很有用。
+    我们欢迎您提出关于如何改进我们的指南的意见和建设性反馈，以及
+    关于哪些替代风格适合您以及原因。
   </p>
   
   <p>
-    This guide is not a Common Lisp tutorial.
-    For basic information about the language, please consult
-    <a HREF="http://www.gigamonkeys.com/book/">Practical Common Lisp</a>.
-    For a language reference, please consult the
-    <a HREF="http://www.lispworks.com/documentation/HyperSpec/Front/index.htm">Common Lisp HyperSpec</a>.
-    For more detailed style guidance, take (with a pinch of salt)
-    a look at Peter Norvig and Kent Pitman's
-    <a HREF="http://norvig.com/luv-slides.ps">style guide</a>.
+    本指南不是 Common Lisp 教程。
+    有关该语言的基本信息，请查阅
+    <a HREF="http://www.gigamonkeys.com/book/">Practical Common Lisp</a>。
+    有关语言参考，请查阅
+    <a HREF="http://www.lispworks.com/documentation/HyperSpec/Front/index.htm">Common Lisp HyperSpec</a>。
+    有关更详细的风格指导，请（略带保留地）查看 Peter Norvig 和 Kent Pitman 的
+    <a HREF="http://norvig.com/luv-slides.ps">style guide</a>。
   </p>
 </CATEGORY>
 </OVERVIEW>
@@ -457,255 +453,249 @@ Robert Brown
           Be aware of these issues, or consult with people who are.
         </li>
       </ul>
-      
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Open-Sourcing Code">
+  <STYLEPOINT title="开源代码">
     <SUMMARY>
       <p>
-        If you write a general-purpose library,
-        or modify an existing open-source library,
-        you are encouraged to publish the result
-        separate from your main project and then
-        have your project import it like any other open-source library.
+        如果你编写了一个通用的库，
+        或者修改了一个现有的开源库，
+        我们鼓励你将结果从你的主项目中分离出来发布，然后
+        让你的项目像其他开源库一样导入它。
       </p>
       
     </SUMMARY>
     <BODY>
       <p>
-        Use your judgment to distinguish
-        general-purpose versus business-specific code,
-        and open-source the general-purpose parts,
-        while keeping the business-specific parts a trade secret.
+        根据你的判断来区分
+        通用代码和业务特定代码，
+        并将通用部分开源，
+        同时将业务特定部分作为商业机密。
       </p>
       
       <p>
-        Open-Sourcing code has many advantages,
-        including being able to leverage third parties for development,
-        letting the development of features be user-directed,
-        and keeping you honest with respect to code quality.
-        Whatever code you write, you will have to maintain anyway,
-        and make sure its quality is high enough to sustain use in production.
-        There should therefore be no additional burden to Open-Sourcing,
-        even of code that (at least initially)
-        is not directly usable by third parties.
+        开源代码有很多优点，
+        包括能够利用第三方进行开发，
+        让功能的开发由用户主导，
+        并让你在代码质量方面保持诚实。
+        无论你编写什么代码，你都必须维护它，
+        并确保其质量足够高，以支持在生产中使用。
+        因此，开源不应该增加额外的负担，
+        即使是那些（至少最初）
+        不能被第三方直接使用的代码。
       </p>
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Development Process">
+  <STYLEPOINT title="开发流程">
     <SUMMARY>
-      Development process is outside the scope of this document.
-      However, developers should remember at least these bits:
-      get reviewed, write tests, eliminate warnings, run tests, avoid mass-changes.
+      开发流程不在本文档的范围内。
+      但是，开发人员至少应该记住以下几点：
+      代码审查，编写测试，消除警告，运行测试，避免大规模更改。
     </SUMMARY>
     <BODY>
       <p>
       </p>
       <ul>
         <li>
-          All code changes must be reviewed.
-          You should expect that your code will be reviewed by other hackers,
-          and that you will be assigned other hackers' code to review.
-          Part of the review criteria will be that code obeys
-          the coding standards in this document.
+          所有代码更改都必须经过审查。
+          你应该预料到你的代码会被其他黑客审查，
+          并且你会被分配审查其他黑客的代码。
+          审查标准的一部分是代码是否遵守
+          本文档中的编码标准。
         </li>
         <li>
-          You must write and check-in tests for new code that you write and old bugs you fix.
-          There must be a unit test for every API function,
-          and any previously failing case.
-          Your work is not truly done until this activity is complete.
-          Estimating tasks must include the time it takes to produce such tests.
+          你必须为你编写的新代码和你修复的旧错误编写并提交测试。
+          每个API函数都必须有一个单元测试，
+          以及任何先前失败的案例。
+          只有完成这项活动，你的工作才算真正完成。
+          估算任务必须包括生成这些测试所需的时间。
         </li>
         <li>
-          Your code must compile
-          without any compilation error or warning messages whatsoever.
-          If the compiler issues warnings that should be ignored,
-          muffle those warnings using the
-          <code>UIOP:WITH-MUFFLED-COMPILER-CONDITIONS</code> and
+          你的代码必须编译通过，
+          没有任何编译错误或警告消息。
+          如果编译器发出应该忽略的警告，
+          使用
+          <code>UIOP:WITH-MUFFLED-COMPILER-CONDITIONS</code> 和
           <code>UIOP:*UNINTERESTING-COMPILER-CONDITIONS*</code>
-          framework (part of <code>UIOP</code>, part of <code>ASDF 3</code>),
-          either around the entire project, or around individual files
-          (using <code>ASDF</code>'s <code>:around-compile</code> hooks).
+          框架（<code>UIOP</code> 的一部分，<code>ASDF 3</code> 的一部分）来消除这些警告，
+          可以围绕整个项目，也可以围绕单个文件
+          （使用 <code>ASDF</code> 的 <code>:around-compile</code> 钩子）。
         </li>
         <li>
-          All code should be checked in an appropriate source control system,
-          in a way that allows for complete reproducibility of
-          build, test and execution of
-          the code that is, has been or may be deployed.
+          所有代码都应该提交到适当的源代码控制系统中，
+          以允许完全重现
+          代码的构建、测试和执行，
+          这些代码是、曾经是或可能被部署的。
         </li>
         <li>
-          You must run the "precheckin" tests, and each component must pass
-          its unit tests successfully before you commit any code.
+          你必须运行 "precheckin" 测试，并且每个组件必须在提交任何代码之前
+          成功通过其单元测试。
         </li>
         <li>
-          You should incorporate code coverage into your testing process.
-          Tests are not sufficient
-          if they do not cover all new and updated code;
-          code that for whatever reason cannot be included in coverage results
-          should be clearly marked as such including the reason.
+          你应该将代码覆盖率纳入你的测试流程中。
+          如果测试没有覆盖所有新的和更新的代码，那么测试是不够的；
+          由于任何原因无法包含在覆盖率结果中的代码
+          应该清楚地标记出来，包括原因。
         </li>
         <li>
-          Many people develop on branches.
-          You must get permission to undertake mass-changes
-          (e.g. mass reindentations)
-          so that we can coordinate in advance,
-          and give branch residents time to get back on the mainline
+          许多人在分支上开发。
+          你必须获得许可才能进行大规模更改
+          （例如，大规模重新缩进），
+          以便我们可以提前协调，
+          并让分支上的居民有时间回到主线。
         </li>
       </ul>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Formatting">
-  <STYLEPOINT title="Spelling and Abbreviations">
+<CATEGORY title="格式化">
+  <STYLEPOINT title="拼写和缩写">
     <SUMMARY>
       <p>
-        You must use correct spelling in your comments,
-        and most importantly in your identifiers.
+        你必须在你的注释中使用正确的拼写，
+        最重要的是在你的标识符中使用正确的拼写。
       </p>
       <p>
-        When several correct spellings exist (including American vs English),
-        and there isn't a consensus amongst developers as which to use,
-        you should choose the shorter spelling.
+        当存在几种正确的拼写（包括美式英语和英式英语）时，
+        并且开发人员之间没有达成一致意见，
+        你应该选择较短的拼写。
       </p>
       <p>
-        You must use only common and domain-specific abbreviations, and
-        must be consistent with these abbreviations.  You may abbreviate
-        lexical variables of limited scope in order to avoid overly-long
-        symbol names.
+        你必须只使用常见的和特定于领域的缩写，并且
+        必须与这些缩写保持一致。你可以缩写
+        范围有限的词法变量，以避免过长的
+        符号名称。
       </p>
     </SUMMARY>
     <BODY>
       <p>
-        If you're not sure, consult a dictionary,
-        Google for alternative spellings,
-        or ask a local expert.
+        如果你不确定，请查阅字典，
+        在 Google 上搜索替代拼写，
+        或咨询当地专家。
       </p>
       <p>
-        Here are examples of choosing the correct spelling:
+        以下是选择正确拼写的示例：
       </p>
       <ul>
         <li>
-          Use "complimentary" in the sense of a meal or beverage
-          that is not paid for by the recipient, not "complementary".
+          使用 "complimentary" 来表示不由接收者支付的膳食或饮料，而不是 "complementary"。
         </li>
         <li>
-          Use "existent" and "nonexistent", not "existant".
-          Use "existence", not "existance".
+          使用 "existent" 和 "nonexistent"，而不是 "existant"。
+          使用 "existence"，而不是 "existance"。
         </li>
         <li>
-          Use "hierarchy" not "heirarchy".
+          使用 "hierarchy" 而不是 "heirarchy"。
         </li>
         <li>
-          Use "precede" not "preceed".
+          使用 "precede" 而不是 "preceed"。
         </li>
         <li>
-          Use "weird", not "wierd".
+          使用 "weird"，而不是 "wierd"。
         </li>
       </ul>
       <p>
-        Here are examples of choosing the shorter spelling:
+        以下是选择较短拼写的示例：
       </p>
       <ul>
         <li>
-          Use "canceled", not "cancelled"
+          使用 "canceled"，而不是 "cancelled"
         </li>
         <li>
-          Use "queuing", not "queueing".
+          使用 "queuing"，而不是 "queueing"。
         </li>
         <li>
-          Use "signaled", not "signalled";
+          使用 "signaled"，而不是 "signalled"；
         </li>
         <li>
-          Use "traveled", not "travelled".
+          使用 "traveled"，而不是 "travelled"。
         </li>
         <li>
-          Use "aluminum", not "aluminium"
+          使用 "aluminum"，而不是 "aluminium"
         </li>
         <li>
-          Use "oriented", not "orientated"
+          使用 "oriented"，而不是 "orientated"
         </li>
         <li>
-          Use "color", not "colour"
+          使用 "color"，而不是 "colour"
         </li>
         <li>
-          Use "behavior", not "behaviour"
+          使用 "behavior"，而不是 "behaviour"
         </li>
       </ul>
       <p>
-        Make appropriate exceptions for industry standard nomenclature/jargon,
-        including plain misspellings.
-        For instance:
+        对行业标准术语/行话进行适当的例外处理，
+        包括普通的拼写错误。
+        例如：
       </p>
       <ul>
         <li>
-          Use "referer", not "referrer", in the context of the HTTP protocol.
+          在 HTTP 协议的上下文中，使用 "referer"，而不是 "referrer"。
         </li>
       </ul>
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Line length">
+  <STYLEPOINT title="行长度">
     <SUMMARY>
-      You should format source code so that no line is longer than 100 characters.
+      你应该格式化源代码，使任何行的长度都不超过 100 个字符。
     </SUMMARY>
     <BODY>
       <p>
-        Some line length restriction is better than none at all.
-        While old text terminals used to make 80 columns the standard,
-        these days, allowing 100 columns seems better,
-        since good style encourages the use of
-        descriptive variables and function names.
+        某种行长度限制总比没有好。
+        虽然旧的文本终端过去使 80 列成为标准，
+        但现在，允许 100 列似乎更好，
+        因为好的风格鼓励使用
+        描述性变量和函数名称。
       </p>
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Indentation">
+  <STYLEPOINT title="缩进">
     <SUMMARY>
       <p>
-        Indent your code the way a properly configured GNU Emacs does.
+        按照正确配置的 GNU Emacs 的方式缩进你的代码。
       </p>
       <p>
-        Maintain a consistent indentation style throughout a project.
+        在整个项目中保持一致的缩进风格。
       </p>
       <p>
-        Indent carefully to make the code easier to understand.
+        仔细缩进以使代码更易于理解。
       </p>
     </SUMMARY>
     <BODY>
       <p>
-        Common Lisp indentation in Emacs is provided by the cl-indent library.
-        The latest version of cl-indent is packaged with
+        Emacs 中的 Common Lisp 缩进由 cl-indent 库提供。
+        最新版本的 cl-indent 与
         <a HREF="https://www.common-lisp.net/project/slime/">SLIME</a>
-        (under contrib/slime-cl-indent.el). After installing SLIME, set up Emacs
-        to load SLIME automatically using
-        <a HREF="https://www.common-lisp.net/project/slime/doc/html/Loading-Contribs.html">these instructions</a>, adding slime-indentation to the list of
-        contrib libraries to be loaded in the call to slime-setup.
+        一起打包（在 contrib/slime-cl-indent.el 下）。安装 SLIME 后，设置 Emacs
+        使用
+        <a HREF="https://www.common-lisp.net/project/slime/doc/html/Loading-Contribs.html">这些说明</a>自动加载 SLIME，将 slime-indentation 添加到
+        要在调用 slime-setup 中加载的 contrib 库列表中。
      </p>
      <p>
-        Ideally, use the default indentation settings provided by
-        slime-indentation. If necessary, customize indentation parameters to
-        maintain a consistent indentation style throughout an existing project.
-        Parameters can be customized using the :variables setting in
-        define-common-lisp-style. Indentation of specific forms can be
-        customized using the :indentation setting of define-common-lisp-style.
-        This is particularly useful when creating forms that behave like macros
-        or special operators that are indented differently than standard
-        function calls (e.g. defun, labels, or let). Add a
-        <a HREF="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hook</a> to 'lisp-mode-hook that calls common-lisp-set-style to set
-        the appropriate style automatically.
+        理想情况下，使用 slime-indentation 提供的默认缩进设置。
+        如有必要，自定义缩进参数以在整个现有项目中保持一致的缩进风格。
+        可以使用 define-common-lisp-style 中的 :variables 设置自定义参数。
+        可以使用 define-common-lisp-style 的 :indentation 设置自定义特定形式的缩进。
+        这在创建行为类似于宏或特殊运算符的形式时特别有用，
+        这些形式的缩进方式与标准函数调用不同（例如 defun、labels 或 let）。
+        添加一个
+        <a HREF="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hook</a> 到 'lisp-mode-hook，该 hook 调用 common-lisp-set-style 以自动设置
+        适当的样式。
       </p>
       
       
       <p>
-        Use indentation to make complex function applications easier to read.
-        When an application does not fit on one line
-        or the function takes many arguments,
-        consider inserting newlines between the arguments
-        so that each one is on a separate line.
-        However, do not insert newlines in a way that makes it hard to tell
-        how many arguments the function takes
-        or where an argument form starts and ends.
+        使用缩进使复杂的函数应用更易于阅读。
+        当一个应用不适合在一行上
+        或者函数接受许多参数时，
+        考虑在参数之间插入换行符，
+        以便每个参数都在单独的一行上。
+        但是，不要以难以分辨的方式插入换行符
+        函数接受多少个参数
+        或者参数形式从哪里开始和结束。
       </p>
       <BAD_CODE_SNIPPET>
         ;; Bad
@@ -722,29 +712,28 @@ Robert Brown
       </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="File Header">
+  <STYLEPOINT title="文件头">
     <SUMMARY>
       <p>
-        You should include a description at the top of each source file.
+        你应该在每个源文件的顶部包含一个描述。
       </p>
       <p>
-        You should include neither authorship nor copyright information in a source file.
+        你不应该在源文件中包含作者身份或版权信息。
       </p>
     </SUMMARY>
     <BODY>
       <p>
-        Every source file should begin with a brief description
-        of the contents of that file.
+        每个源文件都应该以对该文件内容的简要描述开始。
       </p>
       <p>
-        After that description, every file should start the code itself with an
-        <code>(in-package #:<em>package-name</em>)</code> form.
+        在该描述之后，每个文件都应该以一个
+        <code>(in-package #:<em>package-name</em>)</code> 形式开始代码本身。
       </p>
       <p>
-        After that <code>in-package</code> form,
-        every file should follow with any file-specific
-        <code>(declaim (optimize ...))</code> declaration
-        that is not covered by an <code>ASDF</code> <code>:around-compile</code> hook.
+        在该 <code>in-package</code> 形式之后，
+        每个文件都应该跟随任何特定于文件的
+        <code>(declaim (optimize ...))</code> 声明，
+        该声明未被 <code>ASDF</code> <code>:around-compile</code> 钩子覆盖。
       </p>
       <CODE_SNIPPET>
         ;;;; Variable length encoding for integers and floating point numbers.
@@ -753,33 +742,33 @@ Robert Brown
         (declaim #.*optimize-default*)
       </CODE_SNIPPET>
       <p>
-        You should not include authorship information at the top of a file:
-        better information is available from version control,
-        and such a mention will only cause confusion and grief.
-        Indeed, whoever was the main author at the time such a mention was included
-        might not be who eventually made the most significant contributions to the file,
-        and even less who is responsible for the file at the moment.
+        你不应该在文件的顶部包含作者身份信息：
+        可以从版本控制中获得更好的信息，
+        并且这样的提及只会引起混乱和痛苦。
+        事实上，在包含此类提及时，主要作者
+        可能不是最终对文件做出最重要贡献的人，
+        甚至更不是目前对文件负责的人。
         
       </p>
       <p>
-        You should not include copyright information in individual source code files.
-        An exception is made for files meant to be disseminated as standalone.
+        你不应该在单个源代码文件中包含版权信息。
+        对于旨在作为独立文件传播的文件，则可以例外。
       </p>
       
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Vertical white space">
+  <STYLEPOINT title="垂直空白">
     <SUMMARY>
-      Vertical white space: one blank line between top-level forms.
+      垂直空白：顶级形式之间有一个空行。
     </SUMMARY>
     <BODY>
       <p>
-        You should include one blank line between top-level forms,
-        such as function definitions.
-        Exceptionally, blank lines can be omitted
-        between simple, closely related defining forms of the same kind,
-        such as a group of related type declarations or constant definitions.
+        你应该在顶级形式之间包含一个空行，
+        例如函数定义。
+        例外情况是，可以在
+        同一类型的简单、密切相关的定义形式之间省略空行，
+        例如一组相关的类型声明或常量定义。
       </p>
       <CODE_SNIPPET>
         (defconstant +mix32+ #x12b9b0a1 "pi, an arbitrary number")
@@ -796,36 +785,34 @@ Robert Brown
           `(setf ,x (logand (+ ,x ,y) #xffffffffffffffff)))
       </CODE_SNIPPET>
       <p>
-        Blank lines can be used to separate parts of a complicated function.
-        Generally, however, you should break a large function into smaller ones
-        instead of trying to make it more readable by adding vertical space.
-        If you can't, you should document with a <code>;;</code> comment
-        what each of the separated parts of the function does.
+        空行可以用来分隔复杂函数的不同部分。
+        然而，通常情况下，你应该将一个大型函数分解成更小的函数，
+        而不是试图通过添加垂直空间来使其更具可读性。
+        如果不能，你应该用 <code>;;</code> 注释
+        来记录函数中每个分隔部分的作用。
       </p>
       <p>
-        You should strive to keep top-level forms,
-        including comments but excluding the documentation string, of
-        appropriate length; preferably short.  Forms extending beyond a
-        single page should be rare and their use should be justified.
-        This applies to each of the forms in an <code>eval-when</code>,
-        rather than to the <code>eval-when</code> itself.
-        Additionally, <code>defpackage</code> forms may be longer,
-        since they may include long lists of symbols.
+        你应该努力保持顶层形式（包括注释，但不包括文档字符串）的
+        适当长度；最好是短的。扩展到超过
+        一页的表单应该很少见，并且它们的使用应该有理由。
+        这适用于 <code>eval-when</code> 中的每个表单，
+        而不是 <code>eval-when</code> 本身。
+        此外，<code>defpackage</code> 表单可能会更长，
+        因为它们可能包含长长的符号列表。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Horizontal white space">
+  <STYLEPOINT title="水平空白">
     <SUMMARY>
-      Horizontal white space: none around parentheses. No tabs.
+      水平空白：括号周围没有。没有制表符。
     </SUMMARY>
     <BODY>
       <p>
-        You must not include extra horizontal whitespace
-        before or after parentheses or around symbols.
+        你不得在括号之前或之后或符号周围包含额外的水平空白。
       </p>
       <p>
-        You must not place right parentheses by themselves on a line.
-        A set of consecutive trailing parentheses must appear on the same line.
+        你不得将右括号单独放在一行上。
+        一组连续的尾随括号必须出现在同一行上。
       </p>
       <BAD_CODE_SNIPPET>
         ;; Very Bad
@@ -846,14 +833,14 @@ Robert Brown
             product))
       </CODE_SNIPPET>
       <p>
-        You should use only one space between forms.
+        你应该只在表单之间使用一个空格。
       </p>
       <p>
-        You should not use spaces to vertically align forms
-        in the middle of consecutive lines.
-        An exception is made when the code possesses
-        an important yet otherwise not visible symmetry
-        that you want to emphasize.
+        你不应该使用空格来垂直对齐
+        连续行中间的表单。
+        当代码具有
+        重要但以其他方式不可见的对称性
+        并且你想强调它时，可以例外。
       </p>
       <BAD_CODE_SNIPPET>
         ;; Bad
@@ -870,7 +857,7 @@ Robert Brown
           ...))
       </CODE_SNIPPET>
       <p>
-        You must align nested forms if they occur across more than one line.
+        如果嵌套表单跨越多行，则必须对齐它们。
       </p>
       <BAD_CODE_SNIPPET>
         ;; Bad
@@ -885,12 +872,12 @@ Robert Brown
              c))
       </CODE_SNIPPET>
       <p>
-        The convention is that the body of a binding form
-        is indented two spaces after the form.
-        Any binding data before the body is usually indented four spaces.
-        Arguments to a function call are aligned with the first argument;
-        if the first argument is on its own line,
-        it is aligned with the function name.
+        约定是绑定表单的主体
+        在表单后缩进两个空格。
+        主体之前的任何绑定数据通常缩进四个空格。
+        函数调用的参数与第一个参数对齐；
+        如果第一个参数位于其自己的行上，
+        则它与函数名称对齐。
       </p>
       <CODE_SNIPPET>
         (multiple-value-bind (a b c d)
@@ -900,63 +887,60 @@ Robert Brown
           (also-using b d))
       </CODE_SNIPPET>
       <p>
-        An exception to the rule against lonely parentheses
-        is made for an <code>eval-when</code> form around several definitions;
-        in this case, include a comment <code>; eval-when</code>
-        after the closing parenthesis.
+        对于围绕多个定义的 <code>eval-when</code> 表单，
+        可以例外于禁止单独括号的规则；
+        在这种情况下，在右括号后包含注释 <code>; eval-when</code>。
       </p>
       <p>
-        You must set your editor to
-        avoid inserting tab characters in the files you edit.
-        Tabs cause confusion when editors disagree
-        on how many spaces they represent.
-        In Emacs, do <code>(setq-default indent-tabs-mode nil)</code>.
+        你必须设置你的编辑器以
+        避免在你编辑的文件中插入制表符。
+        当编辑器在它们代表多少个空格上存在分歧时，制表符会导致混淆。
+        在 Emacs 中，执行 <code>(setq-default indent-tabs-mode nil)</code>。
       </p>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
 
-<CATEGORY title="Documentation">
-  <STYLEPOINT title="Document everything">
+<CATEGORY title="文档">
+  <STYLEPOINT title="记录一切">
     <SUMMARY>
-      You should use document strings on all visible functions
-      to explain how to use your code.
+      你应该在所有可见函数上使用文档字符串
+      来解释如何使用你的代码。
     </SUMMARY>
     <BODY>
       <p>
-        Unless some bit of code is painfully self-explanatory,
-        document it with a documentation string (also known as docstring).
+        除非某些代码片段非常不言自明，
+        否则请使用文档字符串（也称为 docstring）记录它。
       </p>
       <p>
-        Documentation strings are destined to be read
-        by the programmers who use your code.
-        They can be extracted from functions, types, classes, variables and macros,
-        and displayed by programming tools, such as IDEs,
-        or by REPL queries such as <code>(describe 'foo)</code>;
-        web-based documentation or other reference works
-        can be created based on them.
-        Documentation strings are thus the perfect locus to document your API.
-        They should describe how to use the code
-        (including what pitfalls to avoid),
-        as opposed to how the code works (and where more work is needed),
-        which is what you'll put in comments.
+        文档字符串注定要被
+        使用你的代码的程序员阅读。
+        它们可以从函数、类型、类、变量和宏中提取，
+        并由编程工具（如 IDE）或
+        REPL 查询（如 <code>(describe 'foo)</code>）显示；
+        可以基于它们创建基于 Web 的文档或其他参考作品。
+        因此，文档字符串是记录你的 API 的完美场所。
+        它们应该描述如何使用代码
+        （包括要避免的陷阱），
+        而不是代码如何工作（以及在哪里需要更多工作），
+        这是你将在注释中放入的内容。
       </p>
       <p>
-        Supply a documentation string when defining
-        top-level functions, types, classes, variables and macros.
-        Generally, add a documentation string wherever the language allows.
+        在定义
+        顶层函数、类型、类、变量和宏时，提供文档字符串。
+        通常，在语言允许的任何地方添加文档字符串。
       </p>
       <p>
-        For functions, the docstring should describe the function's contract:
-        what the function does,
-        what the arguments mean,
-        what values are returned,
-        what conditions the function can signal.
-        It should be expressed at the appropriate level of abstraction,
-        explaining the intended meaning rather than, say, just the syntax.
-        In documentation strings, capitalize the names of Lisp symbols,
-        such as function arguments.
-        For example, "The value of LENGTH should be an integer."
+        对于函数，文档字符串应描述函数的约定：
+        函数做什么，
+        参数的含义，
+        返回什么值，
+        函数可以发出什么条件信号。
+        它应该以适当的抽象级别表达，
+        解释预期的含义，而不是仅仅是语法。
+        在文档字符串中，将 Lisp 符号的名称大写，
+        例如函数参数。
+        例如，“LENGTH 的值应该是一个整数。”
       </p>
       <CODE_SNIPPET>
         (defun small-prime-number-p (n)
@@ -978,17 +962,16 @@ Robert Brown
             associations, and returns the table itself."))
       </CODE_SNIPPET>
       <p>
-        A long docstring may usefully
-        begin with a short, single-sentence summary,
-        followed by the larger body of the docstring.
+        一个长的文档字符串可以有效地
+        以一个简短的单句摘要开始，
+        然后是文档字符串的较大主体。
       </p>
       <p>
-        When the name of a type is used,
-        the symbol may be quoted by surrounding it with
-        a back quote at the beginning and a single quote at the end.
-        Emacs will highlight the type, and the highlighting serves
-        as a cue to the reader that <kbd>M-.</kbd>
-        will lead to the symbol's definition.
+        当使用类型名称时，
+        可以通过在开头用反引号和结尾用单引号将其引起来。
+        Emacs 将突出显示该类型，并且突出显示用作
+        提示读者 <kbd>M-.</kbd>
+        将导致符号的定义。
       </p>
       <CODE_SNIPPET>
         (defun bag-tag-expected-itinerary (bag-tag)
@@ -997,68 +980,68 @@ Robert Brown
           ...)
       </CODE_SNIPPET>
       <p>
-        Every method of a generic function should be independently documented
-        when the specialization affects what the method does,
-        beyond what is described in its generic function's docstring.
+        当专门化影响方法的作用时，
+        通用函数的每个方法都应该独立记录，
+        超出其通用函数的文档字符串中描述的内容。
       </p>
       <p>
-        When you fix a bug,
-        consider whether what the fixed code does is obviously correct or not;
-        if not, you must add a comment explaining
-        the reason for the code in terms of fixing the bug.
-        Adding the bug number, if any, is also recommended.
+        当你修复一个错误时，
+        考虑一下修复后的代码所做的事情是否明显正确；
+        如果不是，你必须添加注释来解释
+        根据修复错误的原因来解释代码的原因。
+        如果存在错误编号，也建议添加。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Comment semicolons">
+  <STYLEPOINT title="注释分号">
     <SUMMARY>
-      You must use the appropriate number of semicolons to introduce comments.
+      你必须使用适当数量的分号来引入注释。
     </SUMMARY>
     <BODY>
       <p>
-        Comments are explanations to the future maintainers of the code.
-        Even if you're the only person who will ever see and touch the code,
-        even if you're either immortal and never going to quit,
-        or unconcerned with what happens after you leave
-        (and have your code self-destruct in such an eventuality),
-        you may find it useful to comment your code.
-        Indeed, by the time you revisit your code,
-        weeks, months or years later,
-        you will find yourself a different person from the one who wrote it,
-        and you will be grateful to that previous self
-        for making the code readable.
+        注释是对代码未来维护者的解释。
+        即使你是唯一一个会看到和接触代码的人，
+        即使你是不朽的并且永远不会退出，
+        或者不关心你离开后会发生什么
+        （并让你的代码在这种情况下自毁），
+        你可能会发现注释你的代码很有用。
+        事实上，当你重新审视你的代码时，
+        几周、几个月或几年后，
+        你会发现自己与编写代码的人不同，
+        你会感谢之前的自己
+        使代码可读。
       </p>
       <p>
-        You must comment anything complicated
-        so that the next developer can understand what's going on.
-        (Again, the "hit by a truck" principle.)
+        你必须注释任何复杂的事情，
+        以便下一个开发人员可以理解发生了什么。
+        （同样，“被卡车撞到”原则。）
       </p>
       <p>
-        Also use comments as a way to guide those who read the code,
-        so they know what to find where.
+        还可以使用注释作为指导那些阅读代码的人的一种方式，
+        以便他们知道在哪里可以找到什么。
       </p>
       <ul>
         <li>
-          File headers and important comments
-          that apply to large sections of code in a source file
-          should begin with four semicolons.
+          文件头和重要注释
+          适用于源文件中大段代码的注释
+          应以四个分号开头。
         </li>
         <li>
-          You should use three semicolons
-          to begin comments that apply to just
-          one top-level form or small group of top-level forms.
+          你应该使用三个分号
+          来开始仅适用于
+          一个顶层表单或一小组顶层表单的注释。
         </li>
         <li>
-          Inside a top-level form, you should use two semicolons
-          to begin a comment if it appears between lines.
+          在顶层表单中，如果注释出现在行之间，
+          你应该使用两个分号来开始注释。
         </li>
         <li>
-          You should use one semicolon if it is a parenthetical remark
-          and occurs at the end of a line.
-          You should use spaces to separate the comment
-          from the code it refers to so the comment stands out.
-          You should try to vertically align
-          consecutive related end-of-line comments.
+          如果它是一个附带说明
+          并且出现在行尾，则应该使用一个分号。
+          你应该使用空格将注释与
+          它引用的代码分开，以便注释突出显示。
+          你应该尝试垂直对齐
+          连续相关的行尾注释。
         </li>
       </ul>
       <CODE_SNIPPET>
@@ -1094,258 +1077,253 @@ Robert Brown
                        never (divisorp i n)))))
       </CODE_SNIPPET>
       <p>
-        You should include a space between the semicolon and the text of the comment.
+        你应该在分号和注释文本之间包含一个空格。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Grammar and punctuation">
+  <STYLEPOINT title="语法和标点符号">
     <SUMMARY>
-      You should punctuate documentation correctly.
+      你应该正确地标点文档。
     </SUMMARY>
     <BODY>
       <p>
-        When a comment is a full sentence,
-        you should capitalize the initial letter of the first word
-        and end the comment with a period.
-        In general, you should use correct punctuation.
+        当注释是一个完整的句子时，
+        你应该将第一个单词的首字母大写
+        并以句点结束注释。
+        一般来说，你应该使用正确的标点符号。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Attention Required">
+  <STYLEPOINT title="需要注意">
     <SUMMARY>
-      You must follow the convention of using TODO comments
-      for code requiring special attention.
-      For code using unobvious forms, you must include a comment.
+      你必须遵循使用 TODO 注释的约定
+      对于需要特别注意的代码。
+      对于使用不明显的表单的代码，你必须包含注释。
     </SUMMARY>
     <BODY>
       <p>
-        For comments requiring special attention, such as
-        incomplete code, todo items, questions, breakage, and danger,
-        include a TODO comment indicating the type of problem,
-        its nature, and any notes on how it may be addressed.
+        对于需要特别注意的注释，例如
+        不完整的代码、待办事项、问题、中断和危险，
+        包括一个 TODO 注释，指示问题的类型、
+        性质以及有关如何解决它的任何说明。
       </p>
       <p>
-        The comments begin with <code>TODO</code> in all capital letters,
-        followed by the
+        注释以全部大写的 <code>TODO</code> 开头，
+        后跟
         
-        name, e-mail address, or other identifier
-        of the person 
-        with the best context about the problem referenced by the <code>TODO</code>.
-        The main purpose is to have a consistent <code>TODO</code> that
-        can be searched to find out how to get more details upon
-        request. A <code>TODO</code> is not a commitment that the
-        person referenced will fix the problem. Thus when you create
-        a <code>TODO</code>,
-        it is almost always your 
-        name
-        that is given.
+        具有关于 <code>TODO</code> 引用的问题
+        的最佳上下文的人员的姓名、电子邮件地址或其他标识符。
+        主要目的是拥有一个一致的 <code>TODO</code>，
+        可以搜索该 <code>TODO</code> 以找出如何根据
+        请求获取更多详细信息。
+        <code>TODO</code> 并非承诺
+        被引用的人员将修复该问题。
+        因此，当你创建一个 <code>TODO</code> 时，
+        几乎总是给出你的
+        姓名。
       </p>
       <p>
-        When signing comments,
-        you should use your username (for code within the company)
-        or full email address (for code visible outside the company),
-        not just initials.
-        
+        在签署注释时，
+        你应该使用你的用户名（对于公司内部的代码）
+        或完整的电子邮件地址（对于公司外部可见的代码），
+        而不仅仅是首字母。
+      
       </p>
       <CODE_SNIPPET>
-        ;;--- TODO(george@gmail.com): Refactor to provide a better API.
+        ;;--- TODO(george@gmail.com): 重构以提供更好的 API。
       </CODE_SNIPPET>
       <p>
-        Be specific when indicating times or software releases
-        in a TODO comment and use
+        在 TODO 注释中指示时间和软件版本时要具体，并使用
         <a HREF="https://www.w3.org/TR/NOTE-datetime">YYYY-MM-DD</a>
-        format for dates to make automated processing of such dates easier,
-        e.g., 2038-01-20 for the end of the 32-bit signed <code>time_t</code>.
+        日期格式，以便更轻松地自动处理此类日期，
+        例如，2038-01-20 表示 32 位有符号 <code>time_t</code> 的结束。
       </p>
       <CODE_SNIPPET>
-        ;;--- TODO(brown): Remove this code after release 1.7 or before 2012-11-30.
+        ;;--- TODO(brown): 在发布 1.7 版本后或 2012-11-30 之前删除此代码。
       </CODE_SNIPPET>
       <p>
-        For code that uses unobvious forms to accomplish a task, you must include a comment
-        stating the purpose of the form and the task it accomplishes.
+        对于使用不明显的格式来完成任务的代码，您必须包含一条注释，
+        说明该格式的目的以及它完成的任务。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Domain-Specific Languages">
+  <STYLEPOINT title="领域特定语言">
     <SUMMARY>
-      You should document DSLs and
-      any terse program in a DSL.
+      您应该记录 DSL 以及
+      DSL 中的任何简洁程序。
     </SUMMARY>
     <BODY>
       <p>
-        You should design your Domain Specific Language
-        to be easy to read and understand by people familiar with the domain.
+        您应该设计您的领域特定语言，
+        以便熟悉该领域的人员易于阅读和理解。
       </p>
       <p>
-        You must properly document all your Domain Specific Language.
+        您必须正确记录您的所有领域特定语言。
       </p>
       <p>
-        Sometimes, your DSL is designed for terseness.
-        In that case, it is important to document what each program does,
-        if it's not painfully obvious from the context.
+        有时，您的 DSL 被设计为简洁。
+        在这种情况下，如果从上下文中不明显，
+        那么记录每个程序的作用非常重要。
       </p>
       <p>
-        Notably, when you use regular expressions
-        (e.g. with the <code>CL-PPCRE</code> package),
-        you MUST ALWAYS put in a comment
-        (usually a two-semicolon comment on the previous line)
-        explaining, at least basically, what the regular expression does,
-        or what the purpose of using it is.
-        The comment need not spell out every bit of the syntax, but
-        it should be possible for someone to follow the logic of the code
-        without actually parsing the regular expression.
+        值得注意的是，当您使用正则表达式
+        （例如，使用 <code>CL-PPCRE</code> 包）时，
+        您必须始终添加注释
+        （通常是前一行的双分号注释），
+        至少从根本上解释正则表达式的作用，
+        或使用它的目的。
+        注释不需要拼出语法的每一位，但是
+        应该让某人能够理解代码的逻辑，
+        而无需实际解析正则表达式。
       </p>
     </BODY>
   </STYLEPOINT>
 
 </CATEGORY>
 
-<CATEGORY title="Naming">
-  <STYLEPOINT title="Symbol guidelines">
+<CATEGORY title="命名">
+  <STYLEPOINT title="符号指南">
     <SUMMARY>
-      You should use lower case.
-      You should follow the rules for <a href="#Spelling_and_Abbreviations">Spelling and Abbreviations</a>
-      You should follow punctuation conventions.
+      您应该使用小写字母。
+      您应该遵循 <a href="#Spelling_and_Abbreviations">拼写和缩写</a> 的规则
+      您应该遵循标点符号约定。
     </SUMMARY>
     <BODY>
       <p>
-        Use lower case for all symbols.
-        Consistently using lower case makes searching for symbol names easier
-        and is more readable.
+        对所有符号使用小写字母。
+        始终如一地使用小写字母可以更轻松地搜索符号名称，
+        并且更具可读性。
       </p>
       <p>
-        Note that Common Lisp is case-converting,
-        and that the <code>symbol-name</code> of your symbols
-        will be upper case.
-        Because of this case-converting,
-        attempts to distinguish symbols by case are defeated,
-        and only result in confusion.
-        While it is possible to escape characters in symbols
-        to force lower case,
-        you should not use this capability
-        unless this is somehow necessary
-        to interoperate with third-party software.
+        请注意，Common Lisp 是区分大小写的，
+        并且您的符号的 <code>symbol-name</code>
+        将为大写。
+        由于这种大小写转换，
+        通过大小写区分符号的尝试会失败，
+        并且只会导致混乱。
+        虽然可以转义符号中的字符
+        以强制使用小写字母，
+        但您不应使用此功能，
+        除非以某种方式需要这样做
+        才能与第三方软件互操作。
       </p>
       <p>
-        Place hyphens between all the words in a symbol.
-        If you can't easily say an identifier out loud,
-        it is probably badly named.
+        在符号中的所有单词之间放置连字符。
+        如果您不能轻松地大声说出一个标识符，
+        那么它的命名可能很糟糕。
       </p>
       <p>
-        You must not use <code>"/"</code> or <code>"."</code>
-        instead of <code>"-"</code>
-        unless you have a well-documented overarching reason to,
-        and permission from other hackers who review your proposal.
+        您不得使用 <code>"/"</code> 或 <code>"."</code>
+        代替 <code>"-"</code>，
+        除非您有充分记录的总体原因，
+        并且获得了审查您的提案的其他黑客的许可。
       </p>
       <p>
-        See the section on <a href="#Spelling_and_Abbreviations">Spelling and Abbreviations</a>
-        for guidelines on using abbreviations.
+        有关使用缩写的指南，请参见 <a href="#Spelling_and_Abbreviations">拼写和缩写</a> 部分。
       </p>
       <BAD_CODE_SNIPPET>
-        ;; Bad
+        ;; 糟糕
         (defvar *default-username* "Ann")
         (defvar *max-widget-cnt* 200)
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        ;; Better
+        ;; 更好
         (defvar *default-user-name* "Ann")
         (defvar *maximum-widget-count* 200)
       </CODE_SNIPPET>
       <p>
-        There are conventions in Common Lisp
-        for the use of punctuation in symbols.
-        You should not use punctuation in symbols outside these conventions.
+        Common Lisp 中存在
+        在符号中使用标点符号的约定。
+        您不应在这些约定之外的符号中使用标点符号。
       </p>
       <p>
-        Unless the scope of a variable is very small,
-        do not use overly short names like
-        <code>i</code> and <code>zq</code>.
-      </p>
-    </BODY>
-  </STYLEPOINT>
-  <STYLEPOINT title="Denote intent, not content">
-    <SUMMARY>
-      Name your variables according to their intent,
-      not their content.
-    </SUMMARY>
-    <BODY>
-      <p>
-        You should name a variable according
-        to the high-level concept that it represents,
-        not according to the low-level implementation details
-        of how the concept is represented.
-      </p>
-      <p>
-        Thus, you should avoid embedding
-        data structure or aggregate type names,
-        such as <code>list</code>, <code>array</code>, or
-        <code>hash-table</code> inside variable names,
-        unless you're writing a generic algorithm that applies to
-        arbitrary lists, arrays, hash-tables, etc.
-        In that case it's perfectly OK to name a variable
-        <code>list</code> or <code>array</code>.
-      </p>
-      <p>
-        Indeed, you should be introducing new abstract data types
-        with <code>DEFCLASS</code> or <code>DEFTYPE</code>,
-        whenever a new kind of intent appears for objects in your protocols.
-        Functions that manipulate such objects generically may then
-        use variables the name of which reflect that abstract type.
-      </p>
-      <p>
-        For example, if a variable's value is always a row
-        (or is either a row or <code>NIL</code>),
-        it's good to call it <code>row</code> or <code>first-row</code>
-        or something like that.
-        It is alright is <code>row</code> has been
-        <code>DEFTYPE</code>'d to <code>STRING</code> —
-        precisely because you have abstracted the detail away,
-        and the remaining salient point is that it is a row.
-        You should not name the variable <code>STRING</code> in this context,
-        except possibly in low-level functions that specifically manipulate
-        the innards of rows to provide the suitable abstraction.
-      </p>
-      <p>
-        Be consistent.
-        If a variable is named <code>row</code> in one function,
-        and its value is being passed to a second function,
-        then call it <code>row</code> rather than, say, <code>value</code>
-        (this was a real case).
+        除非变量的作用域非常小，
+        否则不要使用过于简短的名称，例如
+        <code>i</code> 和 <code>zq</code>。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Global variables and constants">
+  <STYLEPOINT title="表示意图，而不是内容">
     <SUMMARY>
-      Name globals according to convention.
+      根据变量的意图而不是内容来命名变量。
     </SUMMARY>
     <BODY>
       <p>
-        The names of global constants should start and end
-        with plus characters.
+        您应该根据变量所代表的
+        高级概念来命名变量，
+        而不是根据概念的低级实现细节
+        来命名变量。
       </p>
       <p>
-        Global variable names should start and end with asterisks
-        (also known in this context as earmuffs).
+        因此，您应该避免嵌入
+        数据结构或聚合类型名称，
+        例如 <code>list</code>、<code>array</code> 或
+        <code>hash-table</code> 在变量名称中，
+        除非您正在编写适用于
+        任意列表、数组、哈希表等的通用算法。
+        在这种情况下，将变量命名为
+        <code>list</code> 或 <code>array</code> 是完全可以的。
       </p>
       <p>
-        In some projects, parameters that are not meant
-        to be usually modified or bound under normal circumstances
-        (but may be during experimentation or exceptional situations)
-        should start (but do not end) with a dollar sign.
-        If such a convention exists within your project,
-        you should follow it consistently.
-        Otherwise, you should avoid naming variables like this.
+        实际上，每当对象的协议中出现一种新的意图时，
+        您都应该使用 <code>DEFCLASS</code> 或 <code>DEFTYPE</code>
+        引入新的抽象数据类型。
+        然后，以通用方式操作此类对象的函数可以使用
+        变量的名称来反映该抽象类型。
       </p>
       <p>
-        Common Lisp does not have global lexical variables,
-        so a naming convention is used to ensure that globals,
-        which are dynamically bound,
-        never have names that overlap with local variables.
-        It is possible to fake global lexical variables
-        with a differently named global variable
-        and a <code>DEFINE-SYMBOL-MACRO</code>.
-        You should not use this trick,
-        unless you first publish a library that abstracts it away.
+        例如，如果变量的值始终是一行
+        （或者是一行或 <code>NIL</code>），
+        那么最好将其称为 <code>row</code> 或 <code>first-row</code>
+        或类似的东西。
+        如果 <code>row</code> 已被
+        <code>DEFTYPE</code>'d 为 <code>STRING</code>，那也没关系——
+        正是因为您已经抽象掉了细节，
+        而剩下的突出点是它是一行。
+        在这种情况下，您不应将变量命名为 <code>STRING</code>，
+        除非可能在专门操作
+        行的内部结构以提供合适的抽象的低级函数中。
+      </p>
+      <p>
+        保持一致。
+        如果一个变量在一个函数中被命名为 <code>row</code>，
+        并且它的值被传递给第二个函数，
+        那么将其称为 <code>row</code>，而不是 <code>value</code>
+        （这是一个真实的案例）。
+      </p>
+    </BODY>
+  </STYLEPOINT>
+  <STYLEPOINT title="全局变量和常量">
+    <SUMMARY>
+      根据约定命名全局变量。
+    </SUMMARY>
+    <BODY>
+      <p>
+        全局常量的名称应以加号字符开头和结尾。
+      </p>
+      <p>
+        全局变量名称应以星号开头和结尾
+        （在这种上下文中也称为耳罩）。
+      </p>
+      <p>
+        在某些项目中，通常不打算
+        在正常情况下修改或绑定的参数
+        （但在实验或特殊情况下可能会修改或绑定）
+        应以美元符号开头（但不以美元符号结尾）。
+        如果您的项目中存在此类约定，
+        则应始终如一地遵循它。
+        否则，您应该避免像这样命名变量。
+      </p>
+      <p>
+        Common Lisp 没有全局词法变量，
+        因此使用命名约定来确保全局变量
+        （它们是动态绑定的）
+        永远不会与局部变量重叠。
+        可以使用不同命名的全局变量
+        和 <code>DEFINE-SYMBOL-MACRO</code>
+        来伪造全局词法变量。
+        您不应使用此技巧，
+        除非您首先发布一个抽象它的库。
       </p>
       <CODE_SNIPPET>
         (defconstant +hash-results+ #xbd49d10d10cbee50)
@@ -1354,59 +1332,60 @@ Robert Brown
       </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Predicate names">
+  <STYLEPOINT title="谓词名称">
     <SUMMARY>
-      Names of predicate functions and variables end with a <code>"P"</code>.
+      谓词函数和变量的名称以 <code>"P"</code> 结尾。
     </SUMMARY>
     <BODY>
       <p>
-        You should name boolean-valued functions and variables with a
-        trailing <code>"P"</code> or <code>"-P"</code>,
-        to indicate they are predicates.
-        Generally, you should use
-        <code>"P"</code> when the rest of the function name is one word
-        and <code>"-P"</code> when it is more than one word.
+        您应该使用尾随 <code>"P"</code> 或 <code>"-P"</code>
+        来命名布尔值函数和变量，
+        以指示它们是谓词。
+        通常，当函数名称的其余部分是一个单词时，
+        您应该使用 <code>"P"</code>，
+        当函数名称的其余部分是多个单词时，
+        您应该使用 <code>"-P"</code>。
       </p>
       <p>
-        A rationale for this convention is given in
-        <a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node69.html">the CLtL2 chapter on predicates</a>.
+        <a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node69.html">CLtL2 中关于谓词的章节</a>
+        给出了此约定的理由。
       </p>
       <p>
-        For uniformity, you should follow the convention above,
-        and not one of the alternatives below.
+        为了统一性，您应该遵循上述约定，
+        而不是以下替代方案之一。
       </p>
       <p>
-        An alternative rule used in some existing packages
-        is to always use <code>"-P"</code>.
-        Another alternative rule used in some existing packages
-        is to always use <code>"?"</code>.
-        When you develop such a package,
-        you must be consistent with the rest of the package.
-        When you start a new package,
-        you should not use such an alternative rule
-        without a very good documented reason.
+        某些现有软件包中使用的一种替代规则
+        是始终使用 <code>"-P"</code>。
+        某些现有软件包中使用的另一种替代规则
+        是始终使用 <code>"?"</code>。
+        当您开发这样的软件包时，
+        您必须与软件包的其余部分保持一致。
+        当您启动一个新软件包时，
+        如果没有充分记录的理由，
+        则不应使用这样的替代规则。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Omit library prefixes">
+  <STYLEPOINT title="省略库前缀">
     <SUMMARY>
-      You should not include a library or package name
-      as a prefix within the name of symbols.
+      您不应在符号名称中包含库或包名称
+      作为前缀。
     </SUMMARY>
     <BODY>
       <p>
-        When naming a symbol (external or internal) in a package,
-        you should not include the package name
-        as a prefix within the name of the symbol.
-        Naming a symbol this way makes it awkward to use
-        from a client package accessing the symbol
-        by qualifying it with a package prefix,
-        where the package name then appears twice
-        (once as a package prefix,
-        another time as a prefix within the symbol name).
+        在包中命名符号（外部或内部）时，
+        您不应在符号名称中包含包名称
+        作为前缀。
+        以这种方式命名符号会使其难以使用
+        从客户端包访问符号
+        通过使用包前缀限定它，
+        其中包名称会出现两次
+        （一次作为包前缀，
+        另一次作为符号名称中的前缀）。
       </p>
       <BAD_CODE_SNIPPET>
-        ;; Bad
+        ;; 糟糕
         (in-package #:varint)
         (defun varint-length64 () ... )
 
@@ -1414,10 +1393,9 @@ Robert Brown
         (defconst +padding+ (varint:varint-length64 +end-token+))
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        ;; Better
+        ;; 更好
         (in-package #:varint)
         (defun length64 () ... )
-
         (in-package #:client-code)
         (defconst +padding+ (varint:length64 +end-token+))
       </CODE_SNIPPET>
@@ -1690,172 +1668,168 @@ Robert Brown
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Assignment">
+  <STYLEPOINT title="赋值">
     <SUMMARY>
-      Be consistent in assignment forms.
+      在赋值形式上保持一致。
     </SUMMARY>
     <BODY>
       <p>
-        There are several styles for dealing with assignment and side-effects;
-        whichever a given package is using,
-        keep using the same consistently when hacking said package.
-        Pick a style that makes sense when starting a new package.
+        处理赋值和副作用有几种风格；
+        无论给定的包使用哪种风格，
+        在修改该包时，始终保持一致。
+        在启动新包时，选择一种有意义的风格。
       </p>
       <p>
-        Regarding multiple assignment in a same form, there are two schools:
-        the first style groups as many assignments as possible into a single
-        <code>SETF</code> or <code>PSETF</code> form
-        thus minimizing the number of forms with side-effects;
-        the second style splits assignments into as many individual
-        <code>SETF</code> (or <code>SETQ</code>, see below) forms as possible,
-        to maximize the chances of locating forms that modify a kind of place
-        by grepping for <code>(setf (foo ...</code>.
-        A grep pattern must actually contain as many place-modifying forms
-        as you may use in your programs, which may make this rationale either
-        convincing or moot depending on the rest of the style of your code.
-        You should follow the convention used in the package you are hacking.
-        We recommend the first convention for new packages.
+        关于同一形式中的多重赋值，有两种流派：
+        第一种风格是将尽可能多的赋值组合成一个
+        <code>SETF</code> 或 <code>PSETF</code> 形式，
+        从而最大限度地减少具有副作用的形式的数量；
+        第二种风格是将赋值拆分为尽可能多的单独
+        <code>SETF</code>（或 <code>SETQ</code>，见下文）形式，
+        以最大限度地提高通过 grep 查找 <code>(setf (foo ...</code> 来定位修改某种位置的形式的机会。
+        grep 模式实际上必须包含与您在程序中可能使用的位置修改形式一样多的形式，这可能会使这种基本原理令人信服或毫无意义，具体取决于代码的其余风格。
+        您应该遵循您正在修改的包中使用的约定。
+        我们建议新包采用第一种约定。
       </p>
       <p>
-        Regarding <code>SETF</code> and <code>SETQ</code>,
-        there are two schools:
-        this first regards <code>SETQ</code>
-        as an archaic implementation detail,
-        and avoids it entirely in favor of <code>SETF</code>;
-        the second regards <code>SETF</code>
-        as an additional layer of complexity,
-        and avoids it in favor of <code>SETQ</code> whenever possible
-        (i.e. whenever the assigned place is a variable or symbol-macro).
-        You should follow the convention used in the package you are hacking.
-        We recommend the first convention for new packages.
+        关于 <code>SETF</code> 和 <code>SETQ</code>，
+        有两种流派：
+        第一种将 <code>SETQ</code>
+        视为一种过时的实现细节，
+        并完全避免使用它，而倾向于使用 <code>SETF</code>；
+        第二种将 <code>SETF</code>
+        视为一个额外的复杂层，
+        并尽可能避免使用它，而倾向于使用 <code>SETQ</code>
+        （即，只要分配的位置是变量或符号宏）。
+        您应该遵循您正在修改的包中使用的约定。
+        我们建议新包采用第一种约定。
       </p>
       <p>
-        In the spirit of a mostly pure functional style,
-        which makes testing and maintenance easier,
-        we invite you to consider how to do things with the fewest assignments required.
+        本着主要纯函数式风格的精神，
+        这使得测试和维护更容易，
+        我们邀请您考虑如何以最少的赋值来完成事情。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Assertions and Conditions">
+  <STYLEPOINT title="断言和条件">
     <SUMMARY>
-      You must make proper usage of assertions and conditions.
+      您必须正确使用断言和条件。
     </SUMMARY>
     <BODY>
       <ul>
         <li>
-          <code>ASSERT</code> should be used ONLY to detect internal bugs.
-          Code should <code>ASSERT</code> invariants whose failure indicates
-          that the software is itself broken.
-          Incorrect input should be handled properly at runtime,
-          and must not cause an assertion violation.
-          The audience for an <code>ASSERT</code> failure is a developer.
-          Do not use the data-form and argument-form in <code>ASSERT</code>
-          to specify a condition to signal.
-          It's fine to use them to print out a message for debugging purposes
-          (and since it's only for debugging, there's no issue of
-          internationalization).
+          <code>ASSERT</code> 应该仅用于检测内部错误。
+          代码应该 <code>ASSERT</code> 不变量，其失败表明
+          软件本身已损坏。
+          不正确的输入应在运行时正确处理，
+          并且不得导致断言冲突。
+          <code>ASSERT</code> 失败的受众是开发人员。
+          不要在 <code>ASSERT</code> 中使用 data-form 和 argument-form
+          来指定要发出的条件。
+          可以使用它们来打印出用于调试的消息
+          （并且由于它仅用于调试，因此不存在
+          国际化的问题）。
         </li>
         <li>
           <code>CHECK-TYPE</code>,
-          <code>ETYPECASE</code> are also forms of assertion.
-          When one of these fails, that's a detected bug.
-          You should prefer to use <code>CHECK-TYPE</code>
-          over (DECLARE (TYPE ...))
-          for the inputs of functions.
+          <code>ETYPECASE</code> 也是断言的形式。
+          当其中一个失败时，这是一个检测到的错误。
+          您应该更喜欢使用 <code>CHECK-TYPE</code>
+          而不是 (DECLARE (TYPE ...))
+          作为函数的输入。
         </li>
         <li>
-          Your code should use assertions and type checks liberally.
-          The sooner a bug is discovered, the better!
-          Only code in the critical path for performance
-          and internal helpers should eschew
-          explicit assertions and type checks.
+          您的代码应该自由地使用断言和类型检查。
+          越早发现错误越好！
+          只有性能关键路径中的代码
+          和内部助手才应避免
+          显式断言和类型检查。
         </li>
         <li>
-          Invalid input, such as files that are read
-          but do not conform to the expected format,
-          should not be treated as assertion violations.
-          Always check to make sure that input is valid,
-          and take appropriate action if it is not,
-          such as signalling a real error.
+          无效的输入，例如读取的文件
+          但不符合预期格式，
+          不应被视为断言冲突。
+          始终检查以确保输入有效，
+          如果无效，则采取适当的措施，
+          例如发出实际错误。
         </li>
         <li>
-          <code>ERROR</code> should be used
-          to detect problems with user data, requests, permissions, etc.,
-          or to report "unusual outcomes" to the caller.
+          <code>ERROR</code> 应该用于
+          检测用户数据、请求、权限等问题，
+          或向调用者报告“异常结果”。
         </li>
         <li>
-          <code>ERROR</code> should always be called
-          with an explicit condition type;
-          it should never simply be called with a string.
-          This enables internationalization.
+          <code>ERROR</code> 应该始终被调用
+          使用显式条件类型；
+          它不应该简单地使用字符串调用。
+          这实现了国际化。
         </li>
         <li>
-          Functions that report unusual outcomes
-          by signaling a condition should say so explicitly in their contracts
-          (their textual descriptions, in documentation and docstrings etc.).
-          When a function signals a condition
-          that is not specified by its contract, that's a bug.
-          The contract should specify the condition class(es) clearly.
-          The function may then signal any condition
-          that is a type-of any of those conditions.
-          That is, signaling instances of subclasses
-          of the documented condition classes is fine.
+          通过发出条件来报告异常结果的函数
+          应在其合同中明确说明
+          （其文本描述，在文档和文档字符串等中）。
+          当函数发出一个条件
+          其合同未指定时，这是一个错误。
+          合同应清楚地指定条件类。
+          然后，该函数可以发出任何条件
+          它是任何这些条件的类型。
+          也就是说，发出已记录的条件类的子类的实例是可以的。
         </li>
         <li>
-          Complex bug-checks may need to use <code>ERROR</code>
-          instead of <code>ASSERT</code>.
+          复杂的错误检查可能需要使用 <code>ERROR</code>
+          而不是 <code>ASSERT</code>。
           
         </li>
         <li>
-          When writing a server, you must not call <code>WARN</code>.
-          Instead, you should use the appropriate logging framework.
+          在编写服务器时，您不得调用 <code>WARN</code>。
+          相反，您应该使用适当的日志记录框架。
           
         </li>
         <li>
-          Code must not call <code>SIGNAL</code>.
-          Instead, use <code>ERROR</code> or <code>ASSERT</code>.
+          代码不得调用 <code>SIGNAL</code>。
+          相反，使用 <code>ERROR</code> 或 <code>ASSERT</code>。
         </li>
         <li>
-          Code should not use <code>THROW</code> and <code>CATCH</code>;
-          instead use the <code>restart</code> facility.
+          代码不应使用 <code>THROW</code> 和 <code>CATCH</code>；
+          而是使用 <code>restart</code> 工具。
         </li>
         <li>
-          Code should not generically handle all conditions,
-          e.g. type <code>T</code>, or use <code>IGNORE-ERRORS</code>.
-          Instead, let unknown conditions propagate to
-          the standard ultimate handler for processing.
+          代码不应泛型地处理所有条件，
+          例如类型 <code>T</code>，或使用 <code>IGNORE-ERRORS</code>。
+          相反，让未知条件传播到
+          用于处理的标准最终处理程序。
           
         </li>
         <li>
-          There are a few places where handling all conditions is appropriate,
-          but they are rare.
-          The problem is that handling all conditions can mask program bugs.
-          If you <em>do</em> need to handle "all conditions",
-          you MUST handle only <code>ERROR</code>, <em>not</em> <code>T</code>
-          and not <code>SERIOUS-CONDITION</code>.
-          (This is notably because CCL's process shutdown
-          depends on being able to signal <code>process-reset</code>
-          and have it handled by CCL's handler,
-          so we must not interpose our own handler.)
+          在少数地方，处理所有条件是合适的，
+          但它们很少见。
+          问题在于处理所有条件可能会掩盖程序错误。
+          如果您<em>确实</em>需要处理“所有条件”，
+          您必须仅处理 <code>ERROR</code>，<em>而不是</em> <code>T</code>
+          而不是 <code>SERIOUS-CONDITION</code>。
+          （这尤其因为 CCL 的进程关闭
+          取决于能够发出 <code>process-reset</code>
+          并让 CCL 的处理程序处理它，
+          因此我们不得插入我们自己的处理程序。）
         </li>
         <li>
           <code>(error (make-condition 'foo-error ...))</code>
-          is equivalent to <code>(error 'foo-error ...)</code> —
-          code must use the shorter form.
+          等效于 <code>(error 'foo-error ...)</code> —
+          代码必须使用较短的形式。
         </li>
         <li>
-          Code should not signal conditions from inside the cleanup form of
-          <code>UNWIND-PROTECT</code>
-          (unless they are always handled inside the cleanup form),
-          or otherwise do non-local exits from cleanup handlers
-          outside of the handler e.g. <code>INVOKE-RESTART</code>.
+          代码不应从
+          <code>UNWIND-PROTECT</code> 的清理形式内部发出条件
+          （除非它们始终在清理形式内部处理），
+          否则不要从清理处理程序中进行非本地退出
+          在处理程序之外，例如 <code>INVOKE-RESTART</code>。
         </li>
         <li>
-          Do not clean up by resignaling.
-          If you do that, and the condition is not handled,
-          the stack trace will halt at the point of the resignal,
-          hiding the rest.
-          And the rest is the part we really care about!
+          不要通过重新发出信号来清理。
+          如果您这样做，并且该条件未处理，
+          堆栈跟踪将在重新发出信号的点停止，
+          隐藏其余部分。
+          其余部分是我们真正关心的部分！
           <BAD_CODE_SNIPPET>
             ;; Bad
             (handler-case
@@ -1876,214 +1850,213 @@ Robert Brown
       </ul>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Type Checking">
+  <STYLEPOINT title="类型检查">
     <SUMMARY>
-      If you know the type of something, you should make it explicit
-      in order to enable compile-time and run-time sanity-checking.
+      如果您知道某物的类型，则应明确说明
+      以便启用编译时和运行时健全性检查。
     </SUMMARY>
     <BODY>
       
       <p>
-        If your function is using a special variable as an implicit argument,
-        it's good to put in a <code>CHECK-TYPE</code> for the special variable,
-        for two reasons:
-        to clue in the person reading the code
-        that this variable is being used implicitly as an argument,
-        and also to help detect bugs.
+        如果您的函数使用特殊变量作为隐式参数，
+        最好为特殊变量添加 <code>CHECK-TYPE</code>，
+        原因有两个：
+        为了让阅读代码的人知道
+        此变量被隐式用作参数，
+        并且还有助于检测错误。
       </p>
       
       <p>
-        Using <code>(declare (type ...))</code>
-        is the least-desirable mechanism to use
-        because, as Scott McKay puts it:
+        使用 <code>(declare (type ...))</code>
+        是最不理想的机制
+        因为，正如 Scott McKay 所说：
       </p>
       <blockquote>
         <p>
-          The fact is, <code>(declare (type ...))</code> does different things
-          depending on the compiler settings of speed, safety, etc.
-          In some compilers, when speed is greater than safety,
-          <code>(declare (type ...))</code> will tell the compiler
-          "please assume that these variables have these types"
-          <em>without</em> generating any type-checks.
-          That is, if some variable has the value <code>1432</code> in it,
-          and you declare it to be of type <code>string</code>,
-          the compiler might just go ahead and use it as though it's a string.
+          事实是，<code>(declare (type ...))</code> 做的事情不同
+          取决于速度、安全性等的编译器设置。
+          在某些编译器中，当速度大于安全性时，
+          <code>(declare (type ...))</code> 会告诉编译器
+          “请假设这些变量具有这些类型”
+          <em>而不</em>生成任何类型检查。
+          也就是说，如果某个变量的值为 <code>1432</code>，
+          并且您将其声明为 <code>string</code> 类型，
+          编译器可能会直接使用它，就好像它是一个字符串一样。
         </p>
         <p>
-          Moral: don't use <code>(declare (type ...))</code>
-          to declare the contract of any API functions,
-          it's not the right thing.
-          Sure, use it for "helper" functions, but not API functions.
+          道德：不要使用 <code>(declare (type ...))</code>
+          来声明任何 API 函数的合同，
+          这不是正确的事情。
+          当然，将其用于“helper”函数，但不要用于 API 函数。
         </p>
       </blockquote>
       <p>
-        You should, of course, use appropriate declarations
-        in internal low-level functions
-        where these declarations are used for optimization.
-        When you do, however, see our recommendations for
-        <a href="#Unsafe_Operations">Unsafe Operations</a>.
+        当然，您应该在内部底层函数中使用适当的声明
+        其中这些声明用于优化。
+        但是，当您这样做时，请参阅我们对
+        <a href="#Unsafe_Operations">不安全操作</a>的建议。
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="CLOS">
     <SUMMARY>
-      Use CLOS appropriately.
+      适当地使用 CLOS。
     </SUMMARY>
     <BODY>
       <p>
-        When a generic function is intended to be called from other
-        modules (other parts of the code), there should be an
-        explicit <code>DEFGENERIC</code> form,
-        with a <code>:DOCUMENTATION</code> string
-        explaining the generic contract of the function
-        (as opposed to its behavior for some specific class).
-        It's generally good to do explicit <code>DEFGENERIC</code> forms,
-        but for module entry points it is mandatory.
+        当通用函数旨在从其他
+        模块（代码的其他部分）调用时，应该有一个
+        显式的 <code>DEFGENERIC</code> 形式，
+        带有 <code>:DOCUMENTATION</code> 字符串
+        解释函数的通用合同
+        （而不是它对某些特定类的行为）。
+        通常最好进行显式的 <code>DEFGENERIC</code> 形式，
+        但对于模块入口点，这是强制性的。
       </p>
       <p>
-        When the argument list of a generic function includes
-        <code>&amp;KEY</code>,
-        the <code>DEFGENERIC</code> should always explicitly list
-        all of the keyword arguments that are acceptable,
-        and explain what they mean.
-        (Common Lisp does not require this, but it is good form,
-        and it may avoid spurious warnings on SBCL.)
+        当通用函数的参数列表包含
+        <code>&amp;KEY</code> 时，
+        <code>DEFGENERIC</code> 应该始终显式列出
+        所有可接受的关键字参数，
+        并解释它们的含义。
+        （Common Lisp 不需要这样做，但这是一个好的形式，
+        并且它可以避免 SBCL 上出现虚假警告。）
       </p>
       <p>
-        You should avoid <code>SLOT-VALUE</code> and <code>WITH-SLOTS</code>,
-        unless you absolutely intend to circumvent
-        any sort of method combination that might be in effect for the slot.
-        Rare exceptions include <code>INITIALIZE-INSTANCE</code>
-        and <code>PRINT-OBJECT</code> methods and
-        accessing normally hidden slots in the low-level implementation of
-        methods that provide user-visible abstractions.
-        Otherwise, you should use accessors,
+        您应该避免 <code>SLOT-VALUE</code> 和 <code>WITH-SLOTS</code>，
+        除非您绝对打算规避
+        可能对该槽有效的任何类型的组合方法。
+        罕见的例外包括 <code>INITIALIZE-INSTANCE</code>
+        和 <code>PRINT-OBJECT</code> 方法以及
+        访问方法的底层实现中通常隐藏的槽
+        提供用户可见的抽象。
+        否则，您应该使用访问器，
         <code>WITH-ACCESSORS</code>
       </p>
       
       <p>
-        Accessor names generally follow a convention of
-        <code>&lt;protocol-name&gt;-&lt;slot-name&gt;</code>,
-        where a "protocol" in this case loosely indicates
-        a set of functions with well-defined behavior.
+        访问器名称通常遵循
+        <code>&lt;协议名称&gt;-&lt;槽名称&gt;</code> 的约定，
+        其中“协议”在这种情况下宽泛地表示
+        一组具有明确定义的行为的函数。
       </p>
       <p>
-        No implication of a formal "protocol" concept is necessarily intended,
-        much less first-class "protocol" objects.
-        However, there may indeed be an abstract CLOS class
-        or an
-        <a href="https://common-lisp.net/~frideau/lil-ilc2012/lil-ilc2012.html">Interface-Passing Style</a> interface
-        that embodies the protocol.
-        Further (sub)classes or (sub)interfaces may then implement
-        all or part of a protocol by defining
-        some methods for (generic) functions in the protocol,
-        including readers and writers.
+        并不一定意味着正式的“协议”概念，
+        更不用说一流的“协议”对象了。
+        但是，实际上可能存在一个抽象的 CLOS 类
+        或者一个
+        <a href="https://common-lisp.net/~frideau/lil-ilc2012/lil-ilc2012.html">接口传递风格</a> 接口
+        来体现该协议。
+        进一步的（子）类或（子）接口然后可以通过为协议中的（通用）函数定义
+        一些方法来实现协议的全部或部分，
+        包括读取器和写入器。
       </p>
       <p>
-        For example, if there were a notional protocol called
-        is <code>pnr</code> with accessors <code>pnr-segments</code>
-        and <code>pnr-passengers</code>, then
-        the classes <code>air-pnr</code>, <code>hotel-pnr</code> and
-        <code>car-pnr</code> could each reasonably implement
-        methods for <code>pnr-segments</code> and <code>pnr-passengers</code>
-        as accessors.
+        例如，如果有一个假想的协议叫做
+        <code>pnr</code>，其访问器为 <code>pnr-segments</code>
+        和 <code>pnr-passengers</code>，那么
+        类 <code>air-pnr</code>、<code>hotel-pnr</code> 和
+        <code>car-pnr</code> 都可以合理地实现
+        <code>pnr-segments</code> 和 <code>pnr-passengers</code>
+        作为访问器的方法。
       </p>
       <p>
-        By default, an abstract base class name is used
-        as the notional protocol name, so accessor names default
-        to <code>&lt;class-name&gt;-&lt;slot-name&gt;</code>;
-        while such names are thus quite prevalent,
-        this form is neither required nor even preferred.
-        In general, it contributes to "symbol bloat",
-        and in many cases has led to a proliferation of "trampoline" methods.
+        默认情况下，抽象基类名称用作
+        假想的协议名称，因此访问器名称默认为
+        <code>&lt;类名&gt;-&lt;槽名&gt;</code>；
+        虽然这样的名称非常普遍，
+        但这种形式既不是必需的，也不是首选的。
+        一般来说，它会导致“符号膨胀”，
+        并且在许多情况下导致了“跳板”方法的激增。
       </p>
       <p>
-        Accessors named <code>&lt;slot-name&gt;-of</code> should not be used.
+        不应使用名为 <code>&lt;槽名&gt;-of</code> 的访问器。
       </p>
       <p>
-        Explicit <code>DEFGENERIC</code> forms should be used when there are
-        (or it is anticipated that there will be)
-        more than one <code>DEFMETHOD</code> for that generic function.
-        The reason is that the documentation for the generic function
-        explains the abstract contract for the function,
-        as opposed to explaining what an individual method does for
-        some specific class(es).
+        当存在
+        （或者预计将会有）
+        多个 <code>DEFMETHOD</code> 用于该通用函数时，
+        应使用显式的 <code>DEFGENERIC</code> 形式。
+        原因是通用函数的文档
+        解释了该函数的抽象契约，
+        而不是解释单个方法对
+        某些特定类所做的事情。
       </p>
       <p>
-        You must not use generic functions where there is no notional protocol.
-        To put it more concretely,
-        if you have more than one generic function that specializes its Nth argument,
-        the specializing classes should all be descendants of a single class.
-        Generic functions must not be used for "overloading",
-        i.e. simply to use the same name for two entirely unrelated types.
+        在没有假想协议的情况下，您不得使用通用函数。
+        更具体地说，
+        如果您有多个通用函数专门化其第 N 个参数，
+        则专门化的类都应该是单个类的后代。
+        通用函数不得用于“重载”，
+        即简单地为两个完全不相关的类型使用相同的名称。
       </p>
       <p>
-        More precisely, it's not really
-        whether they descend from a common superclass,
-        but whether they obey the same "protocol".
-        That is, the two classes should handle the same set of generic functions,
-        as if there were an explicit <code>DEFGENERIC</code> for each method.
+        更准确地说，
+        真正重要的不是
+        它们是否从一个共同的超类继承，
+        而是它们是否遵守相同的“协议”。
+        也就是说，这两个类应该处理同一组通用函数，
+        就好像每个方法都有一个显式的 <code>DEFGENERIC</code>。
       </p>
       <p>
-        Here's another way to put it.
-        Suppose you have two classes, A and B, and a generic function F.
-        There are two methods for F,
-        which dispatch on an argument being of types A and B.
-        Is it plausible that there might be a function call somewhere
-        in the program that calls F,
-        in which the argument might sometimes, at runtime,
-        be of class A and other times be of class B?
-        If not, you probably are overloading and
-        should not be using a single generic function.
+        这是另一种说法。
+        假设您有两个类 A 和 B，以及一个通用函数 F。
+        F 有两个方法，
+        它们根据参数的类型是 A 和 B 进行分派。
+        在程序中是否有可能存在某个函数调用
+        调用 F，
+        其中参数有时在运行时
+        是 A 类，而另一些时候是 B 类？
+        如果不是，您可能正在重载，并且
+        不应该使用单个通用函数。
       </p>
       <p>
-        We allow one exception to this rule:
-        it's OK to do overloading
-        if the corresponding argument "means" the same thing.
-        Typically one overloading allows an X object,
-        and the other allows the name of an X object,
-        which might be a symbol or something.
+        我们允许此规则的一个例外：
+        如果相应的参数“意味着”相同的事情，
+        则可以进行重载。
+        通常，一个重载允许一个 X 对象，
+        另一个允许 X 对象的名称，
+        这可能是一个符号或其他东西。
       </p>
       <p>
-        You must not use MOP "intercessory" operations at runtime.
-        You should not use MOP "intercessory" operations at compile-time.
-        At runtime, they are at worst a danger, at best a performance issue.
-        At compile-time, it is usually cleaner that
-        macros should set things up the right way in one pass
-        than have to require a second pass of fixups through intercession;
-        but sometimes, fixups are necessary to resolve forward references,
-        and intercession is allowed then.
-        MOP intercession is a great tool for interactive development,
-        and you may enjoy it while developping and debugging;
-        but you should not use it in normal applications.
+        您不得在运行时使用 MOP “代求”操作。
+        您不应在编译时使用 MOP “代求”操作。
+        在运行时，它们充其量是一种危险，充其量是一个性能问题。
+        在编译时，通常更简洁的做法是
+        宏应该一次性正确设置，
+        而不是需要通过代求进行第二次修复；
+        但有时，修复是必要的，以解决前向引用，
+        并且在这种情况下允许代求。
+        MOP 代求是交互式开发的一个很好的工具，
+        您可以在开发和调试时享受它；
+        但您不应在普通应用程序中使用它。
       </p>
       <p>
-        If a class definition creates a method
-        as a <code>:READER</code>, <code>:WRITER</code>,
-        or <code>:ACCESSOR</code>,
-        do not redefine that method.
-        It's OK to add <code>:BEFORE</code>, <code>:AFTER</code>,
-        and <code>:AROUND</code> methods,
-        but don't override the primary method.
+        如果一个类定义创建了一个方法
+        作为 <code>:READER</code>、<code>:WRITER</code>
+        或 <code>:ACCESSOR</code>，
+        请不要重新定义该方法。
+        可以添加 <code>:BEFORE</code>、<code>:AFTER</code>
+        和 <code>:AROUND</code> 方法，
+        但不要覆盖主要方法。
       </p>
       <p>
-        In methods with keyword arguments,
-        you must always use <code>&amp;KEY</code>,
-        even if the method does not care about the values of any keys,
-        and you should never use <code>&amp;ALLOW-OTHER-KEYS</code>.
-        As long as a keyword is accepted by any method of a generic function,
-        it's OK to use it in the generic function,
-        even if the other methods of the same generic function
-        don't mention it explicitly.
-        This is particularly important
-        for <code>INITIALIZE-INSTANCE</code> methods,
-        since if you did use <code>&amp;ALLOW-OTHER-KEYS</code>,
-        it would disable error checking for misspelled or wrong keywords
-        in <code>MAKE-INSTANCE</code> calls!
+        在带有关键字参数的方法中，
+        您必须始终使用 <code>&amp;KEY</code>，
+        即使该方法不关心任何键的值，
+        并且您永远不应使用 <code>&amp;ALLOW-OTHER-KEYS</code>。
+        只要通用函数的任何方法接受一个关键字，
+        就可以在通用函数中使用它，
+        即使同一通用函数的其他方法
+        没有明确提及它。
+        这对于
+        <code>INITIALIZE-INSTANCE</code> 方法尤其重要，
+        因为如果您确实使用了 <code>&amp;ALLOW-OTHER-KEYS</code>，
+        它将禁用对 <code>MAKE-INSTANCE</code> 调用中拼写错误或错误的关键字的错误检查！
       </p>
       
       <p>
-        A typical <code>PRINT-OBJECT</code> method might look like this:
+        一个典型的 <code>PRINT-OBJECT</code> 方法可能如下所示：
       </p>
       <CODE_SNIPPET>
         (defmethod print-object ((p person) stream)
@@ -2098,417 +2071,411 @@ Robert Brown
 <CATEGORY title="Meta-language guidelines">
   <STYLEPOINT title="Macros">
     <SUMMARY>
-      Use macros when appropriate, which is often.
-      Define macros when appropriate, which is seldom.
+      在适当的时候使用宏，这通常是这样。
+      在适当的时候定义宏，这很少发生。
     </SUMMARY>
     <BODY>
       <p>
-        Macros bring syntactic abstraction, which is a wonderful thing.
-        It helps make your code clearer, by describing your intent
-        without getting bogged in implementation details
-        (indeed abstracting those details away).
-        It helps make your code more concise and more readable,
-        by eliminating both redundancy and irrelevant details.
-        But it comes at a cost to the reader,
-        which is learning a new syntactic concept for each macro.
-        And so it should not be abused.
+        宏带来了语法抽象，这是一件很棒的事情。
+        它通过描述您的意图来帮助您使代码更清晰，
+        而不会陷入实现细节
+        （实际上是将这些细节抽象掉）。
+        它通过消除冗余和不相关的细节来帮助您使代码更简洁和更具可读性。
+        但这会给读者带来成本，
+        即为每个宏学习一个新的语法概念。
+        因此，不应滥用它。
       </p>
       <p>
-        The general conclusion is that there shouldn't be
-        any recognizable <em>design pattern</em>
-        in a good Common Lisp program.
-        The one and only pattern is: <em>use the language</em>,
-        which includes defining and using syntactic abstractions.
+        一般的结论是，不应该有
+        任何可识别的<em>设计模式</em>
+        在一个好的 Common Lisp 程序中。
+        唯一的一个模式是：<em>使用该语言</em>，
+        其中包括定义和使用语法抽象。
       </p>
       <p>
-        Existing macros must be used
-        whenever they make code clearer
-        by conveying intent in a more concise way,
-        which is often.
-        When a macro is available in your project
-        that expresses the concept you're using,
-        you must not write the expansion rather than use the macro.
+        每当现有宏通过以更简洁的方式传达意图来使代码更清晰时，
+        就必须使用它们，
+        这通常是这样。
+        当您的项目中有一个宏
+        表达了您正在使用的概念时，
+        您不得编写扩展而不是使用宏。
       </p>
       <p>
-        New macros should be defined as appropriate,
-        which should be seldom,
-        for common macros have already been provided
-        by the language and its various libraries,
-        and your program typically only needs few new ones
-        relative to its size.
+        应在适当的时候定义新宏，
+        这应该很少发生，
+        因为该语言及其各种库
+        已经提供了常见的宏，
+        并且您的程序通常只需要相对于其大小的
+        少量新宏。
       </p>
       <p>
-        You should follow the OAOOM rule of thumb
-        for deciding when to create a new abstraction,
-        whether syntactic or not:
-        if a particular pattern is used more than twice,
-        it should probably be abstracted away.
-        A more refined rule to decide when to use abstraction
-        should take into account
-        the benefit in term of number of uses and gain at each use,
-        to the costs in term of having to get used to reading the code.
-        For syntactic abstractions, costs and benefits to the reader
-        is usually more important than costs and benefits to the writer,
-        because good code is usually written once
-        and read many times by many people
-        (including the same programmer
-        who has to maintain the program after having forgotten it).
-        Yet the cost to the writer of the macro
-        should also be taken into account;
-        however, in doing so it should rather be compared
-        to the cost of the programmer writing other code instead
-        that may have higher benefits.
+        您应该遵循 OAOOM 经验法则
+        来决定何时创建新的抽象，
+        无论是语法的还是非语法的：
+        如果一个特定的模式被使用了两次以上，
+        它可能应该被抽象掉。
+        一个更精细的规则来决定何时使用抽象
+        应该考虑到
+        使用次数和每次使用的收益方面的收益，
+        以及在必须习惯于阅读代码方面的成本。
+        对于语法抽象，对读者的成本和收益
+        通常比对编写者的成本和收益更重要，
+        因为好的代码通常编写一次
+        并被许多人阅读多次
+        （包括必须在忘记程序后维护程序的
+        同一程序员）。
+        然而，编写宏的编写者的成本
+        也应该被考虑在内；
+        但是，在这样做时，它应该与
+        程序员编写可能具有更高收益的
+        其他代码的成本进行比较。
       </p>
       <p>
-        Using Lisp macros properly requires taste.
-        Avoid writing complicated macros
-        unless the benefit clearly outweighs the cost.
-        It takes more effort for your fellow developers to learn your macro,
-        so you should only use a macro if the gain in expressiveness
-        is big enough to justify that cost.
-        As usual, feel free to consult your colleagues if you're not sure,
-        since without a lot of Lisp experience,
-        it can be hard to make this judgment.
+        正确使用 Lisp 宏需要品味。
+        避免编写复杂的宏，
+        除非收益明显大于成本。
+        您的其他开发人员需要付出更多的努力来学习您的宏，
+        因此您应该仅在表达方面的收益
+        足够大以证明该成本合理时才使用宏。
+        与往常一样，如果您不确定，请随时咨询您的同事，
+        因为如果没有大量的 Lisp 经验，
+        很难做出此判断。
       </p>
       <p>
-        You must never use a macro where a function will do.
-        That is, if the semantics of what you are writing
-        conforms to the semantics of a function,
-        then you must write it as a function rather than a macro.
+        您绝不能在可以使用函数的地方使用宏。
+        也就是说，如果您正在编写的内容的语义
+        符合函数的语义，
+        那么您必须将其编写为函数而不是宏。
       </p>
       <p>
-        You must not transform a function into a macro for performance reasons.
-        If profiling shows that you have a performance problem
-        with a specific function <code>FOO</code>,
-        document the need and profiling-results appropriately,
-        and
-        <code>(declaim (inline foo))</code>.
+        您不得出于性能原因将函数转换为宏。
+        如果分析表明您在
+        特定的 <code>FOO</code> 函数中存在性能问题，
+        请适当地记录需求和分析结果，
+        并
+        <code>(declaim (inline foo))</code>。
       </p>
       
       <p>
-        You can also use a compiler-macro
-        as a way to speed up function execution
-        by specifying a source-to-source transformation.
-        Beware that it interferes with tracing the optimized function.
+        您还可以使用编译器宏
+        作为通过指定源到源转换来加速函数执行的一种方式。
+        请注意，它会干扰跟踪优化的函数。
       </p>
       <p>
-        When you write a macro-defining macro
-        (a macro that generates macros),
-        document and comment it particularly clearly,
-        since these are harder to understand.
+        当您编写一个宏定义宏
+        （一个生成宏的宏）时，
+        请特别清楚地记录和注释它，
+        因为这些更难理解。
       </p>
       <p>
-        You must not install new reader macros
-        without a consensus among the developers of your system.
-        Reader macros must not leak out of the system that uses them
-        to clients of that system or other systems used in the same project.
-        You must use software such as
-        <code>cl-syntax</code> or <code>named-readtables</code>
-        to control how reader macros are used.
-        This clients who desire it may use the same reader macros as you do.
-        In any case, your system must be usable
-        even to clients who do not use these reader macros.
+        未经您的系统开发人员达成共识，
+        您不得安装新的读取器宏。
+        读取器宏不得从使用它们的系统泄漏到
+        该系统的客户端或在同一项目中使用的其他系统。
+        您必须使用诸如
+        <code>cl-syntax</code> 或 <code>named-readtables</code>
+        之类的软件来控制读取器宏的使用方式。
+        希望使用它的客户端可以使用与您相同的读取器宏。
+        在任何情况下，即使对于不使用这些读取器宏的客户端，
+        您的系统也必须可用。
       </p>
       <p>
-        If your macro has a parameter that is a Lisp form
-        that will be evaluated when the expanded code is run,
-        you should name the parameter with the suffix <code>-form</code>.
-        This convention helps make it clearer to the macro's user
-        which parameters are Lisp forms to be evaluated, and which are not.
-        The common names <code>body</code> and <code>end</code> are
-        exceptions to this rule.
+        如果您的宏有一个参数是一个 Lisp 形式，
+        该形式将在扩展代码运行时进行评估，
+        则应使用后缀 <code>-form</code> 命名该参数。
+        此约定有助于使宏的用户更清楚地了解
+        哪些参数是要评估的 Lisp 形式，哪些不是。
+        常见的名称 <code>body</code> 和 <code>end</code> 是
+        此规则的例外。
       </p>
       <p>
-        You should follow the so-called <code>CALL-WITH</code> style when it applies.
-        This style is explained at length in
-        <a href="http://random-state.net/log/3390120648.html">http://random-state.net/log/3390120648.html</a>.
-        The general principle is that the macro is strictly limited to processing the syntax,
-        and as much of the semantics as possible is kept in normal functions.
-        Therefore, a macro <code>WITH-<em>FOO</em></code> is often limited to
-        generating a call to an auxiliary function
-        <code>CALL-WITH-<em>FOO</em></code>
-        with arguments deduced from the macro arguments.
-        Macro <code>&amp;body</code> arguments are typically
-        wrapped into a lambda expression of which they become the body,
-        which is passed as one of the arguments of the auxiliary function.
+        您应该在适用时遵循所谓的 <code>CALL-WITH</code> 风格。
+        这种风格在
+        <a href="http://random-state.net/log/3390120648.html">http://random-state.net/log/3390120648.html</a> 中有详细解释。
+        总的原则是，宏严格限于处理语法，
+        并且尽可能多的语义保留在普通函数中。
+        因此，宏 <code>WITH-<em>FOO</em></code> 通常仅限于
+        使用从宏参数推导出的参数
+        生成对辅助函数
+        <code>CALL-WITH-<em>FOO</em></code> 的调用。
+        宏 <code>&amp;body</code> 参数通常
+        被包装成一个 lambda 表达式，它们成为该表达式的主体，
+        该表达式作为辅助函数的参数之一传递。
       </p>
       <p>
-        The separation of syntactic and semantic concerns
-        is a general principle of style that applies
-        beyond the case of <code>WITH-</code> macros.
-        Its advantages are many.
-        By keeping semantics outside the macro,
-        the macro is made simpler, easier to get right, and less subject to change,
-        which makes it easier to develop and maintain.
-        The semantics is written in a simpler language — one without staging —
-        which also makes it easier to develop and maintain.
-        It becomes possible to debug and update the semantic function
-        without having to recompile all clients of the macro.
-        The semantic function appears in the stack trace
-        which also helps debug client functions.
-        The macro expansion is made shorter and
-        each expansion shares more code with other expansions,
-        which reduces memory pressure which in turn usually makes things faster.
-        It also makes sense to write the semantic functions first,
-        and write the macros last as syntactic sugar on top.
-        You should use this style unless the macro is used
-        in tight loops where performance matters;
-        and even then, see our rules regarding optimization.
+        语法和语义关注点的分离
+        是一种通用的风格原则，
+        它适用于
+        <code>WITH-</code> 宏的情况之外。
+        它的优点很多。
+        通过将语义保留在宏之外，
+        宏变得更简单，更容易正确，并且更不容易更改，
+        这使得它更容易开发和维护。
+        语义是用一种更简单的语言编写的——一种没有分期的语言——
+        这也使得它更容易开发和维护。
+        可以在不必重新编译宏的所有客户端的情况下
+        调试和更新语义函数。
+        语义函数出现在堆栈跟踪中，
+        这也有助于调试客户端函数。
+        宏扩展变得更短，并且
+        每个扩展与其他扩展共享更多的代码，
+        这降低了内存压力，进而通常会使事情更快。
+        首先编写语义函数，
+        最后编写宏作为其上的语法糖也是有意义的。
+        您应该使用这种风格，除非宏用于
+        性能至关重要的紧密循环中；
+        即使那样，请参阅我们关于优化的规则。
       </p>
       <p>
-        Any functions (closures) created by the macro should be named,
-        which can be done using <code>FLET</code>.
-        
-        This also allows you to declare the function to be of dynamic extent
-        (if it is — and often it is; yet see below regarding
-        <a href="#DYNAMIC-EXTENT">DYNAMIC-EXTENT</a>).
+        宏创建的任何函数（闭包）都应该被命名，
+        这可以使用 <code>FLET</code> 完成。
+
       </p>
       <p>
-        If a macro call contains a form,
-        and the macro expansion includes more than one copy of that form,
-        the form can be evaluated more than once,
-        and code it contains macro-expanded and compiled more than once.
-        If someone uses the macro and calls it
-        with a form that has side effects or that takes a long time to compute,
-        the behavior will be undesirable
-        (unless you're intentionally writing
-        a control structure such as a loop).
-        A convenient way to avoid this problem
-        is to evaluate the form only once,
-        and bind a (generated) variable to the result.
-        There is a very useful macro called <code>ALEXANDRIA:ONCE-ONLY</code>
-        that generates code to do this.
-        See also <code>ALEXANDRIA:WITH-GENSYMS</code>,
-        to make some temporary variables in the generated code.
-        Note that if you follow our <code>CALL-WITH</code> style,
-        you typically expand the code only once, as either
-        an argument to the auxiliary function, or
-        the body of a lambda passed as argument to it;
-        you therefore avoid the above complexity.
+        这也能让你声明函数为动态范围
+        （如果它是——而且通常是；但请参阅下面关于
+        <a href="#DYNAMIC-EXTENT">DYNAMIC-EXTENT</a>）。
       </p>
       <p>
-        When you write a macro with a body,
-        such as a <code>WITH-xxx</code> macro,
-        even if there aren't any parameters,
-        you should leave space for them anyway.
-        For example, if you invent <code>WITH-LIGHTS-ON</code>,
-        do not make the call to it look like
-        <code>(defmacro with-lights-on (&amp;body b) ...)</code>.
-        Instead, do <code>(defmacro with-lights-on (() &amp;body b) ...)</code>.
-        That way, if parameters are needed in the future,
-        you can add them without necessarily having to change
-        all the uses of the macro.
+        如果一个宏调用包含一个形式，
+        并且宏展开包含该形式的多个副本，
+        则该形式可以被多次求值，
+        并且它包含的代码可以被多次宏展开和编译。
+        如果有人使用该宏并使用
+        具有副作用或需要很长时间计算的形式来调用它，
+        则行为将是不希望的
+        （除非你故意编写
+        一个控制结构，例如循环）。
+        避免此问题的一个便捷方法
+        是仅对该形式求值一次，
+        并将（生成的）变量绑定到结果。
+        有一个非常有用的宏叫做 <code>ALEXANDRIA:ONCE-ONLY</code>
+        ，它生成代码来执行此操作。
+        另请参阅 <code>ALEXANDRIA:WITH-GENSYMS</code>，
+        以在生成的代码中创建一些临时变量。
+        请注意，如果你遵循我们的 <code>CALL-WITH</code> 风格，
+        你通常只展开一次代码，作为
+        辅助函数的参数，或者
+        作为传递给它的 lambda 的主体；
+        因此，你可以避免上述复杂性。
+      </p>
+      <p>
+        当你编写带有主体的宏时，
+        例如 <code>WITH-xxx</code> 宏，
+        即使没有任何参数，
+        你也应该为它们留出空间。
+        例如，如果你发明了 <code>WITH-LIGHTS-ON</code>，
+        不要让对它的调用看起来像
+        <code>(defmacro with-lights-on (&amp;body b) ...)</code>。
+        相反，应该写成 <code>(defmacro with-lights-on (() &amp;body b) ...)</code>。
+        这样，如果将来需要参数，
+        你可以添加它们，而不必更改
+        宏的所有用法。
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="EVAL-WHEN">
     <SUMMARY>
-      When using <code>EVAL-WHEN</code>, you should almost always use all of
-      <code>(:compile-toplevel :load-toplevel :execute)</code>.
+      当使用 <code>EVAL-WHEN</code> 时，你应该几乎总是使用所有
+      <code>(:compile-toplevel :load-toplevel :execute)</code>。
     </SUMMARY>
     <BODY>
       <p>
-        Lisp evaluation happens at several times,
-        some of them interleaved.
-        Be aware of them when writing macros.
-        <a href="https://fare.livejournal.com/146698.html">EVAL-WHEN considered harmful to your mental health</a>.
+        Lisp 求值发生在几个时间点，
+        其中一些是交错的。
+        编写宏时要注意它们。
+        <a href="https://fare.livejournal.com/146698.html">EVAL-WHEN 对你的心理健康有害</a>。
       </p>
       <p>
-        In summary of the article linked above,
-        unless you're doing truly advanced macrology,
-        the only valid combination in an <code>EVAL-WHEN</code>
-        is to include all of
+        总结上面链接的文章，
+        除非你正在进行真正高级的宏编程，
+        否则 <code>EVAL-WHEN</code> 中唯一有效的组合
+        是包含所有
         <code>(eval-when (:compile-toplevel :load-toplevel :execute) ...)</code>
       </p>
       <p>
-        You must use
-        <code>(eval-when (:compile-toplevel :load-toplevel :execute) ...)</code>
-        whenever you define functions, types, classes, constants, variables, etc.,
-        that are going to be used in macros.
+        每当你定义函数、类型、类、常量、变量等
+        将在宏中使用的内容时，
+        都必须使用
+        <code>(eval-when (:compile-toplevel :load-toplevel :execute) ...)</code>。
       </p>
       <p>
-        It is usually an error to omit the <code>:execute</code>,
-        because it prevents <code>LOAD</code>ing the source rather than the fasl.
-        It is usually an error to omit the <code>:load-toplevel</code>
-        (except to modify e.g. readtables and compile-time settings),
-        because it prevents <code>LOAD</code>ing future files
-        or interactively compiling code
-        that depends on the effects that happen at compile-time,
-        unless the current file was <code>COMPILE-FILE</code>d
-        within the same Lisp session.
+        省略 <code>:execute</code> 通常是一个错误，
+        因为它阻止了 <code>LOAD</code> 源代码而不是 fasl 文件。
+        省略 <code>:load-toplevel</code> 通常是一个错误
+        （除非修改例如 readtables 和编译时设置），
+        因为它阻止了 <code>LOAD</code> 未来的文件
+        或交互式编译依赖于编译时发生的效果的代码，
+        除非当前文件是在同一 Lisp 会话中 <code>COMPILE-FILE</code> 编译的。
       </p>
       <p>
-        Regarding variables, note that because macros may or may not
-        be expanded in the same process that runs the expanded code,
-        you must not depend on compile-time and runtime effects
-        being either visible or invisible at the other time.
-        There are still valid uses of variables in macros:
+        关于变量，请注意，由于宏可能在与运行展开代码相同的进程中展开，也可能不在，
+        因此你不得依赖于编译时和运行时效果
+        在另一个时间点是可见的还是不可见的。
+        在宏中使用变量仍然有一些有效的用途：
       </p>
       <ul>
         <li>
-          Some variables may hold dictionaries
-          for some new kind of definition and other meta-data.
-          If such meta-data is to be visible at runtime and/or in other files,
-          you must make sure that the macro expands into code that
-          will register the definitions to those meta-data structures
-          at load-time,
-          in addition to effecting the registration at compile-time.
-          Typically, your top-level definitions expand
-          to code that does the registration.
-          if your code doesn't expand at the top-level,
-          you can sometimes use <code>LOAD-TIME-VALUE</code> for good effect.
-          In extreme cases, you may have to use
-          <code>ASDF-FINALIZERS:EVAL-AT-TOPLEVEL</code>.
+          某些变量可能保存字典
+          用于某种新的定义和其他元数据。
+          如果此类元数据要在运行时和/或在其他文件中可见，
+          你必须确保宏展开为代码，该代码
+          将在加载时将定义注册到这些元数据结构，
+          除了在编译时生效注册之外。
+          通常，你的顶层定义会展开
+          为执行注册的代码。
+          如果你的代码没有在顶层展开，
+          你有时可以使用 <code>LOAD-TIME-VALUE</code> 来获得良好的效果。
+          在极端情况下，你可能需要使用
+          <code>ASDF-FINALIZERS:EVAL-AT-TOPLEVEL</code>。
         </li>
         <li>
-          Some variables may hold temporary data
-          that is only used at compile-time in the same file,
-          and can be cleaned up at the end of the file's compilation.
-          Predefined such variables would include <code>*readtable*</code>
-          or compiler-internal variables holding
-          the current optimization settings.
-          You can often manage existing and new such variables using
-          the <code>:AROUND-COMPILE</code> hooks of <code>ASDF</code>.
+          某些变量可能保存临时数据
+          仅在同一文件的编译时使用，
+          并且可以在文件编译结束时清除。
+          预定义的此类变量将包括 <code>*readtable*</code>
+          或编译器内部变量，其中包含
+          当前的优化设置。
+          你通常可以使用 <code>ASDF</code> 的 <code>:AROUND-COMPILE</code> 钩子来管理现有和新的此类变量。
         </li>
       </ul>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="Read-time evaluation">
     <SUMMARY>
-      You should use <code>#.</code> sparingly,
-      and you must avoid read-time side-effects.
+      你应该谨慎使用 <code>#.</code>，
+      并且必须避免读取时副作用。
     </SUMMARY>
     <BODY>
       <p>
-        The <code>#.</code> standard read-macro
-        will read one object, evaluate the object, and
-        have the reader return the resulting value.
+        <code>#.</code> 标准读取宏
+        将读取一个对象，对该对象求值，并且
+        让读取器返回结果值。
       </p>
       <p>
-        You must not use it where other idioms will do, such as
-        using <code>EVAL-WHEN</code> to evaluate side-effects at compile-time,
-        using a regular macro to return an expression computed at compile-time,
-        using <code>LOAD-TIME-VALUE</code> to compute it at load-time.
+        你不得在可以使用其他习惯用法的地方使用它，例如
+        使用 <code>EVAL-WHEN</code> 在编译时评估副作用，
+        使用常规宏返回在编译时计算的表达式，
+        使用 <code>LOAD-TIME-VALUE</code> 在加载时计算它。
       </p>
       <p>
-        Read-time evaluation is often used as a quick way
-        to get something evaluated at compile time
-        (actually "read time" but it amounts to the same thing).
-        If you use this, the evaluation MUST NOT have any side effects
-        and MUST NOT depend on any variable global state.
-        The <code>#.</code> should be treated as a way
-        to force "constant-folding"
-        that a sufficiently-clever compiler
-        could have figure out all by itself,
-        when the compiler isn't sufficiently-clever
-        and the difference matters.
+        读取时求值通常用作一种快速方法
+        来获取在编译时求值的内容
+        （实际上是“读取时”，但它与同一件事）。
+        如果你使用此方法，则求值不得有任何副作用
+        并且不得依赖于任何变量全局状态。
+        <code>#.</code> 应该被视为一种方式
+        来强制“常量折叠”，
+        一个足够聪明的编译器
+        可以自己弄清楚，
+        当编译器不够聪明
+        并且差异很重要时。
       </p>
       <p>
-        Another use of <code>#.</code> is to expand the equivalent of macros
-        in places that are neither expressions nor (quasi)quotations,
-        such as lambda-lists. However, if you find yourself using it a lot,
-        it might be time to instead define macros to replace your consumers
-        of lambda-lists with something that recognizes an extension.
+        <code>#.</code> 的另一个用途是在既不是表达式也不是（准）引用的地方
+        展开等效于宏的内容，
+        例如 lambda 列表。但是，如果你发现自己经常使用它，
+        那么可能是时候定义宏来替换你的 lambda 列表使用者
+        ，用一些可以识别扩展的东西来替换它们。
       </p>
       <p>
-        Whenever you are going to use <code>#.</code>,
-        you should consider using <code>DEFCONSTANT</code> and its variants,
-        possibly in an <code>EVAL-WHEN</code>,
-        to give the value a name explaining what it means.
+        每当你打算使用 <code>#.</code> 时，
+        你应该考虑使用 <code>DEFCONSTANT</code> 及其变体，
+        可能在 <code>EVAL-WHEN</code> 中，
+        给该值一个解释其含义的名称。
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="EVAL">
     <SUMMARY>
-      You must not use <code>EVAL</code> at runtime.
+      你不得在运行时使用 <code>EVAL</code>。
     </SUMMARY>
     <BODY>
       <p>
-        Places where it is actually appropriate to use <code>EVAL</code>
-        are so few and far between that you must consult with your reviewers;
-        it's easily misused.
+        实际适合使用 <code>EVAL</code> 的地方
+        非常少，以至于你必须咨询你的审查员；
+        它很容易被滥用。
       </p>
       <p>
-        If your code manipulates symbols at runtime
-        and needs to get the value of a symbol,
-        use <code>SYMBOL-VALUE</code>, not <code>EVAL</code>.
+        如果你的代码在运行时操作符号
+        并且需要获取符号的值，
+        请使用 <code>SYMBOL-VALUE</code>，而不是 <code>EVAL</code>。
       </p>
       <p>
-        Often, what you really need is to write a macro,
-        not to use <code>EVAL</code>.
+        通常，你真正需要的是编写一个宏，
+        而不是使用 <code>EVAL</code>。
       </p>
       <p>
-        You may be tempted to use <code>EVAL</code> as a shortcut
-        to evaluating expressions in a safe subset of the language.
-        But it often requires more scrutiny to properly check and sanitize
-        all possible inputs to such use of <code>EVAL</code>
-        than to build a special-purpose evaluator.
-        You must not use <code>EVAL</code> in this way at runtime.
+        你可能会想使用 <code>EVAL</code> 作为一种快捷方式
+        来评估语言安全子集中的表达式。
+        但是，正确检查和清理
+        <code>EVAL</code> 的所有可能输入通常需要更多的审查
+        ，而不是构建一个专用评估器。
+        你不得在运行时以这种方式使用 <code>EVAL</code>。
       </p>
       <p>
-        Places where it is OK to use <code>EVAL</code> are:
+        可以使用 <code>EVAL</code> 的地方是：
       </p>
       <ul>
         <li>
-          The implementation of an interactive development tool.
+          交互式开发工具的实现。
         </li>
         <li>
-          The build infrastructure.
+          构建基础设施。
         </li>
         <li>
-          Backdoors that are part of testing frameworks.
-          (You MUST NOT have such backdoors in production code.)
+          作为测试框架一部分的后门。
+          （你不得在生产代码中包含此类后门。）
         </li>
         <li>
-          Macros that fold constants at compile-time.
+          在编译时折叠常量的宏。
         </li>
         <li>
-          Macros that register definitions to meta-data structures;
-          the registration form is sometimes evaluated at compile-time
-          as well as included in the macro-expansion,
-          so it is immediately available to other macros.
+          将定义注册到元数据结构的宏；
+          注册形式有时在编译时进行评估
+          以及包含在宏展开中，
+          因此它可以立即供其他宏使用。
         </li>
       </ul>
       <p>
-        Note that in the latter case,
-        if the macro isn't going to be used at the top-level,
-        it might not be possible to make these definitions available
-        as part of the expansion.
-        The same phenomenon may happen in a <code>DEFTYPE</code> expansion,
-        or in helper functions used by macros.
-        In these cases, you may actually have to use
-        <code>ASDF-FINALIZERS:EVAL-AT-TOPLEVEL</code> in your macro.
-        It will not only <code>EVAL</code> your definitions
-        at macro-expansion time for immediate availability,
-        it will also save the form aside, for inclusion in a
-        <code>(ASDF-FINALIZERS:FINAL-FORMS)</code>
-        that you need to include at the end of the file being compiled
-        (or before the form is needed).
-        This way, the side-effects are present when loading the fasl
-        without having compiled it as well as while compiling it;
-        in either case, the form is made available at load-time.
-        <code>ASDF-FINALIZERS</code> ensures that the form is present,
-        by throwing an error if you omit it.
+        请注意，在后一种情况下，
+        如果宏不会在顶层使用，
+        则可能无法使这些定义作为展开的一部分可用。
+        在 <code>DEFTYPE</code> 展开中，
+        或在宏使用的辅助函数中，也可能发生相同的现象。
+        在这些情况下，你实际上可能需要在宏中使用
+        <code>ASDF-FINALIZERS:EVAL-AT-TOPLEVEL</code>。
+        它不仅会在宏展开时 <code>EVAL</code> 你的定义
+        以供立即使用，
+        它还会将该形式保存下来，以包含在
+        你需要包含在正在编译的文件的末尾
+        （或在需要该形式之前）的
+        <code>(ASDF-FINALIZERS:FINAL-FORMS)</code> 中。
+        这样，副作用在加载 fasl 时存在
+        而无需编译它，以及在编译它时；
+        在任何一种情况下，该形式都可以在加载时使用。
+        <code>ASDF-FINALIZERS</code> 确保该形式存在，
+        如果你省略它，则会抛出错误。
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="INTERN and UNINTERN">
     <SUMMARY>
-      You must not use <code>INTERN</code> or <code>UNINTERN</code> at runtime.
+      你不得在运行时使用 <code>INTERN</code> 或 <code>UNINTERN</code>。
     </SUMMARY>
     <BODY>
       <p>
-        You must not use <code>INTERN</code> at runtime.
-        Not only does it cons,
-        it either creates a permanent symbol that won't be collected
-        or gives access to internal symbols.
-        This creates opportunities for memory leaks, denial of service attacks,
-        unauthorized access to internals, clashes with other symbols.
+        你不得在运行时使用 <code>INTERN</code>。
+        它不仅会 cons，
+        它还会创建一个不会被收集的永久符号
+        或提供对内部符号的访问权限。
+        这会造成内存泄漏、拒绝服务攻击、
+        未经授权访问内部信息、与其他符号冲突的机会。
       </p>
       <p>
-        You must not <code>INTERN</code> a string
-        just to compare it to a keyword;
-        use <code>STRING=</code> or <code>STRING-EQUAL</code>.
+        你不得 <code>INTERN</code> 一个字符串
+        只是为了将其与关键字进行比较；
+        使用 <code>STRING=</code> 或 <code>STRING-EQUAL</code>。
       </p>
       <BAD_CODE_SNIPPET>
         (member (intern str :keyword) $keys) ; Bad
@@ -2517,20 +2484,20 @@ Robert Brown
         (member str $keys :test #'string-equal) ; Better
       </CODE_SNIPPET>
       <p>
-        You must not use <code>UNINTERN</code> at runtime.
-        It can break code that relies on dynamic binding.
-        It makes things harder to debug.
-        You must not dynamically intern any new symbol,
-        and therefore you need not dynamically unintern anything.
+        你不得在运行时使用 <code>UNINTERN</code>。
+        它会破坏依赖于动态绑定的代码。
+        它使调试变得更加困难。
+        你不得动态地 intern 任何新符号，
+        因此你不需要动态地 unintern 任何东西。
       </p>
       <p>
-        You may of course use <code>INTERN</code> at compile-time,
-        in the implementation of some macros.
-        Even so, it is usually more appropriate
-        to use abstractions on top of it, such as
-        <code>ALEXANDRIA:SYMBOLICATE</code> or
+        你当然可以在编译时使用 <code>INTERN</code>，
+        在某些宏的实现中。
+        即便如此，通常更合适
+        使用它之上的抽象，例如
+        <code>ALEXANDRIA:SYMBOLICATE</code> 或
         <code>ALEXANDRIA:FORMAT-SYMBOL</code>
-        to create the symbols you need.
+        来创建你需要的符号。
       </p>
       
     </BODY>
@@ -2540,236 +2507,224 @@ Robert Brown
 <CATEGORY title="Data Representation">
   <STYLEPOINT title="NIL: empty-list, false and I Don't Know">
     <SUMMARY>
-      Appropriately use or avoid using <code>NIL</code>.
+      适当地使用或避免使用 <code>NIL</code>。
     </SUMMARY>
     <BODY>
       <p>
-        <code>NIL</code> can have several different interpretations:
+        <code>NIL</code> 可以有几种不同的解释：
       </p>
       <ul>
         <li>
-          "False."
-          In this case, use <code>NIL</code>.
-          You should test for false <code>NIL</code>
-          using the operator <code>NOT</code> or
-          using the predicate function <code>NULL</code>.
+          “假”。
+          在这种情况下，使用 <code>NIL</code>。
+          你应该使用运算符 <code>NOT</code> 或
+          使用谓词函数 <code>NULL</code> 来测试假 <code>NIL</code>。
         </li>
         <li>
-          "Empty-list."
-          In this case, use <code>'()</code>.
-          (Be careful about quoting the empty-list when calling macros.)
-          You should use <code>ENDP</code> to test for the empty list
-          when the argument is known to be a proper list,
-          or with <code>NULL</code> otherwise.
+          “空列表”。
+          在这种情况下，使用 <code>'()</code>。
+          （调用宏时要注意引用空列表。）
+          当已知参数是正确的列表时，你应该使用 <code>ENDP</code> 来测试空列表，
+          否则使用 <code>NULL</code>。
         </li>
         <li>
-          A statement about some value being unspecified.
-          In this case, you may use <code>NIL</code>
-          if there is no risk of ambiguity anywhere in your code;
-          otherwise you should use an explicit, descriptive symbol.
+          关于某些值未指定的声明。
+          在这种情况下，你可以使用 <code>NIL</code>
+          如果你的代码中任何地方都没有歧义的风险；
+          否则，你应该使用显式的、描述性的符号。
         </li>
         <li>
-          A statement about some value being known not to exist.
-          In this case, you should use an explicit, descriptive symbol
-          instead of <code>NIL</code>.
+          关于已知某些值不存在的声明。
+          在这种情况下，你应该使用显式的、描述性的符号
+          而不是 <code>NIL</code>。
         </li>
       </ul>
       <p>
-        You must not introduce ambiguity in your data representations
-        that will cause headaches for whoever has to debug code.
-        If there is any risk of ambiguity,
-        you should use an explicit, descriptive symbol or keyword
-        for each case,
-        instead of using <code>NIL</code> for either.
-        If you do use <code>NIL</code>,
-        you must make sure that the distinction is well documented.
+        你不得在你的数据表示中引入歧义
+        ，这会导致必须调试代码的人头疼。
+        如果存在任何歧义的风险，
+        你应该为每种情况使用显式的、描述性的符号或关键字
+        ，而不是为任何一种情况使用 <code>NIL</code>。
+        如果你确实使用 <code>NIL</code>，
+        你必须确保对该区别进行了充分的记录。
       </p>
       <p>
-        In many contexts,
-        instead of representing "I don't know" as a particular value,
-        you should instead use multiple values,
-        one for the value that is known if any,
-        and one to denote whether the value was known or found.
+        在许多情况下，
+        与其将“我不知道”表示为特定值，
+        不如使用多个值，
+        一个用于已知的值（如果有），
+        另一个用于表示该值是否已知或找到。
       </p>
       
       <p>
-        When working with database classes, keep in mind that
-        <code>NIL</code> need not always map to <code>'NULL'</code>
-        (and vice-versa)!
-        The needs of the database may differ from the needs of the Lisp.
+        在使用数据库类时，请记住 <code>NIL</code> 不一定总是映射到 <code>'NULL'</code>（反之亦然）！
+        数据库的需求可能与 Lisp 的需求不同。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Do not abuse lists">
+  <STYLEPOINT title="不要滥用列表">
     <SUMMARY>
-      You must select proper data representation.
-      You must not abuse the <code>LIST</code> data structure.
+      你必须选择合适的数据表示。
+      你不能滥用 <code>LIST</code> 数据结构。
     </SUMMARY>
     <BODY>
       <p>
-        Even though back in 1958, LISP was short for "LISt Processing",
-        its successor Common Lisp has been a modern programming language
-        with modern data structures since the 1980s.
-        You must use the proper data structures in your programs.
+        即使早在 1958 年，LISP 是 "LISt Processing" 的缩写，
+        但它的继任者 Common Lisp 自 20 世纪 80 年代以来
+        一直是一种具有现代数据结构的现代编程语言。
+        你必须在你的程序中使用合适的数据结构。
       </p>
       <p>
-        You must not abuse the builtin (single-linked) <code>LIST</code>
-        data structure where it is not appropriate,
-        even though Common Lisp makes it especially easy to use it.
+        即使 Common Lisp 使其特别容易使用，
+        你也不得滥用内置的（单链）<code>LIST</code> 数据结构，
+        在不适合使用它的地方。
       </p>
       <p>
-        You must only use lists
-        when their performance characteristics
-        is appropriate for the algorithm at hand:
-        sequential iteration over the entire contents of the list.
+        你必须只在列表的性能特征
+        适合手头的算法时才使用列表：
+        对列表的整个内容进行顺序迭代。
       </p>
       <p>
-        An exception where it is appropriate to use lists
-        is when it is known in advance
-        that the size of the list will remain very short
-        (say, less than 16 elements).
+        一个适合使用列表的例外情况是
+        当事先知道列表的大小将保持非常短时
+        （例如，少于 16 个元素）。
       </p>
       <p>
-        List data structures are often (but not always)
-        appropriate for macros and functions used by macros at compile-time:
-        indeed, not only is source code passed as lists in Common Lisp,
-        but the macro-expansion and compilation processes
-        will typically walk over the entire source code, sequentially, once.
-        (Note that advanced macro systems don't directly use lists, but instead
-        use abstract syntax objects that track source code location and scope;
-        however there is no such advanced macro system
-        in Common Lisp at this time.)
+        列表数据结构通常（但并非总是）
+        适用于宏和宏使用的函数在编译时使用：
+        事实上，不仅源代码在 Common Lisp 中作为列表传递，
+        而且宏展开和编译过程
+        通常会按顺序遍历整个源代码一次。
+        （请注意，高级宏系统不直接使用列表，而是
+        使用跟踪源代码位置和范围的抽象语法对象；
+        但是，目前 Common Lisp 中没有这种高级宏系统。）
       </p>
       <p>
-        Another exception where it is appropriate to use lists is
-        for introducing literal constants
-        that will be transformed into more appropriate data structures
-        at compile-time or load-time.
-        It is a good to have a function with a relatively short name
-        to build your program's data structures from such literals.
+        另一个适合使用列表的例外情况是
+        用于引入字面常量，
+        这些常量将在编译时或加载时转换为更合适的数据结构。
+        最好有一个名称相对较短的函数
+        来从这些字面量构建程序的数据结构。
       </p>
       <p>
-        In the many cases when lists are not the appropriate data structure,
-        various libraries such as
-        <a href="http://cliki.net/cl-containers">cl-containers</a> or
+        在许多列表不适合作为数据结构的情况下，
+        各种库，例如
+        <a href="http://cliki.net/cl-containers">cl-containers</a> 或
         <a href="http://cliki.net/lisp-interface-library">lisp-interface-library</a>
-        provide plenty of different data structures
-        that should fulfill all the basic needs of your programs.
-        If the existing libraries are not satisfactory, see above about
-        <a href="#Using_Libraries">Using Libraries</a> and
-        <a href="#Open-Sourcing_Code">Open-Sourcing Code</a>.
+        提供了许多不同的数据结构，
+        应该满足你的程序的所有基本需求。
+        如果现有库不令人满意，请参阅上面关于
+        <a href="#Using_Libraries">使用库</a> 和
+        <a href="#Open-Sourcing_Code">开源代码</a> 的内容。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Lists vs. structures vs. multiple values">
+  <STYLEPOINT title="列表 vs. 结构 vs. 多个值">
     <SUMMARY>
-      You should use the appropriate representation for product types.
+      你应该为产品类型使用适当的表示。
     </SUMMARY>
     <BODY>
       <p>
-        You should avoid using a list as anything
-        besides a container of elements of like type.
-        You must not use a list as method of passing
-        multiple separate values of different types
-        in and out of function calls.
-        Sometimes it is convenient to use a list
-        as a little ad hoc structure,
-        i.e. "the first element of the list is a FOO, and the second is a BAR",
-        but this should be used minimally
-        since it gets harder to remember the little convention.
-        You must only use a list that way
-        when destructuring the list of arguments from a function,
-        or creating a list of arguments
-        to which to <code>APPLY</code> a function.
+        你应该避免将列表用作任何东西，
+        除了相同类型元素的容器。
+        你不得使用列表作为传递
+        不同类型的多个单独值
+        进出函数调用的方法。
+        有时使用列表作为
+        一个小型的临时结构很方便，
+        即“列表的第一个元素是 FOO，第二个元素是 BAR”，
+        但这应该尽量少用，
+        因为它越来越难记住这个小约定。
+        你必须仅在以下情况下以这种方式使用列表：
+        解构函数中的参数列表，
+        或创建参数列表
+        以 <code>APPLY</code> 函数。
       </p>
       <p>
-        The proper way to pass around an object
-        comprising several values of heterogeneous types
-        is to use a structure as defined by <code>DEFSTRUCT</code>
-        or <code>DEFCLASS</code>.
+        传递包含多个异构类型值的对象的
+        正确方法是使用 <code>DEFSTRUCT</code>
+        或 <code>DEFCLASS</code> 定义的结构。
       </p>
       <p>
-        You should use multiple values only
-        when function returns a small number of values
-        that are meant to be destructured immediately by the caller,
-        rather than passed together as arguments to further functions.
+        你应该仅在函数返回少量值时才使用多个值，
+        这些值旨在由调用者立即解构，
+        而不是作为参数一起传递给其他函数。
       </p>
       <p>
-        You should not return a condition object
-        as one of a set of multiple values.
-        Instead, you should signal the condition to denote an unusual outcome.
+        你不应该将条件对象作为
+        一组多个值中的一个返回。
+        相反，你应该发出条件信号以表示不寻常的结果。
       </p>
       <p>
-        You should signal a condition to denote an unusual outcome,
-        rather than relying on a special return type.
+        你应该发出条件信号以表示不寻常的结果，
+        而不是依赖于特殊的返回类型。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Lists vs. Pairs">
+  <STYLEPOINT title="列表 vs. 对">
     <SUMMARY>
-      Use the appropriate functions when manipulating lists.
+      在操作列表时使用适当的函数。
     </SUMMARY>
     <BODY>
       <p>
-        Use <code>FIRST</code> to access the first element of a list,
-        <code>SECOND</code> to access the second element, etc.
-        Use <code>REST</code> to access the tail of a list.
-        Use <code>ENDP</code> to test for the end of the list.
+        使用 <code>FIRST</code> 访问列表的第一个元素，
+        使用 <code>SECOND</code> 访问第二个元素，等等。
+        使用 <code>REST</code> 访问列表的尾部。
+        使用 <code>ENDP</code> 测试列表的结尾。
       </p>
       <p>
-        Use <code>CAR</code> and <code>CDR</code>
-        when the cons cell is not being used to implement a proper list
-        and is instead being treated as a pair of more general objects.
-        Use <code>NULL</code> to test for <code>NIL</code> in this context.
+        当 cons 单元未用于实现正确的列表
+        而是被视为一对更通用的对象时，
+        使用 <code>CAR</code> 和 <code>CDR</code>。
+        在这种情况下，使用 <code>NULL</code> 测试 <code>NIL</code>。
       </p>
       <p>
-        The latter case should be rare outside of alists,
-        since you should be using structures and classes where they apply,
-        and data structure libraries when you want trees.
+        后一种情况在 alist 之外应该很少见，
+        因为你应该在使用结构和类的地方使用它们，
+        并且在你想要树时使用数据结构库。
       </p>
       <p>
-        Exceptionally, you may use <code>CDADR</code> and other variants
-        on lists when manually destructuring them,
-        instead of using a combination of several list accessor functions.
-        In this context, using <code>CAR</code> and <code>CDR</code>
-        instead of <code>FIRST</code> and <code>REST</code> also makes sense.
-        However, keep in mind that it might be more appropriate in such cases
-        to use higher-level constructs such as
-        <code>DESTRUCTURING-BIND</code> or <code>OPTIMA:MATCH</code>.
+        例外情况下，你可以在手动解构列表时
+        在列表上使用 <code>CDADR</code> 和其他变体，
+        而不是使用多个列表访问器函数的组合。
+        在这种情况下，使用 <code>CAR</code> 和 <code>CDR</code>
+        代替 <code>FIRST</code> 和 <code>REST</code> 也是有意义的。
+        但是，请记住，在这种情况下，使用更高级别的构造（例如
+        <code>DESTRUCTURING-BIND</code> 或 <code>OPTIMA:MATCH</code>）可能更合适。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Lists vs. Arrays">
+  <STYLEPOINT title="列表 vs. 数组">
     <SUMMARY>
-      You should use arrays rather than lists where random access matters.
+      如果随机访问很重要，你应该使用数组而不是列表。
     </SUMMARY>
     <BODY>
       <p>
-        <code>ELT</code> has <i>O(n)</i> behavior when used on lists.
-        If you are to use random element access on an object,
-        use arrays and <code>AREF</code> instead.
+        当在列表上使用时，<code>ELT</code> 具有 <i>O(n)</i> 行为。
+        如果你要在对象上使用随机元素访问，
+        请改用数组和 <code>AREF</code>。
       </p>
       <p>
-        The exception is for code outside the critical path
-        where the list is known to be small anyway.
+        例外情况是对于关键路径之外的代码，
+        其中已知列表无论如何都很小。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Lists vs. Sets">
+  <STYLEPOINT title="列表 vs. 集合">
     <SUMMARY>
-      You should only use lists as sets for very small lists.
+      你应该只将列表用作非常小的列表的集合。
     </SUMMARY>
     <BODY>
       <p>
-        Using lists as representations of sets is a bad idea
-        unless you know the lists will be small,
-        for accessors are <i>O(n)</i> instead of <i>O(log n)</i>.
-        For arbitrary big sets, use balanced binary trees,
-        for instance using <code>lisp-interface-library</code>.
+        使用列表作为集合的表示是一个坏主意，
+        除非你知道列表会很小，
+        因为访问器是 <i>O(n)</i> 而不是 <i>O(log n)</i>。
+        对于任意大的集合，使用平衡二叉树，
+        例如使用 <code>lisp-interface-library</code>。
       </p>
       <p>
-        If you still use lists as sets,
-        you should not <code>UNION</code> lists just to search them.
+        如果你仍然使用列表作为集合，
+        你不应该仅仅为了搜索它们而 <code>UNION</code> 列表。
       </p>
       <BAD_CODE_SNIPPET>
         (member foo (union list-1 list-2)) ; Bad
@@ -2778,33 +2733,32 @@ Robert Brown
         (or (member foo list-1) (member foo list-2)) ; Better
       </CODE_SNIPPET>
       <p>
-        Indeed, <code>UNION</code> not only conses unnecessarily,
-        but it can be <i>O(n^2)</i> on some implementations,
-        and is rather slow even when it's <i>O(n)</i>.
+        事实上，<code>UNION</code> 不仅不必要地 cons，
+        而且在某些实现上可能是 <i>O(n^2)</i>，
+        即使它是 <i>O(n)</i>，速度也相当慢。
       </p>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
 
-<CATEGORY title="Proper Forms">
+<CATEGORY title="正确的形式">
   <p>
-    You must follow the proper usage regarding
-    well-known functions, macros and special forms.
+    你必须遵循关于
+    众所周知的函数、宏和特殊形式的正确用法。
   </p>
-  <STYLEPOINT title="Defining Constants">
+  <STYLEPOINT title="定义常量">
     <SUMMARY>
-      You must use proper defining forms for constant values.
+      你必须为常量值使用正确的定义形式。
     </SUMMARY>
     <BODY>
       <p>
-        The Lisp system we primarily use, SBCL, is very picky and
-        signals a condition whenever a constant is redefined to a value not
-        <code>EQL</code> to its previous setting.
-        You must not use <code>DEFCONSTANT</code>
-        when defining variables that are not
-        numbers, characters, or symbols (including booleans and keywords).
-        Instead, consistently use whichever alternative
-        is recommended for your project.
+        我们主要使用的 Lisp 系统 SBCL 非常挑剔，
+        并且每当常量被重新定义为与之前的设置不 <code>EQL</code> 的值时，
+        都会发出一个条件信号。
+        在定义不是
+        数字、字符或符号（包括布尔值和关键字）的变量时，
+        你不得使用 <code>DEFCONSTANT</code>。
+        相反，始终如一地使用为你的项目推荐的任何替代方案。
       </p>
       <BAD_CODE_SNIPPET>
         ;; Bad
@@ -2816,12 +2770,11 @@ Robert Brown
       
       
       <p>
-        Open-Source libraries may use
+        开源库可以使用
         <code>ALEXANDRIA:DEFINE-CONSTANT</code>
-        for constants other than numbers, characters and symbols
-        (including booleans and keywords).
-        You may use the <code>:TEST</code> keyword argument
-        to specify an equality predicate.
+        用于数字、字符和符号（包括布尔值和关键字）以外的常量。
+        你可以使用 <code>:TEST</code> 关键字参数
+        来指定相等谓词。
       </p>
       <CODE_SNIPPET>
         ;; Better, for Open-Source code:
@@ -2829,168 +2782,159 @@ Robert Brown
         (define-constant +valid-colors+ '(red green blue))
       </CODE_SNIPPET>
       <p>
-        Note that with optimizing implementations, such as SBCL or CMUCL,
-        defining constants this way precludes any later redefinition
-        short of <code>UNINTERN</code>ing the symbol
-        and recompiling all its clients.
-        This may make it "interesting" to debug things at the REPL
-        or to deploy live code upgrades.
-        If there is a chance that your "constants" are not going to be constant
-        over the lifetime of your server processes
-        after taking into consideration scheduled and unscheduled code patches,
-        you should consider using
-        <code>DEFPARAMETER</code> or <code>DEFVAR</code> instead,
-        or possibly a variant of <code>DEFINE-CONSTANT</code>
-        that builds upon some future library implementing global lexicals
-        rather than <code>DEFCONSTANT</code>.
-        You may keep the <code>+plus+</code> convention in these cases
-        to document the intent of the parameter as a constant.
+        请注意，对于优化实现（例如 SBCL 或 CMUCL），
+        以这种方式定义常量会阻止任何后续的重新定义，
+        除非 <code>UNINTERN</code> 该符号
+        并重新编译其所有客户端。
+        这可能会使在 REPL 中调试事物
+        或部署实时代码升级变得“有趣”。
+        如果你的“常量”在你的服务器进程的生命周期内
+        在考虑到计划内和计划外的代码补丁后，
+        有可能不是常量，
+        你应该考虑使用
+        <code>DEFPARAMETER</code> 或 <code>DEFVAR</code> 代替，
+        或者可能是 <code>DEFINE-CONSTANT</code> 的变体，
+        它建立在一些未来的库之上，该库实现全局词法作用域，
+        而不是 <code>DEFCONSTANT</code>。
+        在这种情况下，你可以保留 <code>+plus+</code> 约定
+        来记录参数作为常量的意图。
       </p>
       <p>
-        Also note that <code>LOAD-TIME-VALUE</code> may help you
-        avoid the need for defined constants.
+        另请注意，<code>LOAD-TIME-VALUE</code> 可能会帮助你
+        避免对已定义常量的需求。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Defining Functions">
+  <STYLEPOINT title="定义函数">
     <SUMMARY>
-      You should make proper use of
-      <code>&amp;OPTIONAL</code> and
-      <code>&amp;KEY</code> arguments.
-      You should not use <code>&amp;AUX</code> arguments.
+      你应该正确使用
+      <code>&amp;OPTIONAL</code> 和
+      <code>&amp;KEY</code> 参数。
+      你不应该使用 <code>&amp;AUX</code> 参数。
     </SUMMARY>
     <BODY>
       <p>
-        You should avoid using <code>&amp;ALLOW-OTHER-KEYS</code>,
-        since it blurs the contract of a function.
-        Almost any real function (generic or not) allows a certain
-        fixed set of keywords, as far as its caller is concerned,
-        and those are part of its contract.
-        If you are implementing a method of a generic function,
-        and it does not need to know
-        the values of some of the keyword arguments,
-        you should explicitly <code>(DECLARE (IGNORE ...))</code>
-        all the arguments that you are not using.
-        You must not use <code>&amp;ALLOW-OTHER-KEYS</code>
-        unless you explicitly want to disable checking of allowed keys
-        for all methods when invoking the generic function on arguments
-        that match this particular method.
-        Note that the contract of a generic function belongs in
-        the <code>DEFGENERIC</code>, not in the <code>DEFMETHOD</code>
-        which is basically an "implementation detail" of the generic function
-        as far as the caller of the generic is concerned.
+        你应该避免使用 <code>&amp;ALLOW-OTHER-KEYS</code>，
+        因为它模糊了函数的约定。
+        几乎任何真正的函数（通用的或非通用的）都允许一定的
+        固定关键字集，就其调用者而言，
+        这些关键字是其约定的一部分。
+        如果你正在实现泛型函数的方法，
+        并且它不需要知道
+        某些关键字参数的值，
+        你应该显式地 <code>(DECLARE (IGNORE ...))</code>
+        所有你没有使用的参数。
+        除非你明确想要禁用对所有方法的允许键的检查，
+        否则你不得使用 <code>&amp;ALLOW-OTHER-KEYS</code>，
+        当在与此特定方法匹配的参数上调用泛型函数时。
+        请注意，泛型函数的约定属于
+        <code>DEFGENERIC</code>，而不是 <code>DEFMETHOD</code>，
+        就泛型函数的调用者而言，
+        后者基本上是泛型函数的“实现细节”。
       </p>
       <p>
-        A case where <code>&amp;ALLOW-OTHER-KEYS</code> is appropriate
-        is when you write a wrapper function to other some other functions
-        that may vary (within the computation or during development),
-        and pass around a plist as a <code>&amp;REST</code> argument.
+        <code>&amp;ALLOW-OTHER-KEYS</code> 适用的情况是
+        当你编写一个包装函数来包装其他一些函数时，
+        这些函数可能会有所不同（在计算中或在开发过程中），
+        并将 plist 作为 <code>&amp;REST</code> 参数传递。
       </p>
       <p>
-        You should avoid using <code>&amp;AUX</code> arguments.
+        你应该避免使用 <code>&amp;AUX</code> 参数。
       </p>
       <p>
-        You should avoid having both <code>&amp;OPTIONAL</code>
-        and <code>&amp;KEY</code> arguments,
-        unless it never makes sense to specify keyword arguments
-        when the optional arguments are not all specified.
-        You must not have non-<code>NIL</code> defaults
-        to your <code>&amp;OPTIONAL</code> arguments
-        when your function has both <code>&amp;OPTIONAL</code>
-        and <code>&amp;KEY</code> arguments.
+        你应该避免同时使用 <code>&amp;OPTIONAL</code>
+        和 <code>&amp;KEY</code> 参数，
+        除非在未指定所有可选参数时，
+        指定关键字参数永远没有意义。
+        当你的函数同时具有 <code>&amp;OPTIONAL</code>
+        和 <code>&amp;KEY</code> 参数时，
+        你不得为你的 <code>&amp;OPTIONAL</code> 参数设置非 <code>NIL</code> 默认值。
       </p>
       <p>
-        For maximum portability of a library, it is good form
-        that <code>DEFMETHOD</code> definitions should
+        为了库的最大可移植性，良好的形式是
+        <code>DEFMETHOD</code> 定义应该
         <code>(DECLARE (IGNORABLE ...))</code>
-        all the required arguments that they are not using.
-        Indeed, some implementations will issue a warning
-        if you <code>(DECLARE (IGNORE ...))</code> those arguments,
-        whereas other implementations will issue a warning
-        if you fail to <code>(DECLARE (IGNORE ...))</code> them.
-        <code>(DECLARE (IGNORABLE ...))</code> works on all implementations.
+        所有它们没有使用的必需参数。
+        事实上，如果你 <code>(DECLARE (IGNORE ...))</code> 这些参数，
+        某些实现会发出警告，
+        而如果你未能 <code>(DECLARE (IGNORE ...))</code> 它们，
+        其他实现会发出警告。
+        <code>(DECLARE (IGNORABLE ...))</code> 适用于所有实现。
       </p>
       <p>
-        You should avoid excessive nesting of binding forms inside a function.
-        If your function ends up with massive nesting,
-        you should probably break it up into several functions or macros.
-        If it is really a single conceptual unit,
-        consider using a macro such as <code>FARE-UTILS:NEST</code>
-        to at least reduce the amount of indentation required.
-        It is bad form to use <code>NEST</code> in typical short functions
-        with 4 or fewer levels of nesting,
-        but also bad form not to use it in the exceptional long functions
-        with 10 or more levels of nesting.
-        Use your judgment and consult your reviewers.
+        你应该避免在函数内部过度嵌套绑定形式。
+        如果你的函数最终出现大量嵌套，
+        你应该将其分解为多个函数或宏。
+        如果它确实是一个单一的概念单元，
+        请考虑使用诸如 <code>FARE-UTILS:NEST</code> 之类的宏
+        至少减少所需的缩进量。
+        在典型的短函数中使用 <code>NEST</code> 是一种不好的形式，
+        这些函数具有 4 个或更少的嵌套级别，
+        但在具有 10 个或更多嵌套级别的特殊长函数中不使用它也是一种不好的形式。
+        运用你的判断力并咨询你的审阅者。
       </p>
-      
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Conditional Expressions">
+  <STYLEPOINT title="条件表达式">
     <SUMMARY>
-      Use the appropriate conditional form.
+      使用适当的条件形式。
     </SUMMARY>
     <BODY>
       <p>
-        Use <code>WHEN</code> and <code>UNLESS</code>
-        when there is only one alternative.
-        Use <code>IF</code> when there are two alternatives
-        and <code>COND</code> when there are several.
+        当只有一个备选项时，使用 <code>WHEN</code> 和 <code>UNLESS</code>。
+        当有两个备选项时，使用 <code>IF</code>，
+        当有多个备选项时，使用 <code>COND</code>。
       </p>
       <p>
-        However, don't use <code>PROGN</code> for an <code>IF</code> clause
-        — use <code>COND</code>, <code>WHEN</code>, or <code>UNLESS</code>.
+        但是，不要为 <code>IF</code> 子句使用 <code>PROGN</code>
+        — 使用 <code>COND</code>、<code>WHEN</code> 或 <code>UNLESS</code>。
       </p>
       <p>
-        Note that in Common Lisp,
-        <code>WHEN</code> and <code>UNLESS</code> return <code>NIL</code>
-        when the condition is not met.
-        You may take advantage of it.
-        Nevertheless, you may use an <code>IF</code>
-        to explicitly return <code>NIL</code>
-        if you have a specific reason to insist on the return value.
-        You may similarly include a fall-through clause <code>(t nil)</code>
-        as the last in your <cond>COND</cond>,
-        or <code>(otherwise nil)</code> as the last in your <cond>CASE</cond>,
-        to insist on the fact that the value returned by the conditional matters
-        and that such a case is going to be used.
-        You should omit the fall-through clause
-        when the conditional is used for side-effects.
+        请注意，在 Common Lisp 中，
+        当条件不满足时，<code>WHEN</code> 和 <code>UNLESS</code> 返回 <code>NIL</code>。
+        你可以利用这一点。
+        尽管如此，如果你有坚持返回值的特定理由，
+        你可以使用 <code>IF</code> 显式返回 <code>NIL</code>。
+        你也可以类似地包含一个直通子句 <code>(t nil)</code>
+        作为你的 <cond>COND</cond> 中的最后一个，
+        或者 <code>(otherwise nil)</code> 作为你的 <cond>CASE</cond> 中的最后一个，
+        以强调条件语句返回的值很重要，
+        并且这种情况将被使用。
+        当条件语句用于副作用时，你应该省略直通子句。
       </p>
       <p>
-        You should prefer <code>AND</code> and <code>OR</code>
-        when it leads to more concise code than using
-        <code>IF</code>, <code>COND</code>,
-        <code>WHEN</code> or <code>UNLESS</code>,
-        and there are no side-effects involved.
-        You may also use an <code>ERROR</code>
-        as a side-effect in the final clause of an <code>OR</code>.
+        当使用 <code>AND</code> 和 <code>OR</code> 比使用
+        <code>IF</code>、<code>COND</code>、
+        <code>WHEN</code> 或 <code>UNLESS</code> 更简洁，
+        并且不涉及副作用时，你应该优先使用 <code>AND</code> 和 <code>OR</code>。
+        你也可以在 <code>OR</code> 的最后一个子句中使用 <code>ERROR</code>
+        作为副作用。
       </p>
       <p>
-        You should only use <code>CASE</code> and <code>ECASE</code>
-        to compare numbers, characters or symbols
-        (including booleans and keywords).
-        Indeed, <code>CASE</code> uses <code>EQL</code> for comparisons,
-        so strings, pathnames and structures may not compare the way you expect,
-        and <code>1</code> will differ from <code>1.0</code>.
+        你应该只使用 <code>CASE</code> 和 <code>ECASE</code>
+        来比较数字、字符或符号
+        （包括布尔值和关键字）。
+        实际上，<code>CASE</code> 使用 <code>EQL</code> 进行比较，
+        因此字符串、路径名和结构可能不会以你期望的方式进行比较，
+        并且 <code>1</code> 将不同于 <code>1.0</code>。
       </p>
       <p>
-        You should use <code>ECASE</code> and <code>ETYPECASE</code>
-        in preference to <code>CASE</code> and <code>TYPECASE</code>.
-        It is better to catch erroneous values early.
+        你应该优先使用 <code>ECASE</code> 和 <code>ETYPECASE</code>
+        而不是 <code>CASE</code> 和 <code>TYPECASE</code>。
+        尽早捕获错误值更好。
       </p>
       <p>
-        You should not use <code>CCASE</code> or <code>CTYPECASE</code> at all.
-        At least, you should not use them in server processes,
-        unless you have quite robust error handling infrastructure
-        and make sure not to leak sensitive data this way.
-        These are meant for interactive use,
-        and can cause interesting damage
-        if they cause data or control to leak to attackers.
+        你根本不应该使用 <code>CCASE</code> 或 <code>CTYPECASE</code>。
+        至少，你不应该在服务器进程中使用它们，
+        除非你拥有非常健壮的错误处理基础设施
+        并确保不会以这种方式泄露敏感数据。
+        这些是为交互式使用而设计的，
+        如果它们导致数据或控制权泄露给攻击者，
+        可能会造成有趣的损害。
       </p>
       <p>
-        You must not use gratuitous single quotes in <code>CASE</code> forms.
-        This is a common error:
+        你不得在 <code>CASE</code> 形式中使用无意义的单引号。
+        这是一个常见的错误：
       </p>
       <BAD_CODE_SNIPPET>
         (case x ; Bad: silently returns NIL on mismatch
@@ -3003,26 +2947,26 @@ Robert Brown
           ((baz) :baz)) ; Better: same reason
       </CODE_SNIPPET>
       <p>
-        <code>'BAR</code> there is <code>(QUOTE BAR)</code>,
-        meaning this leg of the case will be executed
-        if <code>X</code> is <code>QUOTE</code>...
-        and ditto for the second leg
-        (though <code>QUOTE</code> will be caught by the first clause).
-        This is unlikely to be what you really want.
+        <code>'BAR</code> 在这里是 <code>(QUOTE BAR)</code>，
+        这意味着如果 <code>X</code> 是 <code>QUOTE</code>，
+        则将执行 case 的这一分支...
+        第二个分支也是如此
+        （尽管 <code>QUOTE</code> 将被第一个子句捕获）。
+        这不太可能是你真正想要的。
       </p>
       <p>
-        In <code>CASE</code> forms,
-        you must use <code>otherwise</code> instead of <code>t</code>
-        when you mean "execute this clause if the others fail".
-        You must use <code>((t) ...)</code>
-        when you mean "match the symbol T" rather than "match anything".
-        You must also use <code>((nil) ...)</code>
-        when you mean "match the symbol NIL" rather than "match nothing".
+        在 <code>CASE</code> 形式中，
+        当你表示“如果其他子句失败，则执行此子句”时，
+        你必须使用 <code>otherwise</code> 而不是 <code>t</code>。
+        当你表示“匹配符号 T”而不是“匹配任何内容”时，
+        你必须使用 <code>((t) ...)</code>。
+        当你表示“匹配符号 NIL”而不是“匹配任何内容”时，
+        你还必须使用 <code>((nil) ...)</code>。
       </p>
       <p>
-        Therefore, if you want to map booleans <code>NIL</code> and <code>T</code>
-        to respective symbols <code>:BAR</code> and <code>:QUUX</code>,
-        you should avoid the former way and do it the latter way:
+        因此，如果你想将布尔值 <code>NIL</code> 和 <code>T</code>
+        映射到相应的符号 <code>:BAR</code> 和 <code>:QUUX</code>，
+        你应该避免前一种方式，而采用后一种方式：
       </p>
       <BAD_CODE_SNIPPET>
         (ecase x ; Bad: has no actual error case!
@@ -3036,823 +2980,776 @@ Robert Brown
       </CODE_SNIPPET>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Identity, Equality and Comparisons">
+  <STYLEPOINT title="标识、相等和比较">
     <SUMMARY>
-      You should use the appropriate predicates when comparing objects.
+      比较对象时，应使用适当的谓词。
     </SUMMARY>
     <BODY>
       <p>
-        Lisp provides four general equality predicates:
-        <code>EQ</code>, <code>EQL</code>, <code>EQUAL</code>,
-        and <code>EQUALP</code>,
-        which subtly vary in semantics.
-        Additionally, Lisp provides the type-specific predicates
-        <code>=</code>, <code>CHAR=</code>, <code>CHAR-EQUAL</code>,
-        <code>STRING=</code>, and <code>STRING-EQUAL</code>.
-        Know the distinction!
+        Lisp 提供了四个通用的相等谓词：
+        <code>EQ</code>、<code>EQL</code>、<code>EQUAL</code> 和 <code>EQUALP</code>，
+        它们的语义略有不同。
+        此外，Lisp 还提供了特定于类型的谓词
+        <code>=</code>、<code>CHAR=</code>、<code>CHAR-EQUAL</code>、
+        <code>STRING=</code> 和 <code>STRING-EQUAL</code>。
+        了解它们之间的区别！
       </p>
       <p>
-        You should use <code>EQL</code> to compare objects and symbols
-        for <em>identity</em>.
+        你应该使用 <code>EQL</code> 来比较对象和符号的<em>标识</em>。
       </p>
       <p>
-        You must not use <code>EQ</code> to compare numbers or characters.
-        Two numbers or characters that are <code>EQL</code>
-        are not required by Common Lisp to be <code>EQ</code>.
+        你不得使用 <code>EQ</code> 来比较数字或字符。
+        Common Lisp 不要求两个 <code>EQL</code> 的数字或字符
+        是 <code>EQ</code> 的。
       </p>
       <p>
-        When choosing between <code>EQ</code> and <code>EQL</code>,
-        you should use <code>EQL</code> unless you are writing
-        performance-critical low-level code.
-        <code>EQL</code> reduces the opportunity
-        for a class of embarrassing errors
-        (i.e. if numbers or characters are ever compared).
-        There may a tiny performance cost relative to <code>EQ</code>,
-        although under SBCL, it often compiles away entirely.
-        <code>EQ</code> is equivalent to <code>EQL</code> and type declarations,
-        and use of it for optimization should be treated just like
-        any such <a href="#Unsafe_Operations">unsafe operations</a>.
+        在 <code>EQ</code> 和 <code>EQL</code> 之间进行选择时，
+        你应该使用 <code>EQL</code>，除非你正在编写
+        对性能至关重要的底层代码。
+        <code>EQL</code> 减少了一类令人尴尬的错误的可能性
+        （即，如果曾经比较过数字或字符）。
+        相对于 <code>EQ</code>，可能会有很小的性能成本，
+        尽管在 SBCL 下，它通常会完全编译掉。
+        <code>EQ</code> 相当于 <code>EQL</code> 和类型声明，
+        并且将其用于优化应像对待任何此类
+        <a href="#Unsafe_Operations">不安全操作</a>一样对待。
       </p>
       <p>
-        You should use <code>CHAR=</code>
-        for case-dependent character comparisons,
-        and <code>CHAR-EQUAL</code> for case-ignoring character comparisons.
+        你应该使用 <code>CHAR=</code>
+        进行区分大小写的字符比较，
+        并使用 <code>CHAR-EQUAL</code> 进行忽略大小写的字符比较。
       </p>
       <p>
-        You should use <code>STRING=</code>
-        for case-dependent string comparisons,
-        and <code>STRING-EQUAL</code> for case-ignoring string comparisons.
+        你应该使用 <code>STRING=</code>
+        进行区分大小写的字符串比较，
+        并使用 <code>STRING-EQUAL</code> 进行忽略大小写的字符串比较。
       </p>
       <p>
-        A common mistake when using <code>SEARCH</code> on strings
-        is to provide <code>STRING=</code> or <code>STRING-EQUAL</code>
-        as the <code>:TEST</code> function.
-        The <code>:TEST</code> function
-        is given two sequence elements to compare.
-        If the sequences are strings,
-        the <code>:TEST</code> function is called on two characters,
-        so the correct tests are <code>CHAR=</code> or <code>CHAR-EQUAL</code>.
-        If you use <code>STRING=</code> or <code>STRING-EQUAL</code>,
-        the result is what you expect,
-        but in some Lisp implementations it's much slower.
-        CCL (at least as of 8/2008)
-        creates a one-character string upon each comparison, for example,
-        which is very expensive.
+        在字符串上使用 <code>SEARCH</code> 时，一个常见的错误
+        是将 <code>STRING=</code> 或 <code>STRING-EQUAL</code>
+        作为 <code>:TEST</code> 函数提供。
+        <code>:TEST</code> 函数
+        被赋予两个序列元素进行比较。
+        如果序列是字符串，
+        则在两个字符上调用 <code>:TEST</code> 函数，
+        因此正确的测试是 <code>CHAR=</code> 或 <code>CHAR-EQUAL</code>。
+        如果你使用 <code>STRING=</code> 或 <code>STRING-EQUAL</code>，
+        结果是你所期望的，
+        但在某些 Lisp 实现中，它会慢得多。
+        例如，CCL（至少截至 2008 年 8 月）
+        在每次比较时创建一个单字符字符串，
+        这非常昂贵。
       </p>
       <p>
-        Also, you should use <code>:START</code> and <code>:END</code> arguments
-        to <code>STRING=</code> or <code>STRING-EQUAL</code>
-        instead of using <code>SUBSEQ</code>;
-        e.g. <code>(string-equal (subseq s1 2 6) s2)</code> should instead be
+        此外，你应该使用 <code>:START</code> 和 <code>:END</code> 参数
+        来 <code>STRING=</code> 或 <code>STRING-EQUAL</code>，
+        而不是使用 <code>SUBSEQ</code>；
+        例如，<code>(string-equal (subseq s1 2 6) s2)</code> 应该改为
         <code>(string-equal s1 s2 :start1 2 :end1 6)</code>
-        This is preferable because it does not cons.
+        这是首选的，因为它不会 cons。
       </p>
       <p>
-        You should use <code>ZEROP</code>,
-        <code>PLUSP</code>, or <code>MINUSP</code>,
-        instead of comparing a value to <code>0</code> or <code>0.0</code>.
+        你应该使用 <code>ZEROP</code>、
+        <code>PLUSP</code> 或 <code>MINUSP</code>，
+        而不是将值与 <code>0</code> 或 <code>0.0</code> 进行比较。
       </p>
       <p>
-        You must not use exact comparison on floating point numbers,
-        since the vague nature of floating point arithmetic
-        can produce little "errors" in numeric value.
-        You should compare absolute values to a threshold.
+        你不得对浮点数使用精确比较，
+        因为浮点运算的模糊性质
+        可能会在数值中产生小的“误差”。
+        你应该将绝对值与阈值进行比较。
       </p>
       <p>
-        You must use <code>=</code> to compare numbers,
-        unless you really mean for <code>0</code>,
-        <code>0.0</code> and <code>-0.0</code> to compare unequal,
-        in which case you should use <code>EQL</code>.
-        Then again, you must not usually use exact comparison
-        on floating point numbers.
+        你必须使用 <code>=</code> 来比较数字，
+        除非你真的希望 <code>0</code>、
+        <code>0.0</code> 和 <code>-0.0</code> 比较不相等，
+        在这种情况下，你应该使用 <code>EQL</code>。
+        但是，你通常不得对浮点数使用精确比较。
       </p>
       <p>
-        Monetary amounts should be using decimal (rational) numbers
-        to avoid the complexities and rounding errors
-        of floating-point arithmetic.
-        Libraries such as
+        货币金额应使用十进制（有理数）
+        以避免浮点运算的复杂性和舍入误差。
+        诸如
         <a href="http://wukix.com/lisp-decimals">wu-decimal</a>
-        may help you;
-        once again, if this library is not satisfactory, see above about
-        <a href="#Using_Libraries">Using Libraries</a> and
-        <a href="#Open-Sourcing_Code">Open-Sourcing Code</a>.
+        之类的库可能会对你有所帮助；
+        再次，如果此库不令人满意，请参阅上面关于
+        <a href="#Using_Libraries">使用库</a> 和
+        <a href="#Open-Sourcing_Code">开源代码</a>。
       </p>
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Iteration">
+  <STYLEPOINT title="迭代">
     <SUMMARY>
-      Use the appropriate form for iteration.
+      使用适当的迭代形式。
     </SUMMARY>
     <BODY>
       <p>
-        You should use simpler forms such as
-        <code>DOLIST</code> or <code>DOTIMES</code>
-        instead of <code>LOOP</code>
-        in simple cases when you're not going to use any
-        of the <code>LOOP</code> facilities such as
-        bindings, collection or block return.
+        在简单的情况下，当你不会使用任何
+        <code>LOOP</code> 功能（例如
+        绑定、集合或块返回）时，
+        你应该使用更简单的形式，例如
+        <code>DOLIST</code> 或 <code>DOTIMES</code>
+        而不是 <code>LOOP</code>。
       </p>
       <p>
-        Use the <code>WITH</code> clause of <code>LOOP</code>
-        when it will avoid a level of nesting with <code>LET</code>.
-        You may use <code>LET</code> if it makes it clearer
-        to return one of bound variables after the <code>LOOP</code>,
-        rather than use a clumsy <code>FINALLY (RETURN ...)</code> form.
+        当使用 <code>LOOP</code> 的 <code>WITH</code> 子句
+        可以避免使用 <code>LET</code> 进行嵌套时，请使用它。
+        如果在使用 <code>LOOP</code> 之后返回其中一个绑定变量更清晰，
+        而不是使用笨拙的 <code>FINALLY (RETURN ...)</code> 形式，
+        你可以使用 <code>LET</code>。
       </p>
       <p>
-        In the body of a <code>DOTIMES</code>,
-        do not set the iteration variable.
-        (CCL will issue a compiler warning if you do.)
+        在 <code>DOTIMES</code> 的主体中，
+        不要设置迭代变量。
+        （如果你这样做，CCL 将发出编译器警告。）
       </p>
       <p>
-        Most systems use unadorned symbols in the current package
-        as <code>LOOP</code> keywords.
-        Other systems use actual <code>:keywords</code>
-        from the <code>KEYWORD</code> package
-        as <code>LOOP</code> keywords.
-        You must be consistent with the convention used in your system.
+        大多数系统使用当前包中未修饰的符号
+        作为 <code>LOOP</code> 关键字。
+        其他系统使用来自 <code>KEYWORD</code> 包的实际 <code>:keywords</code>
+        作为 <code>LOOP</code> 关键字。
+        你必须与你的系统中使用的约定保持一致。
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="I/O">
     <SUMMARY>
-      Use the appropriate I/O functions.
+      使用适当的 I/O 函数。
     </SUMMARY>
     <BODY>
       <p>
-        When writing a server,
-        code must not send output to the standard streams such as
-        <code>*STANDARD-OUTPUT*</code> or <code>*ERROR-OUTPUT*</code>.
-        Instead, code must use the proper logging framework
-        to output messages for debugging.
-        We are running as a server, so there is no console!
+        在编写服务器时，
+        代码不得将输出发送到标准流，例如
+        <code>*STANDARD-OUTPUT*</code> 或 <code>*ERROR-OUTPUT*</code>。
+        相反，代码必须使用适当的日志记录框架
+        来输出用于调试的消息。
+        我们正在作为服务器运行，因此没有控制台！
       </p>
       <p>
-        Code must not use <code>PRINT-OBJECT</code>
-        to communicate with a user —
-        <code>PRINT-OBJECT</code> is for debugging purposes only.
-        Modifying any <code>PRINT-OBJECT</code> method
-        must not break any public interfaces.
+        代码不得使用 <code>PRINT-OBJECT</code>
+        与用户通信 —
+        <code>PRINT-OBJECT</code> 仅用于调试目的。
+        修改任何 <code>PRINT-OBJECT</code> 方法
+        不得破坏任何公共接口。
       </p>
       <p>
-        You should not use a sequence of <code>WRITE-XXX</code>
-        where a single <code>FORMAT</code> string could be used.
-        Using format allows you
-        to parameterize the format control string in the future
-        if the need arises.
+        你应该避免使用一系列 <code>WRITE-XXX</code>，
+        而可以使用单个 <code>FORMAT</code> 字符串。
+        如果将来需要，使用 format 允许你
+        参数化格式控制字符串。
       </p>
       <p>
-        You should use <code>WRITE-CHAR</code> to emit a character
-        rather than <code>WRITE-STRING</code>
-        to emit a single-character string.
+        你应该使用 <code>WRITE-CHAR</code> 发出一个字符，
+        而不是使用 <code>WRITE-STRING</code>
+        发出一个单字符字符串。
       </p>
       <p>
-        You should not use <code>(format nil "~A" value)</code>;
-        you should use <code>PRINC-TO-STRING</code> instead.
+        你不应该使用 <code>(format nil "~A" value)</code>；
+        你应该使用 <code>PRINC-TO-STRING</code> 代替。
       </p>
       <p>
-        You should use <code>~&lt;Newline&gt;</code>
-        or <code>~@&lt;Newline&gt;</code> in format strings
-        to keep them from wrapping in 100-column editor windows,
-        or to indent sections or clauses to make them more readable.
+        你应该在格式字符串中使用 <code>~&lt;Newline&gt;</code>
+        或 <code>~@&lt;Newline&gt;</code>
+        以防止它们在 100 列的编辑器窗口中换行，
+        或者缩进节或子句以使其更具可读性。
       </p>
       <p>
-        You should not use <code>STRING-UPCASE</code>
-        or <code>STRING-DOWNCASE</code>
-        on format control parameters;
-        instead, it should use <code>"~:@(~A~)"</code> or <code>"~(~A~)"</code>.
+        你不应该在格式控制参数上使用 <code>STRING-UPCASE</code>
+        或 <code>STRING-DOWNCASE</code>；
+        相反，它应该使用 <code>"~:@(~A~)"</code> 或 <code>"~(~A~)"</code>。
       </p>
       <p>
-        Be careful when using the <code>FORMAT</code> conditional directive.
-        The parameters are easy to forget.
+        使用 <code>FORMAT</code> 条件指令时要小心。
+        参数很容易忘记。
       </p>
       <dl>
-        <dt>No parameters, e.g. <code>"~[Siamese~;Manx~;Persian~] Cat"</code></dt>
+        <dt>没有参数，例如 <code>"~[Siamese~;Manx~;Persian~] Cat"</code></dt>
         <dd>
-          Take one format argument, which should be an integer.
-          Use it to choose a clause. Clause numbers are zero-based.
-          If the number is out of range, just print nothing.
-          You can provide a default value
-          by putting a <code>":"</code> in front of the last <code>";"</code>.
-          E.g. in <code>"~[Siamese~;Manx~;Persian~:;Alley~] Cat"</code>,
-          an out-of-range arg prints <code>"Alley"</code>.
+          接受一个格式参数，该参数应为整数。
+          使用它来选择一个子句。子句编号从零开始。
+          如果数字超出范围，则不打印任何内容。
+          你可以通过在最后一个 <code>";"</code> 前面放置一个 <code>":"</code> 来提供默认值。
+          例如，在 <code>"~[Siamese~;Manx~;Persian~:;Alley~] Cat"</code> 中，
+          超出范围的参数打印 <code>"Alley"</code>。
         </dd>
-        <dt><code>:</code> parameter, e.g. <code>"~:[Siamese~;Manx~]"</code></dt>
+        <dt><code>:</code> 参数，例如 <code>"~:[Siamese~;Manx~]"</code></dt>
         <dd>
-          Take one format argument.  If it's <code>NIL</code>,
-          use the first clause, otherwise use the second clause.
+          接受一个格式参数。如果它是 <code>NIL</code>，
+          则使用第一个子句，否则使用第二个子句。
         </dd>
-        <dt><code>@</code> parameter, e.g. <code>"~@[Siamese ~a~]"</code></dt>
+        <dt><code>@</code> 参数，例如 <code>"~@[Siamese ~a~]"</code></dt>
         <dd>
-          If the next format argument is true,
-          use the choice, but do NOT take the argument.
-          If it's false, take one format argument and print nothing.
-          (Normally the clause uses the format argument.)
+          如果下一个格式参数为真，
+          则使用该选择，但不接受该参数。
+          如果为假，则接受一个格式参数并且不打印任何内容。
+          （通常，该子句使用格式参数。）
         </dd>
-        <dt><code>#</code> parameter, e.g. <code>"~#[ none~; ~s~; ~s and ~s~]"</code></dt>
+        <dt><code>#</code> 参数，例如 <code>"~#[ none~; ~s~; ~s and ~s~]"</code></dt>
         <dd>
-          Use the number of arguments to format
-          as the number to choose a clause.
-          The same as no parameters in all other ways.
-          Here's the full hairy example:
+          使用要格式化的参数数量
+          作为选择子句的数字。
+          在所有其他方面与没有参数相同。
+          这是一个完整的复杂示例：
           <code>"Items: ~#[ none~; ~S~; ~S and ~S~:;~@{~S~^~#[~; and ~:;, ~]~}~]."</code>
         </dd>
       </dl>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
-
-<CATEGORY title="Optimization">
-  <STYLEPOINT title="Avoid Allocation">
+<CATEGORY title="优化">
+  <STYLEPOINT title="避免分配">
     <SUMMARY>
-      You should avoid unnecessary allocation of memory.
+      你应该避免不必要的内存分配。
     </SUMMARY>
     <BODY>
       <p>
-        In a language with automatic storage management (such as Lisp or Java),
-        the colloquial phrase "memory leak" refers to situation
-        where storage that is not actually needed
-        nevertheless does not get deallocated,
-        because it is still reachable.
+        在具有自动存储管理的语言（如 Lisp 或 Java）中，
+        口语化的短语“内存泄漏”指的是这样一种情况：
+        实际上不需要的存储空间
+        由于仍然可访问而永远不会被释放。
       </p>
       <p>
-        You should be careful that when you create objects,
-        you don't leave them reachable after they are no longer needed!
+        你应该小心，当你创建对象时，
+        不要在它们不再需要后仍然保持可访问！
       </p>
       <p>
-        Here's a particular trap-for-the-unwary in Common Lisp.
-        If you make an array with a fill pointer, and put objects in it,
-        and then set the fill pointer back to zero,
-        those objects are still reachable as far as Lisp goes
-        (the Common Lisp spec says that it's still OK
-        to refer to the array entries past the end of the fill pointer).
+        这是一个 Common Lisp 中特别容易让人掉进去的陷阱。
+        如果你创建了一个带有填充指针的数组，并将对象放入其中，
+        然后将填充指针设置回零，
+        那么就 Lisp 而言，这些对象仍然是可访问的
+        （Common Lisp 规范指出，引用超出填充指针末尾的数组条目仍然是可以的）。
       </p>
       <p>
-        Don't cons (i.e., allocate) unnecessarily.
-        Garbage collection is not magic.
-        Excessive allocation is usually a performance problem.
+        不要不必要地 cons（即分配）。
+        垃圾回收不是魔法。
+        过度分配通常是一个性能问题。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Unsafe Operations">
+  <STYLEPOINT title="不安全操作">
     <SUMMARY>
-      You must only use faster unsafe operations
-      when there is a clear performance need
-      and you can document why it's correct.
+      只有在有明确的性能需求
+      并且你可以记录为什么它是正确的情况下，
+      你才能使用更快的不安全操作。
     </SUMMARY>
     <BODY>
       <p>
-        Common Lisp implementations often provide backdoors
-        to compute some operations faster in an unsafe way.
-        For instance, some libraries provide arithmetic operations
-        that are designed to be used with fixnums only,
-        and yield the correct result faster if provided proper arguments.
-        The downside is that the result of such operations
-        is incorrect in case of overflow, and can
-        have undefined behavior when called with anything but fixnums.
+        Common Lisp 实现通常提供后门
+        以不安全的方式更快地计算某些操作。
+        例如，一些库提供算术运算，
+        这些运算设计为仅与 fixnum 一起使用，
+        如果提供正确的参数，则可以更快地产生正确的结果。
+        缺点是，如果发生溢出，此类操作的结果
+        是不正确的，并且在使用除 fixnum 之外的任何参数调用时，可能会
+        具有未定义的行为。
       </p>
       
       <p>
-        More generally, unsafe operations
-        will yield the correct result faster
-        than would the equivalent safe operation
-        if the arguments satisfy some invariant such as
-        being of the correct type and small enough;
-        however if the arguments fail to satisfy the required invariants,
-        then the operation may have undefined behavior,
-        such as crashing the software, or,
-        which is sometimes worse, silently giving wrong answers.
-        Depending on whether the software is piloting an aircraft
-        or other life-critical device,
-        or whether it is accounting for large amounts money,
-        such undefined behavior can kill or bankrupt people.
-        Yet proper speed can sometimes make the difference between
-        software that's unusably slow and software that does its job,
-        or between software that is a net loss
-        and software that can yield a profit.
+        更一般地说，不安全的操作
+        将比等效的安全操作更快地产生正确的结果，
+        如果参数满足某些不变式，例如
+        是正确的类型并且足够小；
+        但是，如果参数未能满足所需的不变式，
+        则该操作可能具有未定义的行为，
+        例如使软件崩溃，或者，
+        有时更糟糕的是，默默地给出错误的答案。
+        根据软件是驾驶飞机
+        还是其他生命攸关的设备，
+        或者它是否负责处理大量资金，
+        这种未定义的行为可能会导致人员死亡或破产。
+        然而，适当的速度有时可以区分
+        软件慢得无法使用和软件能够完成其工作，
+        或者区分净亏损的软件
+        和可以产生利润的软件。
       </p>
       <p>
-        You must not define or use unsafe operations without both
-        profiling results indicating the need for this optimization,
-        and careful documentation explaining why it is safe to use them.
-        Unsafe operations should be restricted to internal functions;
-        you should carefully documented how unsafe it is
-        to use these functions with the wrong arguments.
-        You should only use unsafe operations
-        inside functions internal to a package and
-        you should document the use of the declarations,
-        since calling the functions with arguments of the wrong type
-        can lead to undefined behavior.
-        Use <code>check-type</code> in functions exported from a package
-        to sanitize input arguments,
-        so that internal functions are never passed illegal values.
+        如果没有分析结果表明需要此优化，
+        并且没有仔细的文档解释为什么使用它们是安全的，
+        则不得定义或使用不安全的操作。
+        不安全的操作应仅限于内部函数；
+        你应该仔细记录使用错误的参数使用这些函数有多么不安全。
+        你应该只在包内部的函数中使用不安全的操作，并且
+        你应该记录声明的使用，
+        因为使用错误类型的参数调用函数
+        可能会导致未定义的行为。
+        在从包导出的函数中使用 <code>check-type</code>
+        来清理输入参数，
+        以便永远不会将非法值传递给内部函数。
       </p>
       <p>
-        On some compilers,
-        new unsafe operations
-        can usually be defined by combining
-        type declarations with an <code>OPTIMIZE</code> declaration
-        that has sufficiently high <code>SPEED</code> and low <code>SAFETY</code>.
-        In addition to providing more speed for production code,
-        such declarations may more helpful
-        than <code>check-type</code> assertions
-        for finding bugs at compile-time,
-        on compilers that have type inference.
-        These compilers may interpret those declarations as assertions
-        if you switch to safer and slower optimize settings;
-        this is good to locate a dynamic error in your code during development,
-        but is not to be used for production code since
-        it defeats the purpose of declarations as a performance trick.
+        在某些编译器上，
+        通常可以通过将
+        类型声明与具有足够高的 <code>SPEED</code> 和低 <code>SAFETY</code> 的 <code>OPTIMIZE</code> 声明相结合来定义新的不安全操作。
+        除了为生产代码提供更快的速度外，
+        此类声明可能比 <code>check-type</code> 断言
+        更有助于在编译时查找错误，
+        在具有类型推断的编译器上。
+        如果你切换到更安全和更慢的优化设置，
+        这些编译器可能会将这些声明解释为断言；
+        这对于在开发过程中定位代码中的动态错误很有用，
+        但不应用于生产代码，因为它破坏了声明作为性能技巧的目的。
       </p>
       
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="DYNAMIC-EXTENT">
     <SUMMARY>
-      You should only use <code>DYNAMIC-EXTENT</code>
-      where it matters for performance,
-      and you can document why it is correct.
+      只有在对性能有影响的地方
+      并且你可以记录为什么它是正确的情况下，
+      你才应该使用 <code>DYNAMIC-EXTENT</code>。
     </SUMMARY>
     <BODY>
       <p>
-        <code>DYNAMIC-EXTENT</code> declarations are
-        a particular case of
-        <a href="#Unsafe_Operations">unsafe operations</a>.
+        <code>DYNAMIC-EXTENT</code> 声明是
+        <a href="#Unsafe_Operations">不安全操作</a> 的一个特例。
       </p>
       <p>
-        The purpose of a <code>DYNAMIC-EXTENT</code> declaration
-        is to improve performance by reducing garbage collection
-        in cases where it appears to be obvious that an object's lifetime
-        is within the "dynamic extent" of a function.
-        That means the object is created at some point
-        after the function is called, and
-        the object is always inaccessible after the function exits by any means.
+        <code>DYNAMIC-EXTENT</code> 声明的目的是
+        通过减少垃圾回收来提高性能，
+        在某些情况下，对象的生命周期
+        显然在函数的“动态范围”内。
+        这意味着对象是在调用函数后的某个时间点创建的，并且
+        在函数以任何方式退出后，该对象始终无法访问。
       </p>
       <p>
-        By declaring a variable or a local function <code>DYNAMIC-EXTENT</code>,
-        the programmer <em>asserts</em> to Lisp
-        that any object that is ever a value of that variable
-        or the closure that is the definition of the function
-        has a lifetime within the dynamic extent of the (innermost) function
-        that declares the variable.
+        通过声明变量或局部函数 <code>DYNAMIC-EXTENT</code>，
+        程序员向 Lisp <em>断言</em>
+        作为该变量的值的任何对象
+        或作为函数定义的闭包
+        在声明变量的（最内层）函数的动态范围内具有生命周期。
       </p>
       <p>
-        The Lisp implementation is then free to use that information
-        to make the program faster.
-        Typically, Lisp implementations can take advantage of this knowledge
-        to stack-allocate:
+        然后，Lisp 实现可以自由地使用该信息
+        来使程序更快。
+        通常，Lisp 实现可以利用这些知识
+        来进行堆栈分配：
       </p>
       <ul>
         <li>
-          The lists created to store <code>&amp;REST</code> parameters.
+          创建的用于存储 <code>&amp;REST</code> 参数的列表。
         </li>
         <li>
-          Lists, vectors and structures allocated within a function.
+          在函数中分配的列表、向量和结构。
         </li>
         <li>
-          Closures.
+          闭包。
         </li>
       </ul>
       <p>
-        If the assertion is wrong, i.e. if the programmer's claim is not true,
-        the results can be <em>catastrophic</em>:
-        Lisp can terminate any time after the function returns,
-        or it can hang forever, or — worst of all —
-        it can produce incorrect results without any runtime error!
+        如果断言是错误的，即如果程序员的声明不正确，
+        则结果可能是<em>灾难性的</em>：
+        Lisp 可以在函数返回后的任何时间终止，
+        或者它可以永远挂起，或者——最糟糕的是——
+        它可以产生不正确的结果而没有任何运行时错误！
       </p>
       <p>
-        Even if the assertion is correct,
-        future changes to the function might introduce
-        a violation of the assertion.
-        This increases the danger.
+        即使断言是正确的，
+        将来对函数的更改可能会引入
+        对断言的违反。
+        这增加了危险。
       </p>
       <p>
-        In most cases, such objects are ephemeral.
-        Modern Lisp implementations use generational garbage collectors,
-        which are quite efficient under these circumstances.
+        在大多数情况下，此类对象是短暂的。
+        现代 Lisp 实现使用分代垃圾回收器，
+        在这种情况下，分代垃圾回收器非常有效。
       </p>
       <p>
-        Therefore, <code>DYNAMIC-EXTENT</code> declarations
-        should be used sparingly. You must only use them if:
+        因此，<code>DYNAMIC-EXTENT</code> 声明
+        应谨慎使用。你只有在以下情况下才能使用它们：
       </p>
       <ol>
         <li>
-          There is some good reason to think that the overall effect
-          on performance is noticeable, and
+          有充分的理由认为
+          对性能的总体影响是显着的，并且
         </li>
         <li>
-          It is absolutely clear that the assertion is true.
+          绝对清楚断言是正确的。
         </li>
         <li>
-          It is quite unlikely that the code will be changed
-          in ways that cause the declaration to become false.
+          代码不太可能被更改
+          以导致声明变为假。
         </li>
       </ol>
       <p>
-        Point (1) is a special case of
-        the principle of avoiding premature optimization.
-        An optimization like this only matters if such objects
-        are allocated at a very high rate, e.g. "inside an inner loop".
+        第 (1) 点是
+        避免过早优化原则的一个特例。
+        像这样的优化只有在以非常高的速率分配此类对象时才重要，例如“在内部循环中”。
       </p>
       <p>
-        Note that is relatively easy to ascertain that
-        a function will not escape the dynamic extent of the current call frame
-        by analyzing where the function is called and
-        what other functions it is passed to;
-        therefore, you should somewhat wary of declaring a function
-        <code>DYNAMIC-EXTENT</code>, but this is not a high-stress declaration.
-        On the other hand, it is much harder to ascertain that
-        none of the objects ever bound or assigned to that variable
-        and none of their sub-objects
-        will escape the dynamic extent of the current call frame,
-        and that they still won't in any future modification of a function.
-        Therefore, you should be extremely wary
-        of declaring a variable <code>DYNAMIC-EXTENT</code>.
+        请注意，通过分析函数被调用的位置以及
+        它传递给哪些其他函数，相对容易确定
+        函数不会逃脱当前调用帧的动态范围；
+        因此，你应该对声明函数
+        <code>DYNAMIC-EXTENT</code> 有些警惕，但这并不是一个高压力的声明。
+        另一方面，更难确定
+        绑定或分配给该变量的任何对象
+        及其任何子对象
+        都不会逃脱当前调用帧的动态范围，
+        并且它们在将来对函数的任何修改中仍然不会逃脱。
+        因此，你应该非常警惕
+        声明变量 <code>DYNAMIC-EXTENT</code>。
       </p>
       <p>
-        It's usually hard to predict the effect of such optimization on performance.
-        When writing a function or macro
-        that is part of a library of reusable code,
-        there's no a priori way to know how often the code will run.
-        Ideally, tools would be available to discover
-        the availability and suitability of using such an optimization
-        based on running simulations and test cases, but
-        in practice this isn't as easy as it ought to be.
-        It's a tradeoff.
-        If you're very, very sure that the assertion is true
-        (that any object bound to the variable and any of its sub-objects
-        are only used within the dynamic extent of the specified scope),
-        and it's not obvious how much time will be saved
-        and it's not easy to measure,
-        then it may be better to put in the declaration than to leave it out.
-        (Ideally it would be easier to make such measurements
-        than it actually is.)
+        通常很难预测这种优化对性能的影响。
+        在编写作为可重用代码库一部分的函数或宏时，
+        没有先验的方法知道代码将运行多少次。
+        理想情况下，应该有工具可以发现
+        基于运行模拟和测试用例来使用这种优化的可用性和适用性，但是
+        在实践中，这并不像它应该的那样容易。
+        这是一个权衡。
+        如果你非常非常确定断言是正确的
+        （绑定到变量的任何对象及其任何子对象
+        仅在指定范围的动态范围内使用），
+        并且不清楚会节省多少时间
+        并且不容易测量，
+        那么最好放入声明而不是将其排除在外。
+        （理想情况下，进行此类测量应该比
+        实际情况更容易。）
       </p>
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="REDUCE vs APPLY">
     <SUMMARY>
-      You should use <code>REDUCE</code>
-      instead of <code>APPLY</code> where appropriate.
+      你应该在适当的时候使用 <code>REDUCE</code>
+      而不是 <code>APPLY</code>。
     </SUMMARY>
     <BODY>
       <p>
-        You should use <code>REDUCE</code>
-        instead of <code>APPLY</code> and a consed-up list,
-        where the semantics of the first operator argument
-        otherwise guarantees the same semantics.
-        Of course, you must use <code>APPLY</code>
-        if it does what you want and <code>REDUCE</code> doesn't.
-        For instance:
+        你应该使用 <code>REDUCE</code>
+        而不是 <code>APPLY</code> 和一个 cons 起来的列表，
+        其中第一个运算符参数的语义
+        以其他方式保证相同的语义。
+        当然，如果 <code>APPLY</code> 做了你想要的事情而 <code>REDUCE</code> 没有，
+        你必须使用 <code>APPLY</code>。
+        例如：
       </p>
       <BAD_CODE_SNIPPET>
-        ;; Bad
+        ;; 糟糕
         (apply #'+ (mapcar #'acc frobs))
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        ;; Better
+        ;; 更好
         (reduce #'+ frobs :key #'acc :initial-value 0)
       </CODE_SNIPPET>
       <p>
-        This is preferable because it does not do extra consing,
-        and does not risk going beyond <code>CALL-ARGUMENTS-LIMIT</code>
-        on implementations where that limit is small,
-        which could blow away the stack on long lists
-        (we want to avoid gratuitous non-portability in our code).
+        这是首选的，因为它不会进行额外的 consing，
+        并且不会冒着超出 <code>CALL-ARGUMENTS-LIMIT</code> 的风险，
+        在限制很小的实现中，
+        这可能会在长列表上耗尽堆栈
+        （我们希望避免代码中不必要的非可移植性）。
       </p>
       <p>
-        However, you must be careful not to use <code>REDUCE</code>
-        in ways that needlessly increase
-        the complexity class of the computation.
-        For instance, <code>(REDUCE 'STRCAT ...)</code> is <i>O(n^2)</i>
-        when an appropriate implementation is only <i>O(n)</i>.
-        Moreover, <code>(REDUCE 'APPEND ...)</code>
-        is also <i>O(n^2)</i> unless you specify <code>:FROM-END T</code>.
-        In such cases, you MUST NOT use <code>REDUCE</code>,
-        and you MUST NOT use <code>(APPLY 'STRCAT ...)</code>
-        or <code>(APPLY 'APPEND ...)</code> either.
-        Instead you MUST use proper abstractions
-        from a suitable library (that you may have to contribute to)
-        that properly handles those cases
-        without burdening users with implementation details.
-        See for instance <code>UIOP:REDUCE/STRCAT</code>.
+        但是，你必须小心不要以
+        不必要地增加计算的复杂性类别的方式使用 <code>REDUCE</code>。
+        例如，<code>(REDUCE 'STRCAT ...)</code> 是 <i>O(n^2)</i>，
+        而适当的实现仅为 <i>O(n)</i>。
+        此外，<code>(REDUCE 'APPEND ...)</code>
+        也是 <i>O(n^2)</i>，除非你指定 <code>:FROM-END T</code>。
+        在这种情况下，你绝不能使用 <code>REDUCE</code>，
+        并且你绝不能使用 <code>(APPLY 'STRCAT ...)</code>
+        或 <code>(APPLY 'APPEND ...)</code>。
+        相反，你必须使用来自合适的库的适当抽象
+        （你可能需要为此做出贡献），
+        该库可以正确处理这些情况
+        而不会让用户承担实现细节。
+        例如，请参见 <code>UIOP:REDUCE/STRCAT</code>。
       </p>
       
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Avoid NCONC">
+  <STYLEPOINT title="避免 NCONC">
     <SUMMARY>
-      You should not use <code>NCONC</code>;
-      you should use <code>APPEND</code> instead,
-      or better data structures.
+      你应该避免使用 <code>NCONC</code>；
+      你应该使用 <code>APPEND</code> 代替，
+      或者更好的数据结构。
     </SUMMARY>
     <BODY>
       <p>
-        You should almost never use <code>NCONC</code>.
-        You should use <code>APPEND</code>
-        when you don't depend on any side-effect.
-        You should use <code>ALEXANDRIA:APPENDF</code>
-        when you need to update a variable.
-        You should probably not depend on games
-        being played with the <code>CDR</code>
-        of the current CONS cell
-        (which some might argue is suggested but not guaranteed by the specification);
-        if you do, you must include a prominent
-        comment explaining the use of <code>NCONC</code>;
-        and you should probably reconsider your data representation strategy.
+        你几乎永远不应该使用 <code>NCONC</code>。
+        当你不依赖任何副作用时，你应该使用 <code>APPEND</code>。
+        当你需要更新变量时，你应该使用 <code>ALEXANDRIA:APPENDF</code>。
+        你可能不应该依赖于
+        使用当前 CONS 单元的 <code>CDR</code> 进行的游戏
+        （有些人可能会认为这是规范建议但未保证的）；
+        如果你这样做，你必须包含一个突出的
+        注释，解释 <code>NCONC</code> 的使用；
+        并且你可能应该重新考虑你的数据表示策略。
       </p>
       <p>
-        By extension, you should avoid <code>MAPCAN</code>
-        or the <code>NCONC</code> feature of <code>LOOP</code>.
-        You should instead respectively use
+        通过扩展，你应该避免 <code>MAPCAN</code>
+        或 <code>LOOP</code> 的 <code>NCONC</code> 功能。
+        你应该分别使用
         <code>ALEXANDRIA:MAPPEND</code>
-        and the <code>APPEND</code> feature of <code>LOOP</code>.
+        和 <code>LOOP</code> 的 <code>APPEND</code> 功能。
       </p>
       <p>
-        <code>NCONC</code> is very seldom a good idea,
-        since its time complexity class is no better than <code>APPEND</code>,
-        its space complexity class also is no better than <code>APPEND</code>
-        in the common case where no one else is sharing the side-effected list,
-        and its bug complexity class is way higher than <code>APPEND</code>.
+        <code>NCONC</code> 很少是一个好主意，
+        因为它的时间复杂度类别不优于 <code>APPEND</code>，
+        在没有人共享副作用列表的常见情况下，它的空间复杂度类别也不优于 <code>APPEND</code>，
+        并且它的错误复杂度类别远高于 <code>APPEND</code>。
       </p>
       <p>
-        If the small performance hit due
-        to <code>APPEND</code> vs. <code>NCONC</code>
-        is a limiting factor in your program,
-        you have a big problem and are probably using the wrong data structure:
-        you should be using sequences with constant-time append
-        (see Okasaki's book, and add them to lisp-interface-library),
-        or more simply you should be accumulating data in a tree
-        that will get flattened once in linear time
-        after the accumulation phase is complete.
+        如果由于 <code>APPEND</code> 与 <code>NCONC</code> 相比
+        造成的微小性能损失是你程序中的一个限制因素，
+        那么你遇到了一个大问题，并且可能使用了错误的数据结构：
+        你应该使用具有恒定时间附加的序列
+        （请参阅 Okasaki 的书，并将它们添加到 lisp-interface-library），
+        或者更简单地说，你应该在树中累积数据，
+        该树将在累积阶段完成后以线性时间展平一次。
       </p>
       <p>
-        You may only use <code>NCONC</code>, <code>MAPCAN</code>
-        or the <code>NCONC</code> feature of <code>LOOP</code>
-        in low-level functions where performance matters,
-        where the use of lists as a data structure has been vetted
-        because these lists are known to be short,
-        and when the function or expression the result of which are accumulated
-        explicitly promises in its contract that it only returns fresh lists
-        (in particular, it can't be a constant quote or backquote expression).
-        Even then, the use of such primitives must be rare,
-        and accompanied by justifying documentation.
+        你只能在性能重要的底层函数中使用 <code>NCONC</code>、<code>MAPCAN</code>
+        或 <code>LOOP</code> 的 <code>NCONC</code> 功能，
+        其中列表作为数据结构的使用已经过审查，
+        因为已知这些列表很短，
+        并且函数或表达式（其结果被累积）
+        在其合同中明确承诺它只返回新的列表
+        （特别是，它不能是常量引用或反引用表达式）。
+        即使那样，此类原语的使用也必须很少见，
+        并且附有证明文档。
       </p>
     </BODY>
   </STYLEPOINT>
 </CATEGORY>
-
-<CATEGORY title="Pitfalls">
+<CATEGORY title="陷阱">
   <STYLEPOINT title="#'FUN vs. 'FUN">
     <SUMMARY>
-      You should usually refer to a function as <code>#'FUN</code> rather than <code>'FUN</code>.
+      通常你应该使用 <code>#'FUN</code> 而不是 <code>'FUN</code> 来引用函数。
     </SUMMARY>
     <BODY>
       <p>
-        The former, which reads as <code>(FUNCTION FUN)</code>,
-        refers to the function object, and is lexically scoped.
-        The latter, which reads as <code>(QUOTE FUN)</code>,
-        refers to the symbol, which when called
-        uses the global <code>FDEFINITION</code> of the symbol.
+        前者，可以理解为 <code>(FUNCTION FUN)</code>，
+        引用的是函数对象，并且是词法作用域。
+        后者，可以理解为 <code>(QUOTE FUN)</code>，
+        引用的是符号，当调用时
+        使用该符号的全局 <code>FDEFINITION</code>。
       </p>
       <p>
-        When using functions that take a functional argument
-        (e.g., <code>MAPCAR</code>, <code>APPLY</code>,
-        <code>:TEST</code> and <code>:KEY</code> arguments),
-        you should use the <code>#'</code> to refer to the function,
-        not just single quote.
+        当使用接受函数式参数的函数时
+        (例如，<code>MAPCAR</code>、<code>APPLY</code>、
+        <code>:TEST</code> 和 <code>:KEY</code> 参数)，
+        你应该使用 <code>#'</code> 来引用函数，
+        而不仅仅是单引号。
       </p>
       <p>
-        An exception is when you explicitly want dynamic linking,
-        because you anticipate that
-        the global function binding will be updated.
+        一个例外是当你明确想要动态链接时，
+        因为你预计
+        全局函数绑定会被更新。
       </p>
       <p>
-        Another exception is when you explicitly want to access
-        a global function binding,
-        and avoid a possible shadowing lexical binding.
-        This shouldn't happen often, as it is usually a bad idea
-        to shadow a function when you will want to use the shadowed function;
-        just use a different name for the lexical function.
+        另一个例外是当你明确想要访问
+        全局函数绑定，
+        并避免可能的遮蔽词法绑定。
+        这种情况不应该经常发生，因为当你想使用被遮蔽的函数时，遮蔽函数通常不是一个好主意；
+        只需为词法函数使用不同的名称。
       </p>
       <p>
-        You must consistently use either <code>#'(lambda ...)</code>
-        or <code>(lambda ...)</code> without <code>#'</code> everywhere.
-        Unlike the case of <code>#'symbol</code> vs <code>'symbol</code>,
-        it is only a syntactic difference with no semantic impact,
-        except that the former works on Genera and the latter doesn't.
+        你必须始终如一地使用 <code>#'(lambda ...)</code>
+        或 <code>(lambda ...)</code>，不要到处使用 <code>#'</code>。
+        与 <code>#'symbol</code> vs <code>'symbol</code> 的情况不同，
+        这只是一个语法上的差异，没有语义上的影响，
+        除了前者在 Genera 上有效，而后者无效。
         
-        You must use the former style if your code is intended as a library
-        with maximal compatibility to all Common Lisp implementations;
-        otherwise, it is optional which style you use.
-        <code>#'</code> may be seen as a hint
-        that you're introducing a function in expression context;
-        but the <code>lambda</code> itself is usually sufficient hint,
-        and concision is good.
-        Choose wisely, but above all,
-        consistently with yourself and other developers,
-        within a same file, package, system, project, etc.
+        如果你的代码旨在作为库
+        与所有 Common Lisp 实现具有最大的兼容性，则必须使用前一种风格；
+        否则，你可以选择使用哪种风格。
+        <code>#'</code> 可以被视为一个提示，
+        表明你正在表达式上下文中引入一个函数；
+        但 <code>lambda</code> 本身通常就足以作为提示，
+        而且简洁是好的。
+        明智地选择，但最重要的是，
+        在同一个文件、包、系统、项目等中，与你自己和其他开发人员保持一致。
       </p>
       <p>
-        Note that if you start writing a new system
-        in a heavily functional style,
-        you may consider using
-        <a href="http://cliki.net/lambda-reader">lambda-reader</a>,
-        a system that lets you use the unicode character <code>λ</code>
-        instead of <code>LAMBDA</code>.
-        But you must not start using such a syntactic extension
-        in an existing system without getting permission from other developers.
+        请注意，如果你开始编写一个采用
+        重度函数式风格的新系统，
+        你可以考虑使用
+        <a href="http://cliki.net/lambda-reader">lambda-reader</a>，
+        一个允许你使用 Unicode 字符 <code>λ</code>
+        代替 <code>LAMBDA</code> 的系统。
+        但是，在没有获得其他开发人员的许可的情况下，你不得在现有系统中开始使用这种语法扩展。
       </p>
     </BODY>
   </STYLEPOINT>
-  <STYLEPOINT title="Pathnames">
+  <STYLEPOINT title="路径名">
     <SUMMARY>
-      Common Lisp pathnames are tricky. Be aware of pitfalls. Use <code>UIOP</code>.
+      Common Lisp 路径名很棘手。注意陷阱。使用 <code>UIOP</code>。
     </SUMMARY>
     <BODY>
       <p>
-        It is surprisingly hard to properly deal with pathnames in Common Lisp.
+        令人惊讶的是，在 Common Lisp 中正确处理路径名非常困难。
       </p>
       <p>
-        <code>ASDF 3</code> comes with a portability library <code>UIOP</code>
-        that makes it <em>much</em> easier to deal with pathnames
-        portably — and correctly — in Common Lisp.
-        You should use it when appropriate.
+        <code>ASDF 3</code> 附带了一个可移植性库 <code>UIOP</code>，
+        它使得在 Common Lisp 中以可移植的方式 — 并且正确地 — 处理路径名<em>容易得多</em>。
+        你应该在适当的时候使用它。
       </p>
       <p>
-        First, be aware of the discrepancies between
-        the syntax of Common Lisp pathnames,
-        which depends on which implementation and operating system
-        you are using,
-        and the native syntax of pathnames on your operating system.
-        The Lisp syntax may involves quoting of special characters
-        such as <code>#\.</code> and <code>#\*</code>, etc.,
-        in addition to the quoting of
-        <code>#\\</code> and <code>#\"</code> within strings.
-        By contrast, your operating system's other
-        system programming languages
-        (shell, C, scripting languages)
-        may only have one layer of quoting, into strings.
+        首先，要注意
+        Common Lisp 路径名的语法之间的差异，
+        这取决于你使用的实现和操作系统，
+        以及你的操作系统上路径名的原生语法。
+        Lisp 语法可能涉及引用特殊字符，
+        例如 <code>#\.</code> 和 <code>#\*</code> 等，
+        此外还有引用字符串中的
+        <code>#\\</code> 和 <code>#\"</code>。
+        相比之下，你的操作系统的其他
+        系统编程语言
+        （shell、C、脚本语言）
+        可能只有一层引用，进入字符串。
       </p>
       <p>
-        Second, when using <code>MERGE-PATHNAMES</code>,
-        be wary of the treatment of the <code>HOST</code> component,
-        which matters a lot on non-Unix platforms
-        (and even on some Unix implementations).
-        You probably should be using
-        <code>UIOP:MERGE-PATHNAMES*</code> or <code>UIOP:SUBPATHNAME</code>
-        instead of <code>MERGE-PATHNAMES</code>,
-        especially if your expectations for relative pathnames
-        are informed by the way they work in Unix or Windows;
-        otherwise you might hit weird bugs whereby on some implementations,
-        merging a relative pathnames with an absolute pathname
-        results in overriding the absolute pathname's host
-        and replace it with the host from the value of
-        <code>*DEFAULT-PATHNAME-DEFAULTS*</code>
-        at the time the relative pathname was created.
+        其次，当使用 <code>MERGE-PATHNAMES</code> 时，
+        要注意 <code>HOST</code> 组件的处理，
+        这在非 Unix 平台上非常重要
+        （甚至在某些 Unix 实现上也是如此）。
+        你可能应该使用
+        <code>UIOP:MERGE-PATHNAMES*</code> 或 <code>UIOP:SUBPATHNAME</code>
+        而不是 <code>MERGE-PATHNAMES</code>，
+        特别是如果你的相对路径名的期望
+        受到它们在 Unix 或 Windows 中的工作方式的影响；
+        否则你可能会遇到奇怪的错误，即在某些实现上，
+        将相对路径名与绝对路径名合并
+        会导致覆盖绝对路径名的主机
+        并将其替换为
+        <code>*DEFAULT-PATHNAME-DEFAULTS*</code> 的值中的主机
+        在创建相对路径名时。
       </p>
       <p>
-        Third, be aware that <code>DIRECTORY</code>
-        is not portable across implementations
-        in how it handles wildcards, sub-directories, symlinks, etc.
-        There again, <code>UIOP</code> provides several
-        common abstractions to deal with pathnames,
-        but only does so good a job.
-        For a complete portable solution, use IOLib —
-        though its Windows support lags behind.
+        第三，要注意 <code>DIRECTORY</code>
+        在如何处理通配符、子目录、符号链接等方面
+        在不同实现之间是不可移植的。
+        同样，<code>UIOP</code> 提供了几个
+        用于处理路径名的通用抽象，
+        但只能做到这么好。
+        对于完整的可移植解决方案，请使用 IOLib —
+        尽管它对 Windows 的支持滞后。
       </p>
       <p>
-        <code>LOGICAL-PATHNAME</code>s are not a portable abstraction,
-        and should not be used in portable code.
-        Many implementations have bugs in them, when they are supported at all.
-        SBCL implements them very well,
-        but strictly enforces the limitations on characters
-        allowed by the standard, which restricts their applicability.
-        Other implementations allow arbitrary characters in such pathnames,
-        but in doing so are not being conformant,
-        and are still incompatible with each other in many ways.
-        You should use other pathname abstractions,
-        such as <code>ASDF:SYSTEM-RELATIVE-PATHNAME</code> or
-        the underlying <code>UIOP:SUBPATHNAME</code> and
-        <code>UIOP:PARSE-UNIX-NAMESTRING</code>.
+        <code>LOGICAL-PATHNAME</code>s 不是可移植的抽象，
+        不应在可移植代码中使用。
+        许多实现中都存在错误，即使它们受到支持。
+        SBCL 对它们的实现非常好，
+        但严格执行标准允许的字符限制，
+        这限制了它们的适用性。
+        其他实现允许在此类路径名中使用任意字符，
+        但这样做并不符合标准，
+        并且在许多方面仍然彼此不兼容。
+        你应该使用其他路径名抽象，
+        例如 <code>ASDF:SYSTEM-RELATIVE-PATHNAME</code> 或
+        底层的 <code>UIOP:SUBPATHNAME</code> 和
+        <code>UIOP:PARSE-UNIX-NAMESTRING</code>。
       </p>
       
       <p>
-        Finally, be aware that paths may change between
-        the time you build the Lisp image for your application,
-        and the time you run the application from its image.
-        You should be careful to reset your image
-        to forget irrelevant build-time paths and
-        reinitialize any search path from current environment variables.
-        <code>ASDF</code> for instance requires you to reset its paths
-        with <code>UIOP:CLEAR-CONFIGURATION</code>.
-        <code>UIOP</code> provides hooks
-        to call functions before an image is dumped,
-        from which to reset or <code>makunbound</code> relevant variables.
+        最后，请注意，在
+        你为应用程序构建 Lisp 镜像的时间，
+        和你从其镜像运行应用程序的时间之间，路径可能会发生变化。
+        你应该小心地重置你的镜像，
+        以忘记不相关的构建时路径，并
+        从当前环境变量重新初始化任何搜索路径。
+        例如，<code>ASDF</code> 要求你使用 <code>UIOP:CLEAR-CONFIGURATION</code> 重置其路径。
+        <code>UIOP</code> 提供了钩子
+        在转储镜像之前调用函数，
+        从中重置或 <code>makunbound</code> 相关变量。
       </p>
       
     </BODY>
   </STYLEPOINT>
   <STYLEPOINT title="SATISFIES">
     <SUMMARY>
-      You must be careful when using a <code>SATISFIES</code> clause in a type specifier.
+      在使用类型说明符中的 <code>SATISFIES</code> 子句时，必须小心。
     </SUMMARY>
     <BODY>
       <p>
-        Most Common Lisp implementations can't optimize
-        based on a <code>SATISFIES</code> type,
-        but many of them offer simple optimizations
-        based on a type of the form
+        大多数 Common Lisp 实现无法基于 <code>SATISFIES</code> 类型进行优化，
+        但许多实现基于以下形式的类型提供简单的优化：
         <code>(AND FOO (SATISFIES BAR-P))</code>
-        where the first term of the <code>AND</code> clause
-        describes the structure of the object
-        without any <code>SATISFIES</code>
-        and the second term is the <code>SATISFIES</code>.
+        其中 <code>AND</code> 子句的第一项
+        描述了对象的结构，
+        没有任何 <code>SATISFIES</code>，
+        第二项是 <code>SATISFIES</code>。
       </p>
       <BAD_CODE_SNIPPET>
-        (deftype prime-number () (satisfies prime-number-p)) ; Bad
+        (deftype prime-number () (satisfies prime-number-p)) ; 糟糕
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        (deftype prime-number () (and integer (satisfies prime-number-p)) ; Better
+        (deftype prime-number () (and integer (satisfies prime-number-p)) ; 更好
       </CODE_SNIPPET>
       <p>
-        However, <code>AND</code> in the <code>DEFTYPE</code> language
-        isn't a left-to-right short-circuit operator
-        as in the expression language;
-        it is a symmetrical connector that allows for reordering subterms
-        and doesn't guarantee short-circuiting.
-        Therefore, in the above example,
-        you cannot rely on the test for <code>INTEGER</code>ness
-        to protect the function <code>PRIME-NUMBER-P</code>
-        from being supplied non-integer arguments
-        to test for being of instances of the type.
-        Implementations may, and some <em>will</em>,
-        invoke <code>SATISFIES</code>-specified function
-        at compile-time to test various relevant objects.
+        但是，<code>DEFTYPE</code> 语言中的 <code>AND</code>
+        不是像表达式语言中那样的从左到右的短路运算符；
+        它是一个对称连接器，允许重新排序子项
+        并且不保证短路。
+        因此，在上面的例子中，
+        你不能依赖于 <code>INTEGER</code> 性的测试
+        来保护函数 <code>PRIME-NUMBER-P</code>
+        免受提供非整数参数
+        来测试是否为该类型实例的影响。
+        实现可能会，并且有些<em>会</em>，
+        在编译时调用 <code>SATISFIES</code> 指定的函数
+        来测试各种相关的对象。
       </p>
       <p>
-        That is why any function specified in a <code>SATISFIES</code> clause
-        MUST accept objects of any type as argument to the function,
-        and MUST be defined within an <code>EVAL-WHEN</code>
-        (as well as any variable it uses or function it calls):
+        这就是为什么在 <code>SATISFIES</code> 子句中指定的任何函数
+        必须接受任何类型的对象作为函数的参数，
+        并且必须在 <code>EVAL-WHEN</code> 中定义
+        （以及它使用的任何变量或调用的函数）：
       </p>
       <BAD_CODE_SNIPPET>
-        (defun prime-number-p (n) ; Doubly bad!
+        (defun prime-number-p (n) ; 双重糟糕！
           (let ((m (abs n)))
             (if (&lt;= m *prime-number-cutoff*)
                 (small-prime-number-p m)
                 (big-prime-number-p m))))
       </BAD_CODE_SNIPPET>
       <CODE_SNIPPET>
-        (eval-when (:compile-toplevel :load-toplevel :execute) ; Better
+        (eval-when (:compile-toplevel :load-toplevel :execute) ; 更好
           (defun prime-number-p (n)
-            (when (integerp n) ; Better
+            (when (integerp n) ; 更好
               (let ((m (abs n)))
                 (if (&lt;= m *prime-number-cutoff*)
                     (small-prime-number-p m)
                     (big-prime-number-p m))))))
       </CODE_SNIPPET>
       <p>
-        In particular, the above means that the
-        <a href="https://www.lispworks.com/documentation/HyperSpec/Body/t_satisf.htm">example</a>
-        used in the Common Lisp Standard is erroneous:
+        特别是，以上意味着
+        <a href="https://www.lispworks.com/documentation/HyperSpec/Body/t_satisf.htm">示例</a>
+        在 Common Lisp 标准中使用的是错误的：
         <code>(and integer (satisfies evenp))</code>
-        is <em>not</em> a safe, conformant type specifier to use,
-        because <code>EVENP</code> will throw an error
-        rather than return <code>NIL</code>
-        when passed a non-integer as an argument.
+        <em>不是</em>一个安全、符合标准的类型说明符，
+        因为当传递一个非整数作为参数时，<code>EVENP</code> 会抛出一个错误，
+        而不是返回 <code>NIL</code>。
       </p>
       <p>
-        Finally, there is a catch when your <code>DEFTYPE</code> code expands
-        to a <code>SATISFIES</code> with a dynamically generated function:
+        最后，当你的 <code>DEFTYPE</code> 代码扩展
+        到具有动态生成函数的 <code>SATISFIES</code> 时，会有一个陷阱：
       </p>
       <ul>
         <li>
-          You cannot control when implementations will or will not
-          expand a <code>DEFTYPE</code>.
+          你无法控制实现何时会或不会
+          扩展 <code>DEFTYPE</code>。
         </li>
         <li>
-          The expansion itself cannot contain a function definition
-          or any code in the expression language.
+          扩展本身不能包含函数定义
+          或表达式语言中的任何代码。
         </li>
         <li>
-          You cannot control when the expansion is used,
-          it may happen in a different process
-          that didn't expand the definition.
+          你无法控制何时使用扩展，
+          它可能发生在不同的进程中，
+          该进程没有扩展定义。
         </li>
       </ul>
       <p>
-        Therefore, you cannot merely create the function
-        as a side-effect of expansion
-        using <code>EVAL</code> at type-expansion time.
-        The solution is to use
-        <code>ASDF-FINALIZERS:EVAL-AT-TOPLEVEL</code> instead.
-        See the very last point
-        in the discussion about <a href="#EVAL">EVAL</a>.
+        因此，你不能仅仅通过在类型扩展时
+        使用 <code>EVAL</code> 作为扩展的副作用来创建函数。
+        解决方案是使用
+        <code>ASDF-FINALIZERS:EVAL-AT-TOPLEVEL</code> 代替。
+        请参阅关于 <a href="#EVAL">EVAL</a> 的讨论中的最后一点。
       </p>
       <p>
-        Common Lisp is hard to satisfy.
+        Common Lisp 很难满足。
       </p>
     </BODY>
   </STYLEPOINT>

@@ -3,70 +3,70 @@
 <GUIDE title="Google JSON Style Guide">
 
 <p align="right">
-Revision 0.9
+修订版 0.9
 </p>
 
 <address>
 </address>
 
 <OVERVIEW>
-<CATEGORY title="Important Note">
-<STYLEPOINT title="Display Hidden Details in this Guide">
+<CATEGORY title="重要说明">
+<STYLEPOINT title="显示本指南中的隐藏细节">
 <SUMMARY>
-This style guide contains many details that are initially hidden from view.  They are marked by the triangle icon, which you see here on your left.  Click it now.  You should see "Hooray" appear below.
+本风格指南包含许多初始隐藏的细节。它们由三角形图标标记，你现在可以在左侧看到。点击它。你应该会看到下方出现“Hooray”。
 </SUMMARY>
 <BODY>
-<p>Hooray!  Now you know you can expand points to get more details.  Alternatively, there's an "expand all" at the top of this document.</p>
+<p>Hooray！现在你知道你可以展开点来获取更多细节。或者，你也可以在文档顶部找到“展开全部”选项。</p>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Introduction">
-<p>This style guide documents guidelines and recommendations for building JSON APIs at Google.  In general, JSON APIs should follow the spec found at <a href="http://www.json.org">JSON.org</a>.  This style guide clarifies and standardizes specific cases so that JSON APIs from Google have a standard look and feel.  These guidelines are applicable to JSON requests and responses in both RPC-based and REST-based APIs.</p>
+<CATEGORY title="简介">
+<p>本风格指南记录了在Google构建JSON API的指导方针和建议。一般来说，JSON API应遵循在<a href="http://www.json.org">JSON.org</a>找到的规范。本风格指南澄清并标准化了特定情况，以便Google的JSON API具有标准的外观和感觉。这些指导方针适用于基于RPC和基于REST的API中的JSON请求和响应。</p>
 </CATEGORY>
-<CATEGORY title="Definitions">
-<p>For the purposes of this style guide, we define the following terms:</p><ul><li><b>property</b> - a name/value pair inside a JSON object.</li><li><b>property name</b> - the name (or key) portion of the property.</li><li><b>property value</b> - the value portion of the property.</li></ul>
+<CATEGORY title="定义">
+<p>为本风格指南的目的，我们定义以下术语：</p><ul><li><b>属性</b> - JSON对象中的名称/值对。</li><li><b>属性名称</b> - 属性的名称（或键）部分。</li><li><b>属性值</b> - 属性的值部分。</li></ul>
 <CODE_SNIPPET>
 {
-  // The name/value pair together is a "property".
+  // 名称/值对一起称为“属性”。
   "propertyName": "propertyValue"
 }
 
 </CODE_SNIPPET>
-<p>Javascript's <code>number</code> type encompasses all floating-point numbers, which is a broad designation.  In this guide, <code>number</code> will refer to JavaScript's <code>number</code> type, while <code>integer</code> will refer to integers.</p>
+<p>JavaScript的<code>number</code>类型包括所有浮点数，这是一个广泛的指定。在本指南中，<code>number</code>将指JavaScript的<code>number</code>类型，而<code>integer</code>将指整数。</p>
 </CATEGORY>
 </OVERVIEW>
-<CATEGORY title="General Guidelines">
-<STYLEPOINT title="Comments">
+<CATEGORY title="通用指导方针">
+<STYLEPOINT title="注释">
 <SUMMARY>
-No comments in JSON objects.
+JSON对象中不应包含注释。
 </SUMMARY>
 <BODY>
-<p>Comments should not be included in JSON objects.  Some of the examples in this style guide include comments.  However this is only to clarify the examples.</p>
+<p>JSON对象中不应包含注释。本风格指南中的一些示例包含了注释。然而，这只是为了澄清示例。</p>
 <BAD_CODE_SNIPPET>
 {
-  // You may see comments in the examples below,
-  // But don't include comments in your JSON.
+  // 你可能会在下面的示例中看到注释，
+  // 但不要在你的JSON中包含注释。
   "propertyName": "propertyValue"
 }
 
 </BAD_CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Double Quotes">
+<STYLEPOINT title="双引号">
 <SUMMARY>
-Use double quotes.
+使用双引号。
 </SUMMARY>
 <BODY>
-<p>If a property requires quotes, double quotes must be used.  All property names must be surrounded by double quotes.  Property values of type string must be surrounded by double quotes.  Other value types (like boolean or number) should not be surrounded by double quotes.</p>
+<p>如果属性需要引号，必须使用双引号。所有属性名称必须用双引号包围。类型为字符串的属性值必须用双引号包围。其他类型的值（如布尔或数字）不应使用双引号包围。</p>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Flattened data vs Structured Hierarchy">
+<STYLEPOINT title="扁平数据与结构化层次">
 <SUMMARY>
-Data should not be arbitrarily grouped for convenience.
+数据不应为了方便而任意分组。
 </SUMMARY>
 <BODY>
-<p>Data elements should be "flattened" in the JSON representation.  Data should not be arbitrarily grouped for convenience.</p><p>In some cases, such as a collection of properties that represents a single structure, it may make sense to keep the structured hierarchy.  These cases should be carefully considered, and only used if it makes semantic sense.  For example, an address could be represented two ways, but the structured way probably makes more sense for developers:</p>
-<p>Flattened Address:</p>
+<p>数据元素在JSON表示中应“扁平化”。数据不应为了方便而任意分组。</p><p>在某些情况下，例如表示单一结构的属性集合，可能有意义保持结构化层次。这些情况应谨慎考虑，仅在语义上有意义时使用。例如，地址可以用两种方式表示，但结构化的方式可能对开发者更有意义：</p>
+<p>扁平地址：</p>
 <CODE_SNIPPET>
 {
   "company": "Google",
@@ -78,7 +78,7 @@ Data should not be arbitrarily grouped for convenience.
   "zip": "10011"
 }
 </CODE_SNIPPET>
-<p>Structured Address:</p>
+<p>结构化地址：</p>
 <CODE_SNIPPET>
 {
   "company": "Google",
@@ -95,13 +95,13 @@ Data should not be arbitrarily grouped for convenience.
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Property Name Guidelines">
-<STYLEPOINT title="Property Name Format">
+<CATEGORY title="属性名称指导方针">
+<STYLEPOINT title="属性名称格式">
 <SUMMARY>
-Choose meaningful property names.
+选择有意义的属性名称。
 </SUMMARY>
 <BODY>
-<p>Property names must conform to the following guidelines:</p><ul><li>Property names should be meaningful names with defined semantics.</li><li>Property names must be camel-cased, ascii strings.</li><li>The first character must be a letter, an underscore (_) or a dollar sign ($).</li><li>Subsequent characters can be a letter, a digit, an underscore, or a dollar sign.</li><li>Reserved JavaScript keywords should be avoided (A list of reserved JavaScript keywords can be found below).</li></ul><p>These guidelines mirror the guidelines for naming JavaScript identifiers.  This allows JavaScript clients to access properties using dot notation.  (for example, <code>result.thisIsAnInstanceVariable</code>).  Here's an example of an object with one property:</p>
+<p>属性名称必须符合以下指导方针：</p><ul><li>属性名称应为具有定义语义的有意义名称。</li><li>属性名称必须是驼峰式命名的ASCII字符串。</li><li>第一个字符必须是字母、下划线（_）或美元符号（$）。</li><li>后续字符可以是字母、数字、下划线或美元符号。</li><li>应避免使用保留的JavaScript关键字（可以在下方找到保留的JavaScript关键字列表）。</li></ul><p>这些指导方针反映了命名JavaScript标识符的指导方针。这允许JavaScript客户端使用点表示法访问属性。（例如，<code>result.thisIsAnInstanceVariable</code>）。这是一个带有一个属性的对象示例：</p>
 <CODE_SNIPPET>
 {
   "thisPropertyIsAnIdentifier": "identifier value"
@@ -110,68 +110,67 @@ Choose meaningful property names.
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Key Names in JSON Maps">
+<STYLEPOINT title="JSON映射中的键名称">
 <SUMMARY>
-JSON maps can use any Unicode character in key names.
+JSON映射可以在键名称中使用任何Unicode字符。
 </SUMMARY>
 <BODY>
-<p>The property name naming rules do not apply when a JSON object is used as a map.  A map (also referred to as an associative array) is a data type with arbitrary key/value pairs that use the keys to access the corresponding values.  JSON objects and JSON maps look the same at runtime; this distinction is relevant to the design of the API.  The API documentation should indicate when JSON objects are used as maps.</p><p>The keys of a map do not have to obey the naming guidelines for property names.  Map keys may contain any Unicode characters.  Clients can access these properties using the square bracket notation familiar for maps (for example, <code>result.thumbnails["72"]</code>).</p>
+<p>当JSON对象用作映射时，属性名称命名规则不适用。映射（也称为关联数组）是一种数据类型，具有任意键/值对，使用键来访问相应的值。JSON对象和JSON映射在运行时看起来相同；这种区别与API的设计相关。API文档应指明何时JSON对象用作映射。</p><p>映射的键不必遵守属性名称的命名指导方针。映射键可以包含任何Unicode字符。客户端可以使用熟悉的映射方括号表示法访问这些属性（例如，<code>result.thumbnails["72"]</code>）。</p>
 <CODE_SNIPPET>
 {
-  // The "address" property is a sub-object
-  // holding the parts of an address.
+  // “address”属性是一个子对象，
+  // 保存地址的各个部分。
   "address": {
     "addressLine1": "123 Anystreet",
     "city": "Anytown",
     "state": "XX",
     "zip": "00000"
   },
-  // The "thumbnails" property is a map that maps
-  // a pixel size to the thumbnail url of that size.
+  // “thumbnails”属性是一个映射，
+  // 将像素大小映射到该大小的缩略图URL。
   "thumbnails": {
     "72": "http://url.to.72px.thumbnail",
     "144": "http://url.to.144px.thumbnail"
   }
 }
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Reserved Property Names">
+<STYLEPOINT title="保留属性名称">
 <SUMMARY>
-Certain property names are reserved for consistent use across services.
+某些属性名称被保留以在服务间一致使用。
 </SUMMARY>
 <BODY>
-<p>Details about reserved property names, along with the full list, can be found later on in this guide.  Services should avoid using these property names for anything other than their defined semantics.</p>
+<p>关于保留属性名称的详细信息以及完整列表可以在本指南的后面找到。服务应避免将这些属性名称用于除其定义语义之外的任何其他用途。</p>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Singular vs Plural Property Names">
+<STYLEPOINT title="单数与复数属性名称">
 <SUMMARY>
-Array types should have plural property names.  All other property names should be singular.
+数组类型应使用复数属性名称。所有其他属性名称应为单数。
 </SUMMARY>
 <BODY>
-<p>Arrays usually contain multiple items, and a plural property name reflects this.  An example of this can be seen in the reserved names below.  The <code>items</code> property name is plural because it represents an array of item objects.  Most of the other fields are singular.</p><p>There may be exceptions to this, especially when referring to numeric property values.  For example, in the reserved names, <code>totalItems</code> makes more sense than <code>totalItem</code>.  However, technically, this is not violating the style guide, since <code>totalItems</code> can be viewed as <code>totalOfItems</code>, where <code>total</code> is singular (as per the style guide), and <code>OfItems</code> serves to qualify the total.  The field name could also be changed to <code>itemCount</code> to look singular.</p>
+<p>数组通常包含多个项目，复数属性名称反映了这一点。可以在下面的保留名称中看到一个例子。属性名称<code>items</code>是复数，因为它代表一个项目对象的数组。大多数其他字段是单数的。</p><p>这可能有一些例外，特别是在引用数值属性值时。例如，在保留名称中，<code>totalItems</code>比<code>totalItem</code>更合理。然而，从技术上讲，这并不违反风格指南，因为<code>totalItems</code>可以被视为<code>totalOfItems</code>，其中<code>total</code>是单数（按照风格指南），而<code>OfItems</code>用于限定总数。字段名称也可以更改为<code>itemCount</code>以看起来是单数的。</p>
 <CODE_SNIPPET>
 {
-  // Singular
+  // 单数
   "author": "lisa",
-  // An array of siblings, plural
+  // 兄弟姐妹的数组，复数
   "siblings": [ "bart", "maggie"],
-  // "totalItem" doesn't sound right
+  // "totalItem"听起来不对
   "totalItems": 10,
-  // But maybe "itemCount" is better
+  // 但也许"itemCount"更好
   "itemCount": 10,
 }
 
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Naming Conflicts">
+<STYLEPOINT title="命名冲突">
 <SUMMARY>
-Avoid naming conflicts by choosing a new property name or versioning the API.
+通过选择新的属性名称或版本化API来避免命名冲突。
 </SUMMARY>
 <BODY>
-<p>New properties may be added to the reserved list in the future.  There is no concept of JSON namespacing.  If there is a naming conflict, these can usually be resolved by choosing a new property name or by versioning.  For example, suppose we start with the following JSON object:</p>
+<p>将来可能会向保留列表中添加新属性。没有JSON命名空间的概念。如果存在命名冲突，通常可以通过选择新的属性名称或版本化来解决。例如，假设我们从以下JSON对象开始：</p>
 <CODE_SNIPPET>
 {
   "apiVersion": "1.0",
@@ -182,7 +181,7 @@ Avoid naming conflicts by choosing a new property name or versioning the API.
 }
 
 </CODE_SNIPPET>
-<p>If in the future we wish to make <code>ingredients</code> a reserved word, we can do one of two things:</p><p>1) Choose a different name:</p>
+<p>如果将来我们希望将<code>ingredients</code>设为保留词，我们可以做以下两件事之一：</p><p>1) 选择不同的名称：</p>
 <CODE_SNIPPET>
 {
   "apiVersion": "1.0",
@@ -194,7 +193,7 @@ Avoid naming conflicts by choosing a new property name or versioning the API.
 }
 
 </CODE_SNIPPET>
-<p>2) Rename the property on a major version boundary:</p>
+<p>2) 在主要版本边界上重命名属性：</p>
 <CODE_SNIPPET>
 {
   "apiVersion": "2.0",
@@ -209,62 +208,61 @@ Avoid naming conflicts by choosing a new property name or versioning the API.
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Property Value Guidelines">
-<STYLEPOINT title="Property Value Format">
+<CATEGORY title="属性值指南">
+<STYLEPOINT title="属性值格式">
 <SUMMARY>
-Property values must be Unicode booleans, numbers, strings, objects, arrays, or <code>null</code>.
+属性值必须是Unicode布尔值、数字、字符串、对象、数组或<code>null</code>。
 </SUMMARY>
 <BODY>
-<p>The spec at <a href="http://www.json.org">JSON.org</a> specifies exactly what type of data is allowed in a property value. This includes Unicode booleans, numbers, strings, objects, arrays, and <code>null</code>. JavaScript expressions are not allowed. APIs should support that spec for all values, and should choose the data type most appropriate for a particular property (numbers to represent numbers, etc.).</p><p>Good:</p>
+<p><a href="http://www.json.org">JSON.org</a>的规范准确规定了属性值中允许的数据类型。这包括Unicode布尔值、数字、字符串、对象、数组和<code>null</code>。不允许使用JavaScript表达式。API应支持该规范的所有值，并应选择最适合特定属性的数据类型（数字表示数字等）。</p><p>好的示例：</p>
 <CODE_SNIPPET>
 {
   "canPigsFly": null,     // null
-  "areWeThereYet": false, // boolean
-  "answerToLife": 42,     // number
-  "name": "Bart",         // string
-  "moreData": {},         // object
-  "things": []            // array
+  "areWeThereYet": false, // 布尔值
+  "answerToLife": 42,     // 数字
+  "name": "Bart",         // 字符串
+  "moreData": {},         // 对象
+  "things": []            // 数组
 }
 
 </CODE_SNIPPET>
-<p>Bad:</p>
+<p>坏的示例：</p>
 <BAD_CODE_SNIPPET>
 {
-  "aVariableName": aVariableName,         // Bad - JavaScript identifier
-  "functionFoo": function() { return 1; } // Bad - JavaScript function
+  "aVariableName": aVariableName,         // 错误 - JavaScript标识符
+  "functionFoo": function() { return 1; } // 错误 - JavaScript函数
 }
 
 </BAD_CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Empty/Null Property Values">
+<STYLEPOINT title="空/Null属性值">
 <SUMMARY>
-Consider removing empty or <code>null</code> values.
+考虑删除空或<code>null</code>值。
 </SUMMARY>
 <BODY>
-<p>If a property is optional or has an empty or <code>null</code> value, consider dropping the property from the JSON, unless there's a strong semantic reason for its existence.</p>
+<p>如果一个属性是可选的或其值为空或<code>null</code>，除非有强烈的语义原因需要保留，否则考虑从JSON中删除该属性。</p>
 <CODE_SNIPPET>
 {
   "volume": 10,
 
-  // Even though the "balance" property's value is zero, it should be left in,
-  // since "0" signifies "even balance" (the value could be "-1" for left
-  // balance and "+1" for right balance.
+  // 尽管"balance"属性的值为零，但应保留，
+  // 因为"0"表示"平衡"（值可以是"-1"表示左平衡，"+1"表示右平衡）。
   "balance": 0,
 
-  // The "currentlyPlaying" property can be left out since it is null.
+  // "currentlyPlaying"属性可以省略，因为它是null。
   // "currentlyPlaying": null
 }
 
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Enum Values">
+<STYLEPOINT title="枚举值">
 <SUMMARY>
-Enum values should be represented as strings.
+枚举值应表示为字符串。
 </SUMMARY>
 <BODY>
-<p>As APIs grow, enum values may be added, removed or changed. Using strings as enum values ensures that downstream clients can gracefully handle changes to enum values.</p><p>Java code:</p>
+<p>随着API的发展，枚举值可能会被添加、删除或更改。使用字符串作为枚举值可以确保下游客户端能够优雅地处理枚举值的变化。</p><p>Java代码：</p>
 <CODE_SNIPPET>
 public enum Color {
   WHITE,
@@ -275,7 +273,7 @@ public enum Color {
 }
 
 </CODE_SNIPPET>
-<p>JSON object:</p>
+<p>JSON对象：</p>
 <CODE_SNIPPET>
 {
   "color": "WHITE"
@@ -285,47 +283,46 @@ public enum Color {
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Property Value Data Types">
-<p>As mentioned above, property value types must be booleans, numbers, strings, objects, arrays, or <code>null</code>.  However, it is useful define a set of standard data types when dealing with certain values.  These data types will always be strings, but they will be formatted in a specific manner so that they can be easily parsed.</p>
-<STYLEPOINT title="Date Property Values">
+<CATEGORY title="属性值数据类型">
+<p>如上所述，属性值类型必须是布尔值、数字、字符串、对象、数组或<code>null</code>。然而，在处理某些值时，定义一组标准数据类型是有用的。这些数据类型将始终是字符串，但它们将以特定方式格式化，以便于解析。</p>
+<STYLEPOINT title="日期属性值">
 <SUMMARY>
-Dates should be formatted as recommended by RFC 3339.
+日期应按RFC 3339推荐的格式进行格式化。
 </SUMMARY>
 <BODY>
-<p>Dates should be strings formatted as recommended by <a href="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</a></p>
+<p>日期应为按<a href="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</a>推荐格式化的字符串</p>
 <CODE_SNIPPET>
 {
   "lastUpdate": "2007-11-06T16:34:41.000Z"
 }
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Time Duration Property Values">
+<STYLEPOINT title="时间持续时间属性值">
 <SUMMARY>
-Time durations should be formatted as recommended by ISO 8601.
+时间持续时间应按ISO 8601推荐的格式进行格式化。
 </SUMMARY>
 <BODY>
-<p>Time duration values should be strings formatted as recommended by <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601</a>.</p>
+<p>时间持续时间值应为按<a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601</a>推荐格式化的字符串。</p>
 <CODE_SNIPPET>
 {
-  // three years, six months, four days, twelve hours,
-  // thirty minutes, and five seconds
+  // 三年，六个月，四天，十二小时，
+  // 三十分钟，五秒
   "duration": "P3Y6M4DT12H30M5S"
 }
 
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Latitude/Longitude Property Values">
+<STYLEPOINT title="纬度/经度属性值">
 <SUMMARY>
-Latitudes/Longitudes should be formatted as recommended by ISO 6709.
+纬度/经度应按ISO 6709推荐的格式进行格式化。
 </SUMMARY>
 <BODY>
-<p>Latitude/Longitude should be strings formatted as recommended by <a href="https://en.wikipedia.org/wiki/ISO_6709">ISO 6709</a>.  Furthermore, they should favor the ±DD.DDDD±DDD.DDDD degrees format.</p>
+<p>纬度/经度应为按<a href="https://en.wikipedia.org/wiki/ISO_6709">ISO 6709</a>推荐格式化的字符串。此外，它们应优先使用±DD.DDDD±DDD.DDDD度格式。</p>
 <CODE_SNIPPET>
 {
-  // The latitude/longitude location of the statue of liberty.
+  // 自由女神像的纬度/经度位置。
   "statueOfLiberty": "+40.6894-074.0447"
 }
 
@@ -333,8 +330,8 @@ Latitudes/Longitudes should be formatted as recommended by ISO 6709.
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="JSON Structure &amp; Reserved Property Names">
-<p>In order to maintain a consistent interface across APIs, JSON objects should follow the structure outlined below.  This structure applies to both requests and responses made with JSON.  Within this structure, there are certain property names that are reserved for specific uses.  These properties are NOT required; in other words, each reserved property may appear zero or one times.  But if a service needs these properties, this naming convention is recommend.  Here is a schema of the JSON structure, represented in <a href="https://www.google.com/url?sa=D&amp;q=http%3A%2F%2Forderly-json.org%2F">Orderly</a> format (which in turn can be compiled into a <a href="https://www.google.com/url?sa=D&amp;q=http%3A%2F%2Fjson-schema.org%2F">JSONSchema</a>).  You can few examples of the JSON structure at the end of this guide.</p>
+<CATEGORY title="JSON结构与保留属性名称">
+<p>为了在API之间保持一致的接口，JSON对象应遵循下面的结构。此结构适用于使用JSON进行的请求和响应。在此结构中，某些属性名称被保留用于特定用途。这些属性不是必需的；换句话说，每个保留属性可以出现零次或一次。但如果服务需要这些属性，建议使用此命名约定。这里是用<a href="https://www.google.com/url?sa=D&amp;q=http%3A%2F%2Forderly-json.org%2F">Orderly</a>格式表示的JSON结构的模式（该模式可以进一步编译成<a href="https://www.google.com/url?sa=D&amp;q=http%3A%2F%2Fjson-schema.org%2F">JSONSchema</a>）。您可以在本指南末尾查看JSON结构的示例。</p>
 <CODE_SNIPPET>
 object {
   string apiVersion?;
@@ -350,7 +347,7 @@ object {
     string etag?;
     string id?;
     string lang?;
-    string updated?; # date formatted RFC 3339
+    string updated?; # 日期格式为RFC 3339
     boolean deleted?;
     integer currentItemCount?;
     integer itemsPerPage?;
@@ -389,16 +386,16 @@ object {
 }*;
 
 </CODE_SNIPPET>
-<p>The JSON object has a few top-level properties, followed by either a <code>data</code> object or an <code>error</code> object, but not both.  An explanation of each of these properties can be found below.</p>
+<p>JSON对象有一些顶级属性，后跟一个<code>data</code>对象或一个<code>error</code>对象，但不能同时存在。以下是对这些属性的解释。</p>
 </CATEGORY>
-<CATEGORY title="Top-Level Reserved Property Names">
-<p>The top-level of the JSON object may contain the following properties.</p>
+<CATEGORY title="顶级保留属性名称">
+<p>JSON对象的顶级可能包含以下属性。</p>
 <STYLEPOINT title="apiVersion">
 <SUMMARY>
-Property Value Type: string<br />Parent: -
+属性值类型：字符串<br />父级：-
 </SUMMARY>
 <BODY>
-<p>Represents the desired version of the service API in a request, and the version of the service API that's served in the response.  <code>apiVersion</code> should always be present.  This is not related to the version of the data.  Versioning of data should be handled through some other mechanism such as etags.</p><p>Example:</p>
+<p>在请求中表示所需的服务API版本，在响应中表示提供的服务API版本。<code>apiVersion</code>应始终存在。这与数据的版本无关。数据的版本控制应通过其他机制处理，如etag。</p><p>示例：</p>
 <CODE_SNIPPET>
 { "apiVersion": "2.1" }
 
@@ -407,20 +404,20 @@ Property Value Type: string<br />Parent: -
 </STYLEPOINT>
 <STYLEPOINT title="context">
 <SUMMARY>
-Property Value Type: string<br />Parent: -
+属性值类型：字符串<br />父级：-
 </SUMMARY>
 <BODY>
-<p>Client sets this value and server echos data in the response.   This is useful in JSON-P and batch situations , where the user can use the <code>context</code> to correlate responses with requests.  This property is a top-level property because the <code>context</code> should present regardless of whether the response was successful or an error.  <code>context</code> differs from <code>id</code> in that <code>context</code> is specified by the user while <code>id</code> is assigned by the service.</p><p>Example:</p><p>Request #1:</p>
+<p>客户端设置此值，服务器在响应中回显数据。这在JSON-P和批处理情况下很有用，用户可以使用<code>context</code>来关联响应与请求。此属性是一个顶级属性，因为无论响应是成功还是错误，<code>context</code>都应存在。<code>context</code>与<code>id</code>的区别在于，<code>context</code>由用户指定，而<code>id</code>由服务分配。</p><p>示例：</p><p>请求#1：</p>
 <CODE_SNIPPET>
 https://www.google.com/myapi?context=bart
 
 </CODE_SNIPPET>
-<p>Request #2:</p>
+<p>请求#2：</p>
 <CODE_SNIPPET>
 https://www.google.com/myapi?context=lisa
 
 </CODE_SNIPPET>
-<p>Response #1:</p>
+<p>响应#1：</p>
 <CODE_SNIPPET>
 {
   "context": "bart",
@@ -430,7 +427,7 @@ https://www.google.com/myapi?context=lisa
 }
 
 </CODE_SNIPPET>
-<p>Response #2:</p>
+<p>响应#2：</p>
 <CODE_SNIPPET>
 {
   "context": "lisa",
@@ -440,13 +437,13 @@ https://www.google.com/myapi?context=lisa
 }
 
 </CODE_SNIPPET>
-<p>Common JavaScript handler code to process both responses:</p>
+<p>处理两个响应的常见JavaScript处理程序代码：</p>
 <CODE_SNIPPET>
 function handleResponse(response) {
   if (response.result.context == "bart") {
-    // Update the "Bart" section of the page.
+    // 更新页面的"Bart"部分。
   } else if (response.result.context == "lisa") {
-    // Update the "Lisa" section of the page.
+    // 更新页面的"Lisa"部分。
   }
 }
 
@@ -455,22 +452,21 @@ function handleResponse(response) {
 </STYLEPOINT>
 <STYLEPOINT title="id">
 <SUMMARY>
-Property Value Type: string<br />Parent: -
+属性值类型：字符串<br />父级：-
 </SUMMARY>
 <BODY>
-<p>A server supplied identifier for the response (regardless of whether the response is a success or an error).  This is useful for correlating server logs with individual responses received at a client.</p><p>Example:</p>
+<p>服务器提供的响应标识符（无论响应是成功还是错误）。这对于将服务器日志与客户端接收的各个响应相关联很有用。</p><p>示例：</p>
 <CODE_SNIPPET>
 { "id": "1" }
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
 <STYLEPOINT title="method">
 <SUMMARY>
-Property Value Type: string<br />Parent: -
+属性值类型：字符串<br />父级：-
 </SUMMARY>
 <BODY>
-<p>Represents the operation to perform, or that was performed, on the data.  In the case of a JSON request, the <code>method</code> property can be used to indicate which operation to perform on the data.  In the case of a JSON response, the <code>method</code> property can indicate the operation performed on the data.</p><p>One example of this is in JSON-RPC requests, where <code>method</code> indicates the operation to perform on the <code>params</code> property:</p>
+<p>表示对数据执行或已执行的操作。在JSON请求的情况下，<code>method</code>属性可用于指示要对数据执行的操作。在JSON响应的情况下，<code>method</code>属性可以指示对数据执行的操作。</p><p>这在JSON-RPC请求中是一个例子，其中<code>method</code>指示要对<code>params</code>属性执行的操作：</p>
 <CODE_SNIPPET>
 {
   "method": "people.get",
@@ -485,10 +481,10 @@ Property Value Type: string<br />Parent: -
 </STYLEPOINT>
 <STYLEPOINT title="params">
 <SUMMARY>
-Property Value Type: object<br />Parent: -
+属性值类型：对象<br />父级：-
 </SUMMARY>
 <BODY>
-<p>This object serves as a map of input parameters to send to an RPC request.  It can be used in conjunction with the <code>method</code> property to execute an RPC function.  If an RPC function does not need parameters, this property can be omitted.</p><p>Example:</p>
+<p>此对象用作发送到RPC请求的输入参数的映射。它可以与<code>method</code>属性一起使用来执行RPC函数。如果RPC函数不需要参数，可以省略此属性。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "method": "people.get",
@@ -503,28 +499,28 @@ Property Value Type: object<br />Parent: -
 </STYLEPOINT>
 <STYLEPOINT title="data">
 <SUMMARY>
-Property Value Type: object<br />Parent: -
+属性值类型：对象<br />父级：-
 </SUMMARY>
 <BODY>
-<p>Container for all the data from a response.  This property itself has many reserved property names, which are described below.  Services are free to add their own data to this object.  A JSON response should contain either a <code>data</code> object or an <code>error</code> object, but not both.  If both <code>data</code> and <code>error</code> are present, the <code>error</code> object takes precedence.</p>
+<p>响应中所有数据的容器。此属性本身有许多保留的属性名称，下面将进行描述。服务可以自由地向此对象添加自己的数据。JSON响应应包含<code>data</code>对象或<code>error</code>对象，但不能同时包含两者。如果<code>data</code>和<code>error</code>都存在，则<code>error</code>对象优先。</p>
 </BODY>
 </STYLEPOINT>
 <STYLEPOINT title="error">
 <SUMMARY>
-Property Value Type: object<br />Parent: -
+属性值类型：对象<br />父级：-
 </SUMMARY>
 <BODY>
-<p>Indicates that an error has occurred, with details about the error.  The error format supports either one or more errors returned from the service.  A JSON response should contain either a <code>data</code> object or an <code>error</code> object, but not both.  If both <code>data</code> and <code>error</code> are present, the <code>error</code> object takes precedence.</p><p>Example:</p>
+<p>表示发生错误，并提供有关错误的详细信息。错误格式支持从服务返回一个或多个错误。JSON响应应包含<code>data</code>对象或<code>error</code>对象，但不能同时包含两者。如果<code>data</code>和<code>error</code>都存在，则<code>error</code>对象优先。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "apiVersion": "2.0",
   "error": {
     "code": 404,
-    "message": "File Not Found",
+    "message": "文件未找到",
     "errors": [{
-      "domain": "Calendar",
-      "reason": "ResourceNotFoundException",
-      "message": "File Not Found"
+      "domain": "日历",
+      "reason": "资源未找到异常",
+      "message": "文件未找到"
     }]
   }
 }
@@ -533,16 +529,16 @@ Property Value Type: object<br />Parent: -
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Reserved Property Names in the data object">
-<p>The <code>data</code> property of the JSON object may contain the following properties.</p>
+<CATEGORY title="data对象中的保留属性名称">
+<p><code>data</code>对象的JSON属性可能包含以下属性。</p>
 <STYLEPOINT title="data.kind">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>data</code>
+属性值类型：字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The <code>kind</code> property serves as a guide to what type of information this particular object stores.  It can be present at the <code>data</code> level, or at the <code>items</code> level, or in any object where its helpful to distinguish between various types of objects.  If the <code>kind</code> object is present, it should be the first property in the object (See the "Property Ordering" section below for more details).</p><p>Example:</p>
+<p><code>kind</code>属性用作指南，指示此特定对象存储的信息类型。它可以在<code>data</code>级别、<code>items</code>级别或在任何有助于区分不同类型对象的对象中存在。如果存在<code>kind</code>对象，它应该是对象中的第一个属性（有关更多详细信息，请参见下面的“属性排序”部分）。</p><p>示例：</p>
 <CODE_SNIPPET>
-// "Kind" indicates an "album" in the Picasa API.
+// "Kind"指示Picasa API中的"album"。
 {"data": {"kind": "album"}}
 
 </CODE_SNIPPET>
@@ -550,10 +546,10 @@ Property Value Type: string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.fields">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>data</code>
+属性值类型：字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>Represents the fields present in the response when doing a partial GET, or the fields present in a request when doing a partial PATCH.  This property should only exist during a partial GET/PATCH, and should not be empty.</p><p>Example:</p>
+<p>表示在执行部分GET时响应中存在的字段，或在执行部分PATCH时请求中存在的字段。此属性应仅在部分GET/PATCH期间存在，且不应为空。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -569,10 +565,10 @@ Property Value Type: string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.etag">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>data</code>
+属性值类型：字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>Represents the etag for the response.  Details about ETags in the GData APIs can be found here: <a href="https://code.google.com/apis/gdata/docs/2.0/reference.html#ResourceVersioning">https://code.google.com/apis/gdata/docs/2.0/reference.html#ResourceVersioning</a></p><p>Example:</p>
+<p>表示响应的etag。关于GData API中ETag的详细信息可在此处找到：<a href="https://code.google.com/apis/gdata/docs/2.0/reference.html#ResourceVersioning">https://code.google.com/apis/gdata/docs/2.0/reference.html#ResourceVersioning</a></p><p>示例：</p>
 <CODE_SNIPPET>
 {"data": {"etag": "W/"C0QBRXcycSp7ImA9WxRVFUk.""}}
 
@@ -581,22 +577,21 @@ Property Value Type: string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.id">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>data</code>
+属性值类型：字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>A globally unique string used to reference the object.  The specific details of the <code>id</code> property are left up to the service.</p><p>Example:</p>
+<p>用于引用对象的全局唯一字符串。<code>id</code>属性的具体细节由服务决定。</p><p>示例：</p>
 <CODE_SNIPPET>
 {"data": {"id": "12345"}}
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
 <STYLEPOINT title="data.lang">
 <SUMMARY>
-Property Value Type: string (formatted as specified in BCP 47)<br />Parent: <code>data (or any child element)</code>
+属性值类型：字符串（按BCP 47指定的格式）<br />父级：<code>data（或任何子元素）</code>
 </SUMMARY>
 <BODY>
-<p>Indicates the language of the rest of the properties in this object.  This property mimics HTML's <code>lang</code> property and XML's <code>xml:lang</code> properties.  The value should be a language value as defined in <a href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>.  If a single JSON object contains data in multiple languages, the service is responsible for developing and documenting an appropriate location for the <code>lang</code> property.</p><p>Example:</p>
+<p>指示此对象中其余属性的语言。此属性模仿HTML的<code>lang</code>属性和XML的<code>xml:lang</code>属性。值应为<a href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>中定义的语言值。如果单个JSON对象包含多种语言的数据，服务负责开发和记录<code>lang</code>属性的适当位置。</p><p>示例：</p>
 <CODE_SNIPPET>
 {"data": {
   "items": [
@@ -611,10 +606,10 @@ Property Value Type: string (formatted as specified in BCP 47)<br />Parent: <cod
 </STYLEPOINT>
 <STYLEPOINT title="data.updated">
 <SUMMARY>
-Property Value Type: string (formatted as specified in RFC 3339)<br />Parent: <code>data</code>
+属性值类型：字符串（按RFC 3339指定的格式）<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>Indicates the last date/time (<a href="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</a>) the item was updated, as defined by the service.</p><p>Example:</p>
+<p>指示服务定义的项目最后更新的日期/时间（<a href="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</a>）。</p><p>示例：</p>
 <CODE_SNIPPET>
 {"data": {"updated": "2007-11-06T16:34:41.000Z"}}
 
@@ -623,10 +618,10 @@ Property Value Type: string (formatted as specified in RFC 3339)<br />Parent: <c
 </STYLEPOINT>
 <STYLEPOINT title="data.deleted">
 <SUMMARY>
-Property Value Type: boolean<br />Parent: <code>data (or any child element)</code>
+属性值类型：布尔值<br />父级：<code>data（或任何子元素）</code>
 </SUMMARY>
 <BODY>
-<p>A marker element, that, when present, indicates the containing entry is deleted.  If deleted is present, its value must be <code>true</code>; a value of <code>false</code> can cause confusion and should be avoided.</p><p>Example:</p>
+<p>一个标记元素，当存在时，表示包含的条目已被删除。如果存在<code>deleted</code>，其值必须为<code>true</code>；<code>false</code>的值可能会引起混淆，应避免使用。</p><p>示例：</p>
 <CODE_SNIPPET>
 {"data": {
   "items": [
@@ -641,16 +636,16 @@ Property Value Type: boolean<br />Parent: <code>data (or any child element)</cod
 </STYLEPOINT>
 <STYLEPOINT title="data.items">
 <SUMMARY>
-Property Value Type: array<br />Parent: <code>data</code>
+属性值类型：数组<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The property name <code>items</code> is reserved to represent an array of items (for example, photos in Picasa, videos in YouTube).  This construct is intended to provide a standard location for collections related to the current result.  For example, the JSON output could be plugged into a generic pagination system that knows to page on the <code>items</code> array.  If <code>items</code> exists, it should be the last property in the <code>data</code> object (See the "Property Ordering" section below for more details).</p><p>Example:</p>
+<p>属性名称<code>items</code>保留用于表示项目数组（例如，Picasa中的照片，YouTube中的视频）。此构造旨在为与当前结果相关的集合提供标准位置。例如，JSON输出可以插入到一个通用的分页系统中，该系统知道如何在<code>items</code>数组上进行分页。如果存在<code>items</code>，它应该是<code>data</code>对象中的最后一个属性（有关更多详细信息，请参见下面的“属性排序”部分）。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
     "items": [
-      { /* Object #1 */ },
-      { /* Object #2 */ },
+      { /* 对象#1 */ },
+      { /* 对象#2 */ },
       ...
     ]
   }
@@ -660,18 +655,18 @@ Property Value Type: array<br />Parent: <code>data</code>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Reserved Property Names for Paging">
-<p>The following properties are located in the <code>data</code> object, and help page through a list of items.  Some of the language and concepts are borrowed from the <a href="http://www.opensearch.org/Home">OpenSearch specification</a>.</p><p>The paging properties below allow for various styles of paging, including:</p><ul><li>Previous/Next paging - Allows user's to move forward and backward through a list, one page at a time.  The <code>nextLink</code> and <code>previousLink</code> properties (described in the "Reserved Property Names for Links" section below) are used for this style of paging.</li><li>Index-based paging - Allows user's to jump directly to a specific item position within a list of items.  For example, to load 10 items starting at item 200, the developer may point the user to a url with the query string <code>?startIndex=200</code>.</li><li>Page-based paging - Allows user's to jump directly to a specific page within the items.  This is similar to index-based paging, but saves the developer the extra step of having to calculate the item index for a new page of items.  For example, rather than jump to item number 200, the developer could jump to page 20.  The urls during page-based paging could use the query string <code>?page=1</code> or <code>?page=20</code>.  The <code>pageIndex</code> and <code>totalPages</code> properties are used for this style of paging.</li></ul><p>An example of how to use these properties to implement paging can be found at the end of this guide.</p>
+<CATEGORY title="用于分页的保留属性名称">
+<p>以下属性位于<code>data</code>对象中，帮助浏览项目列表。一些语言和概念借鉴自<a href="http://www.opensearch.org/Home">OpenSearch规范</a>。</p><p>下面的分页属性允许各种分页样式，包括：</p><ul><li>前/后分页 - 允许用户一次一页地向前和向后移动列表。用于这种分页样式的<code>nextLink</code>和<code>previousLink</code>属性（在下面的“用于链接的保留属性名称”部分中描述）。</li><li>基于索引的分页 - 允许用户直接跳转到列表中特定项目的位置。例如，要加载从第200项开始的10个项目，开发者可以将用户指向带有查询字符串<code>?startIndex=200</code>的URL。</li><li>基于页面的分页 - 允许用户直接跳转到项目中的特定页面。这与基于索引的分页类似，但节省了开发者计算新页面项目索引的额外步骤。例如，与其跳转到第200项，开发者可以跳转到第20页。在基于页面的分页期间，URL可以使用查询字符串<code>?page=1</code>或<code>?page=20</code>。用于这种分页样式的<code>pageIndex</code>和<code>totalPages</code>属性。</li></ul><p>如何使用这些属性实现分页的示例可以在本指南的末尾找到。</p>
 <STYLEPOINT title="data.currentItemCount">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>data</code>
+属性值类型：整数<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The number of items in this result set.  Should be equivalent to items.length, and is provided as a convenience property.  For example, suppose a developer requests a set of search items, and asks for 10 items per page.  The total set of that search has 14 total items.  The first page of items will have 10 items in it, so both <code>itemsPerPage</code> and <code>currentItemCount</code> will equal "10".  The next page of items will have the remaining 4 items; <code>itemsPerPage</code> will still be "10", but <code>currentItemCount</code> will be "4".</p><p>Example:</p>
+<p>此结果集中的项目数量。应相当于<code>items.length</code>，并作为便利属性提供。例如，假设开发者请求一组搜索项目，并要求每页10个项目。该搜索的总项目数为14。第一页项目将包含10个项目，因此<code>itemsPerPage</code>和<code>currentItemCount</code>都将等于“10”。下一页项目将包含剩余的4个项目；<code>itemsPerPage</code>仍将是“10”，但<code>currentItemCount</code>将是“4”。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
-    // "itemsPerPage" does not necessarily match "currentItemCount"
+    // "itemsPerPage" 不一定与 "currentItemCount" 匹配
     "itemsPerPage": 10,
     "currentItemCount": 4
   }
@@ -682,10 +677,10 @@ Property Value Type: integer<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.itemsPerPage">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>data</code>
+属性值类型：整数<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The number of items in the result.  This is not necessarily the size of the data.items array; if we are viewing the last page of items, the size of data.items may be less than <code>itemsPerPage</code>.  However the size of data.items should not exceed <code>itemsPerPage</code>.</p><p>Example:</p>
+<p>结果中的项目数量。这不一定是<code>data.items</code>数组的大小；如果我们正在查看最后一页项目，<code>data.items</code>的大小可能小于<code>itemsPerPage</code>。然而，<code>data.items</code>的大小不应超过<code>itemsPerPage</code>。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -698,26 +693,25 @@ Property Value Type: integer<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.startIndex">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>data</code>
+属性值类型：整数<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The index of the first item in data.items.  For consistency, <code>startIndex</code> should be 1-based.  For example, the first item in the first set of items should have a <code>startIndex</code> of 1.  If the user requests the next set of data, the <code>startIndex</code> may be 10.</p><p>Example:</p>
+<p><code>data.items</code>中第一个项目的索引。为保持一致性，<code>startIndex</code>应为基于1的。例如，第一组项目中的第一个项目应具有<code>startIndex</code>为1。如果用户请求下一组数据，<code>startIndex</code>可能为10。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
     "startIndex": 1
   }
 }
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
 <STYLEPOINT title="data.totalItems">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>data</code>
+属性值类型：整数<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The total number of items available in this set.  For example, if a user has 100 blog posts, the response may only contain 10 items, but the <code>totalItems</code> would be 100.</p><p>Example:</p>
+<p>此集合中可用的项目总数。例如，如果用户有100篇博客文章，响应可能只包含10个项目，但<code>totalItems</code>将为100。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -730,10 +724,10 @@ Property Value Type: integer<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.pagingLinkTemplate">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>data</code>
+属性值类型：字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>A URI template indicating how users can calculate subsequent paging links.  The URI template also has some reserved variable names: <code>{index}</code> representing the item number to load, and <code>{pageIndex}</code>, representing the page number to load.</p><p>Example:</p>
+<p>一个URI模板，指示用户如何计算后续分页链接。URI模板还有一些保留的变量名称：<code>{index}</code>表示要加载的项目编号，<code>{pageIndex}</code>表示要加载的页面编号。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -746,10 +740,10 @@ Property Value Type: string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.pageIndex">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>data</code>
+属性值类型：整数<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The index of the current page of items.  For consistency, <code>pageIndex</code> should be 1-based.  For example, the first page of items has a <code>pageIndex</code> of 1.  <code>pageIndex</code> can also be calculated from the item-based paging properties: <code>pageIndex = floor(startIndex / itemsPerPage) + 1</code>.</p><p>Example:</p>
+<p>当前项目页面的索引。为了保持一致性，<code>pageIndex</code>应为基于1的。例如，第一页项目的<code>pageIndex</code>为1。<code>pageIndex</code>也可以从基于项目的分页属性计算得出：<code>pageIndex = floor(startIndex / itemsPerPage) + 1</code>。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -762,10 +756,10 @@ Property Value Type: integer<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.totalPages">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>data</code>
+属性值类型：整数<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The total number of pages in the result set.  <code>totalPages</code> can also be calculated from the item-based paging properties above: <code>totalPages = ceiling(totalItems / itemsPerPage)</code>.</p><p>Example:</p>
+<p>结果集中的总页面数。<code>totalPages</code>也可以从上述基于项目的分页属性计算得出：<code>totalPages = ceiling(totalItems / itemsPerPage)</code>。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -777,14 +771,14 @@ Property Value Type: integer<br />Parent: <code>data</code>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Reserved Property Names for Links">
-<p>The following properties are located in the <code>data</code> object, and represent references to other resources.  There are two forms of link properties: 1) objects, which can contain any sort of reference (such as a JSON-RPC object), and 2) URI strings, which represent URIs to resources (and will always be suffixed with "Link").</p>
+<CATEGORY title="链接的保留属性名称">
+<p>以下属性位于<code>data</code>对象中，表示对其他资源的引用。有两种形式的链接属性：1）对象，可以包含任何类型的引用（例如JSON-RPC对象），2）URI字符串，表示指向资源的URI（并始终以“Link”结尾）。</p>
 <STYLEPOINT title="data.self / data.selfLink">
 <SUMMARY>
-Property Value Type: object / string<br />Parent: <code>data</code>
+属性值类型：对象 / 字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The self link can be used to retrieve the item's data.  For example, in a list of a user's Picasa album, each album object in the <code>items</code> array could contain a <code>selfLink</code> that can be used to retrieve data related to that particular album.</p><p>Example:</p>
+<p>自链接可用于检索项目的数据。例如，在用户的Picasa相册列表中，<code>items</code>数组中的每个相册对象可以包含一个<code>selfLink</code>，用于检索与该特定相册相关的数据。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -798,10 +792,10 @@ Property Value Type: object / string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.edit / data.editLink">
 <SUMMARY>
-Property Value Type: object / string<br />Parent: <code>data</code>
+属性值类型：对象 / 字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The edit link indicates where a user can send update or delete requests.  This is useful for REST-based APIs.  This link need only be present if the user can update/delete this item.</p><p>Example:</p>
+<p>编辑链接指示用户可以发送更新或删除请求的位置。这对于基于REST的API很有用。只有当用户可以更新/删除此项目时，才需要此链接存在。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -815,10 +809,10 @@ Property Value Type: object / string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.next / data.nextLink">
 <SUMMARY>
-Property Value Type: object / string<br />Parent: <code>data</code>
+属性值类型：对象 / 字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The next link indicates how more data can be retrieved.  It points to the location to load the next set of data.  It can be used in conjunction with the <code>itemsPerPage</code>, <code>startIndex</code> and <code>totalItems</code> properties in order to page through data.</p><p>Example:</p>
+<p>下一链接指示如何检索更多数据。它指向加载下一组数据的位置。它可以与<code>itemsPerPage</code>、<code>startIndex</code>和<code>totalItems</code>属性一起使用，以便分页浏览数据。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -832,10 +826,10 @@ Property Value Type: object / string<br />Parent: <code>data</code>
 </STYLEPOINT>
 <STYLEPOINT title="data.previous / data.previousLink">
 <SUMMARY>
-Property Value Type: object / string<br />Parent: <code>data</code>
+属性值类型：对象 / 字符串<br />父级：<code>data</code>
 </SUMMARY>
 <BODY>
-<p>The previous link indicates how more data can be retrieved.  It points to the location to load the previous set of data.  It can be used in conjunction with the <code>itemsPerPage</code>, <code>startIndex</code> and <code>totalItems</code> properties in order to page through data.</p><p>Example:</p>
+<p>上一链接指示如何检索更多数据。它指向加载上一组数据的位置。它可以与<code>itemsPerPage</code>、<code>startIndex</code>和<code>totalItems</code>属性一起使用，以便分页浏览数据。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "data": {
@@ -848,14 +842,14 @@ Property Value Type: object / string<br />Parent: <code>data</code>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Reserved Property Names in the error object">
-<p>The <code>error</code> property of the JSON object may contain the following properties.</p>
+<CATEGORY title="错误对象中的保留属性名称">
+<p>JSON对象的<code>error</code>属性可能包含以下属性。</p>
 <STYLEPOINT title="error.code">
 <SUMMARY>
-Property Value Type: integer<br />Parent: <code>error</code>
+属性值类型：整数<br />父级：<code>error</code>
 </SUMMARY>
 <BODY>
-<p>Represents the code for this error.  This property value will usually represent the HTTP response code.  If there are multiple errors, <code>code</code> will be the error code for the first error.</p><p>Example:</p>
+<p>表示此错误的代码。此属性值通常表示HTTP响应代码。如果存在多个错误，<code>code</code>将是第一个错误的错误代码。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -868,14 +862,14 @@ Property Value Type: integer<br />Parent: <code>error</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.message">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error</code>
+属性值类型：字符串<br />父级：<code>error</code>
 </SUMMARY>
 <BODY>
-<p>A human readable message providing more details about the error.  If there are multiple errors, <code>message</code> will be the message for the first error.</p><p>Example:</p>
+<p>提供有关错误的更多详细信息的人类可读消息。如果存在多个错误，<code>message</code>将是第一个错误的消息。</p><p>示例：</p>
 <CODE_SNIPPET>
 {
   "error":{
-    "message": "File Not Found"
+    "message": "文件未找到"
   }
 }
 
@@ -884,22 +878,21 @@ Property Value Type: string<br />Parent: <code>error</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors">
 <SUMMARY>
-Property Value Type: array<br />Parent: <code>error</code>
+属性值类型：数组<br />父级：<code>error</code>
 </SUMMARY>
 <BODY>
-<p>Container for any additional information regarding the error.  If the service returns multiple errors, each element in the <code>errors</code> array represents a different error.</p><p>Example:</p>
+<p>用于存储有关错误的任何附加信息的容器。如果服务返回多个错误，<code>errors</code>数组中的每个元素代表一个不同的错误。</p><p>示例：</p>
 <CODE_SNIPPET>
 { "error": { "errors": [] } }
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].domain">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>Unique identifier for the service raising this error.  This helps distinguish service-specific errors (i.e. error inserting an event in a calendar) from general protocol errors (i.e. file not found).</p><p>Example:</p>
+<p>引发此错误的服务的唯一标识符。这有助于区分服务特定的错误（例如，在日历中插入事件的错误）和一般协议错误（例如，文件未找到）。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -912,10 +905,10 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].reason">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>Unique identifier for this error.  Different from the <code>error.code</code> property in that this is not an http response code.</p><p>Example:</p>
+<p>此错误的唯一标识符。与<code>error.code</code>属性不同，这不是HTTP响应代码。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -928,16 +921,16 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].message">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>A human readable message providing more details about the error.  If there is only one error, this field will match <code>error.message</code>.</p><p>Example:</p>
+<p>提供有关错误的更多详细信息的人类可读消息。如果只有一个错误，此字段将与<code>error.message</code>匹配。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
-    "code": 404
-    "message": "File Not Found",
-    "errors": [{"message": "File Not Found"}]
+    "code": 404,
+    "message": "文件未找到",
+    "errors": [{"message": "文件未找到"}]
   }
 }
 
@@ -946,10 +939,10 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].location">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>The location of the error (the interpretation of its value depends on <code>locationType</code>).</p><p>Example:</p>
+<p>错误的位置（其值的解释取决于<code>locationType</code>）。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -962,10 +955,10 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].locationType">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>Indicates how the <code>location</code> property should be interpreted.</p><p>Example:</p>
+<p>指示如何解释<code>location</code>属性。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -978,10 +971,10 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].extendedHelp">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>A URI for a help text that might shed some more light on the error.</p><p>Example:</p>
+<p>可能提供更多错误信息的帮助文本的URI。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -994,10 +987,10 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </STYLEPOINT>
 <STYLEPOINT title="error.errors[].sendReport">
 <SUMMARY>
-Property Value Type: string<br />Parent: <code>error.errors</code>
+属性值类型: 字符串<br />父级: <code>error.errors</code>
 </SUMMARY>
 <BODY>
-<p>A URI for a report form used by the service to collect data about the error condition. This URI should be preloaded with parameters describing the request.</p><p>Example:</p>
+<p>服务用于收集有关错误条件数据的报告表单的URI。此URI应预加载描述请求的参数。</p><p>示例:</p>
 <CODE_SNIPPET>
 {
   "error":{
@@ -1009,52 +1002,51 @@ Property Value Type: string<br />Parent: <code>error.errors</code>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Property Ordering">
-<p>Properties can be in any order within the JSON object.  However, in some cases the ordering of properties can help parsers quickly interpret data and lead to better performance.  One example is a pull parser in a mobile environment, where performance and memory are critical, and unnecessary parsing should be avoided.</p>
-<STYLEPOINT title="Kind Property">
+<CATEGORY title="属性排序">
+<p>属性可以在JSON对象内的任何顺序中。然而，在某些情况下，属性的排序可以帮助解析器快速解释数据并提高性能。一个例子是在移动环境中的拉取解析器，其中性能和内存至关重要，应避免不必要的解析。</p>
+<STYLEPOINT title="Kind属性">
 <SUMMARY>
-<code>kind</code> should be the first property
+<code>kind</code>应为第一个属性
 </SUMMARY>
 <BODY>
-<p>Suppose a parser is responsible for parsing a raw JSON stream into a specific object.  The <code>kind</code> property guides the parser to instantiate the appropriate object.  Therefore it should be the first property in the JSON object.  This only applies when objects have a <code>kind</code> property (usually found in the <code>data</code> and <code>items</code> properties).</p>
+<p>假设一个解析器负责将原始JSON流解析为特定对象。<code>kind</code>属性指导解析器实例化适当的对象。因此，它应是JSON对象中的第一个属性。这仅适用于对象具有<code>kind</code>属性时（通常在<code>data</code>和<code>items</code>属性中找到）。</p>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Items Property">
+<STYLEPOINT title="Items属性">
 <SUMMARY>
-<code>items</code> should be the last property in the <code>data</code> object
+<code>items</code>应为<code>data</code>对象中的最后一个属性
 </SUMMARY>
 <BODY>
-<p>This allows all of the collection's properties to be read before reading each individual item.  In cases where there are a lot of items, this avoids unnecessarily parsing those items when the developer only needs fields from the data.</p>
+<p>这允许在读取每个单独的项目之前读取集合的所有属性。在有大量项目时，这避免了在开发者只需要数据字段时不必要地解析这些项目。</p>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Property Ordering Example">
+<STYLEPOINT title="属性排序示例">
 <BODY>
 <CODE_SNIPPET>
-// The "kind" property distinguishes between an "album" and a "photo".
-// "Kind" is always the first property in its parent object.
-// The "items" property is the last property in the "data" object.
+// "kind"属性区分"album"和"photo"。
+// "Kind"始终是其父对象中的第一个属性。
+// "items"属性是"data"对象中的最后一个属性。
 {
   "data": {
     "kind": "album",
-    "title": "My Photo Album",
-    "description": "An album in the user's account",
+    "title": "我的相册",
+    "description": "用户账户中的一个相册",
     "items": [
       {
         "kind": "photo",
-        "title": "My First Photo"
+        "title": "我的第一张照片"
       }
     ]
   }
 }
-
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Examples">
+<CATEGORY title="示例">
 <STYLEPOINT title="YouTube JSON API">
 <SUMMARY>
-Here's an example of the YouTube JSON API's response object.  You can learn more about YouTube's JSON API here: <a href="https://code.google.com/apis/youtube/2.0/developers_guide_jsonc.html">https://code.google.com/apis/youtube/2.0/developers_guide_jsonc.html</a>.
+这是一个YouTube JSON API响应对象的示例。您可以在这里了解更多关于YouTube的JSON API的信息：<a href="https://jqknono.github.io/styleguide">https://jqknono.github.io/styleguide</a>。
 </SUMMARY>
 <BODY>
 <CODE_SNIPPET>
@@ -1108,12 +1100,12 @@ Here's an example of the YouTube JSON API's response object.  You can learn more
 </CODE_SNIPPET>
 </BODY>
 </STYLEPOINT>
-<STYLEPOINT title="Paging Example">
+<STYLEPOINT title="分页示例">
 <SUMMARY>
-This example demonstrates how the Google search items could be represented as a JSON object, with special attention to the paging variables.
+此示例展示了Google搜索结果如何表示为JSON对象，特别关注分页变量。
 </SUMMARY>
 <BODY>
-<p>This sample is for illustrative purposes only.  The API below does not actually exist.</p><p>Here's a sample Google search results page:<br /><img src="jsoncstyleguide_example_01.png" /><br /><img src="jsoncstyleguide_example_02.png" /></p><p>Here's a sample JSON representation of this page:</p>
+<p>此示例仅用于说明目的。下面的API实际上并不存在。</p><p>这是一个Google搜索结果页面的示例：<br /><img src="jsoncstyleguide_example_01.png" /><br /><img src="jsoncstyleguide_example_02.png" /></p><p>这是该页面的JSON表示示例：</p>
 <CODE_SNIPPET>
 {
   "apiVersion": "2.1",
@@ -1131,25 +1123,25 @@ This example demonstrates how the Google search items could be represented as a 
     "items": [
       {
         "title": "Pizz'a Chicago Home Page"
-        // More fields for the search results
+        // 搜索结果的更多字段
       }
-      // More search results
+      // 更多搜索结果
     ]
   }
 }
 
 </CODE_SNIPPET>
-<p>Here's how each of the colored boxes from the screenshot would be represented (the background colors correspond to the colors in the images above):</p><ul><li>Results <span style="background-color:rgb(180, 167, 214)">11</span> - 20 of about 2,700,000 = startIndex</li><li>Results 11 - <span style="background-color:rgb(255, 217, 102)">20</span> of about 2,700,000 = startIndex + currentItemCount - 1</li><li>Results 11 - 20 of about <span style="background-color:rgb(246, 178, 107)">2,700,000</span> = totalItems</li><li><span style="background-color:rgb(234, 153, 153)">Search results</span> = items (formatted appropriately)</li><li><span style="background-color:rgb(182, 215, 168)">Previous/Next</span> = previousLink / nextLink</li><li><span style="background-color:rgb(159, 197, 232)">Numbered links in "Gooooooooooogle"</span> = Derived from "pageLinkTemplate".  The developer is responsible for calculating the values for {index} and substituting those values into the "pageLinkTemplate".  The pageLinkTemplate's {index} variable is calculated as follows:<ul><li>Index #1 = 0 * itemsPerPage = 0</li><li>Index #2 = 2 * itemsPerPage = 10</li><li>Index #3 = 3 * itemsPerPage = 20</li><li>Index #N = N * itemsPerPage</li></ul></li></ul>
+<p>以下是屏幕截图中每个彩色框的表示方式（背景颜色对应上图中的颜色）：</p><ul><li>结果 <span style="background-color:rgb(180, 167, 214)">11</span> - 20 约 2,700,000 = startIndex</li><li>结果 11 - <span style="background-color:rgb(255, 217, 102)">20</span> 约 2,700,000 = startIndex + currentItemCount - 1</li><li>结果 11 - 20 约 <span style="background-color:rgb(246, 178, 107)">2,700,000</span> = totalItems</li><li><span style="background-color:rgb(234, 153, 153)">搜索结果</span> = items（适当格式化）</li><li><span style="background-color:rgb(182, 215, 168)">上一页/下一页</span> = previousLink / nextLink</li><li><span style="background-color:rgb(159, 197, 232)">“Gooooooooooogle”中的编号链接</span> = 由“pageLinkTemplate”派生。开发者负责计算{index}的值并将这些值代入“pageLinkTemplate”。pageLinkTemplate的{index}变量计算如下：<ul><li>索引#1 = 0 * itemsPerPage = 0</li><li>索引#2 = 2 * itemsPerPage = 10</li><li>索引#3 = 3 * itemsPerPage = 20</li><li>索引#N = N * itemsPerPage</li></ul></li></ul>
 </BODY>
 </STYLEPOINT>
 </CATEGORY>
-<CATEGORY title="Appendix">
-<STYLEPOINT title="Appendix A: Reserved JavaScript Words">
+<CATEGORY title="附录">
+<STYLEPOINT title="附录A：保留的JavaScript词">
 <SUMMARY>
-A list of reserved JavaScript words that should be avoided in property names.
+应避免在属性名称中使用的保留JavaScript词列表。
 </SUMMARY>
 <BODY>
-<p>The words below are reserved by the JavaScript language and cannot be referred to using dot notation.  The list represents best knowledge of keywords at this time; the list may change or vary based on your specific execution environment.</p><p>From the <a href="https://www.google.com/url?sa=D&amp;q=http%3A%2F%2Fwww.ecma-international.org%2Fpublications%2Fstandards%2FEcma-262.htm">ECMAScript Language Specification 5th Edition</a></p>
+<p>以下词语由JavaScript语言保留，不能使用点表示法引用。该列表代表当前对关键字的最佳了解；根据您的具体执行环境，该列表可能会发生变化或有所不同。</p><p>来自<a href="https://jqknono.github.io/styleguide">ECMAScript语言规范第5版</a></p>
 <BAD_CODE_SNIPPET>
 abstract
 boolean break byte
@@ -1173,12 +1165,11 @@ yield
 </STYLEPOINT>
 </CATEGORY>
 <HR/>
-
 <p align="center">
-Except as otherwise <a href="https://code.google.com/policies.html">noted</a>, the content of this page is licensed under the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>.
+除非另有<a href="https://jqknono.github.io/styleguide/policies.html">说明</a>，本页内容根据<a href="https://creativecommons.org/licenses/by/3.0/">知识共享署名3.0许可证</a>授权，代码示例根据<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0许可证</a>授权。
 </p>
 <p align="right">
-Revision 0.9
+修订版 0.9
 </p>
 
 <address>
