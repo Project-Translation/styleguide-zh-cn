@@ -2,7 +2,7 @@
 
 每个主要的开源项目都有自己的风格指南：一套关于如何为该项目编写代码的约定（有时是任意的）。当一个大型代码库中的所有代码都采用一致的风格时，理解它会变得更加容易。
 
-“风格”涵盖了很多方面，从“变量名使用驼峰命名法”到“永远不要使用全局变量”再到“永远不要使用异常”。这个项目（[google/styleguide](https://jqknono.github.io/styleguide)）链接到我们用于 Google 代码的风格指南。如果您正在修改起源于 Google 的项目，您可能会被指向此页面以查看适用于该项目的风格指南。
+“风格”涵盖了很多方面，从“变量名使用驼峰命名法”到“永远不要使用全局变量”再到“永远不要使用异常”。这个项目（[google/styleguide](https://project-translation.github.io/styleguide-zh-cn/)）链接到我们用于 Google 代码的风格指南。如果您正在修改起源于 Google 的项目，您可能会被指向此页面以查看适用于该项目的风格指南。
 
 *   [AngularJS 风格指南][angular]
 *   [Common Lisp 风格指南][cl]
